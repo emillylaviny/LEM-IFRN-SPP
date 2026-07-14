@@ -69,6 +69,6 @@ Esta plataforma é resultado de um projeto acadêmico desenvolvido no âmbito do
 
 
 ## Integrantes
-- Ana Jéssica
-- Emilly Laviny
-- Nathalia Cordeiro
+- [Ana Jéssica](https://github.com/jessicamoura0355-code)
+- [Emilly Laviny](https://github.com/emillylaviny)
+- [Nathalia Cordeiro](https://github.com/nathalia-mcs)
