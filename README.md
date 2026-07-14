@@ -67,6 +67,7 @@ Esta plataforma é resultado de um projeto acadêmico desenvolvido no âmbito do
     src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg"
 />
 
+
 ## Integrantes
 - Ana Jéssica
 - Emilly Laviny
