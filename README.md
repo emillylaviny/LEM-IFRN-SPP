@@ -11,7 +11,7 @@ Esta plataforma é resultado de um projeto acadêmico desenvolvido no âmbito do
     alt="HTML"
     title="HTML" 
     width="30px" 
-    style="padding-right: 10px;" 
+    style="padding-right: 20px;" 
     src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" 
 />
 <img 
@@ -19,7 +19,7 @@ Esta plataforma é resultado de um projeto acadêmico desenvolvido no âmbito do
     alt="CSS" 
     title="CSS"
     width="30px" 
-    style="padding-right: 10px;" 
+    style="padding-right: 20px;" 
     src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" 
 />
 <img 
@@ -27,7 +27,7 @@ Esta plataforma é resultado de um projeto acadêmico desenvolvido no âmbito do
     alt="JavaScript" 
     title="JavaScript"
     width="30px" 
-    style="padding-right: 10px;" 
+    style="padding-right: 20px;" 
     src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" 
 />
 
@@ -36,7 +36,7 @@ Esta plataforma é resultado de um projeto acadêmico desenvolvido no âmbito do
     alt="Python" 
     title="Python"
     width="30px" 
-    style="padding-right: 10px;" 
+    style="padding-right: 20px;" 
     src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" 
 />
 
@@ -45,7 +45,7 @@ Esta plataforma é resultado de um projeto acadêmico desenvolvido no âmbito do
     alt="Bootstrap"
     title="Bootstrap" 
     width="30px" 
-    style="padding-right: 10px;" 
+    style="padding-right: 20px;" 
     src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" 
 />
 
@@ -54,7 +54,7 @@ Esta plataforma é resultado de um projeto acadêmico desenvolvido no âmbito do
     alt="mySql"
     title="mySql" 
     width="30px" 
-    style="padding-right: 10px;" 
+    style="padding-right: 20px;" 
     src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg"
 />
 
@@ -63,7 +63,7 @@ Esta plataforma é resultado de um projeto acadêmico desenvolvido no âmbito do
     alt="django"
     title="django" 
     width="30px" 
-    style="padding-right: 10px;" 
+    style="padding-right: 20px;" 
     src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg"
 />
 
