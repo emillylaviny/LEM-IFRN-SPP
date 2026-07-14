@@ -1,4 +1,4 @@
-<img src="logo LEM-IFRNSPP.png" width="500" height="400">
+<img src="logo LEM-IFRNSPP.png" width="500" height="300">
 
 ## Sobre
 A Plataforma Digital do LEM é um sistema web desenvolvido para facilitar o acesso ao acervo de materiais manipuláveis do Laboratório de Ensino de Matemática do IFRN/SPP. Por meio da plataforma, professores da rede pública poderão consultar os materiais disponíveis, solicitar empréstimos e agendar visitas ao laboratório para realização de atividades pedagógicas. 
@@ -65,7 +65,7 @@ Esta plataforma é resultado de um projeto acadêmico desenvolvido no âmbito do
     width="30px" 
     style="padding-right: 20px;" 
     src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg"
-/>
+/> <br/>
 
 
 ## Integrantes
