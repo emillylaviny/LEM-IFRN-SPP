@@ -1,0 +1,19 @@
+
+.corpo{
+    background-color: #00D0B3 !important;
+}
+.nav-link{
+    color: #005F8F;
+}
+
+.btn-entrar{
+    background-color: #005F8F !important;
+    border-color: #005F8F !important;
+    color: #ffffff;
+    border: 40px;
+    border-radius: 25px;
+    width: 120px;
+    height: 30px;
+}
+
+
