@@ -1,4 +1,4 @@
-
+/* ===== Estilos globais (usados em várias telas) ===== */
 .corpo{
     background-color: #00D0B3 !important;
 }
@@ -16,4 +16,92 @@
     height: 30px;
 }
 
+/* ===== Tela de login (escopado em body.login-page para não afetar as demais telas) ===== */
+body.login-page {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* trava a rolagem só nesta tela */
+    min-height: 100vh;
+}
 
+body.login-page .left-panel,
+body.login-page .right-panel {
+    height: 100vh;
+}
+
+body.login-page .form-wrapper {
+    width: 100%;
+    max-width: 440px;
+}
+
+body.login-page .login-title {
+    color: #7a7a7a;
+    font-weight: 700;
+}
+
+body.login-page .form-label-custom {
+    color: #8a8a8a;
+    font-weight: 400;
+}
+
+/* Campos apenas com linha inferior, sem caixa, como na referência */
+body.login-page .input-underline {
+    border: none;
+    border-bottom: 1px solid #1b3a63;
+    border-radius: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+body.login-page .input-underline:focus {
+    box-shadow: none;
+    border-bottom: 2px solid #1b3a63;
+}
+
+body.login-page .btn-access {
+    background-color: #00D1B4;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 50rem;
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+}
+body.login-page .btn-access:hover {
+    background-color: #00b89e;
+    color: #fff;
+}
+
+body.login-page .btn-google {
+    border-radius: 50rem;
+    border: 1px solid #d0d0d0;
+    color: #444;
+    font-weight: 600;
+    padding-top: .55rem;
+    padding-bottom: .55rem;
+}
+
+body.login-page .divider-text {
+    color: #9a9a9a;
+    white-space: nowrap;
+}
+body.login-page .divider-line {
+    border-top: 1px solid #d9d9d9;
+}
+
+body.login-page a.link-custom {
+    color: #1a56b0;
+    text-decoration: none;
+}
+body.login-page a.link-custom:hover {
+    text-decoration: underline;
+}
+
+/* Responsivo: em telas menores o painel esquerdo diminui de altura */
+@media (max-width: 991.98px) {
+    body.login-page .left-panel {
+        height: 40vh;
+    }
+    body.login-page .right-panel {
+        height: 60vh;
+    }
+}
