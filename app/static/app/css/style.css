@@ -1,16 +1,16 @@
-/* ===== Estilos globais (usados em várias telas) ===== */
-.corpo{
-    background-color: #00D0B3 !important;
+/* ===== Estilos globais (usados em várias telas: navbar, botão Entrar e seção "corpo") ===== */
+.corpo {
+    background-color: #00D0B3;
 }
-.nav-link{
+
+.navbar .nav-link {
     color: #005F8F;
 }
 
-.btn-entrar{
-    background-color: #005F8F !important;
-    border-color: #005F8F !important;
+.btn-entrar {
+    background-color: #005F8F;
+    border-color: #005F8F;
     color: #ffffff;
-    border: 40px;
     border-radius: 25px;
     width: 120px;
     height: 30px;

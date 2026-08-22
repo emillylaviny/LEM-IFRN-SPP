@@ -9,8 +9,7 @@
 
 <!-- Bootstrap Icons, usado apenas para o ícone dentro do botão "Entrar" -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'app/css/style.css' %}">
-{% block extra_head %}{% endblock %}
+<link rel="stylesheet" href="{% static 'app/static/app/css/style.css' %}">
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
@@ -21,7 +20,7 @@
 
         <!-- Logo à esquerda -->
         <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'app/assets/img/logoLEMnav.png' %}" alt="Logo LEM" height="50">
+            <img src="{% static 'app/assets/img/LogoLEMnav.png' %}" alt="Logo LEM" height="70">
         </a>
 
         <!-- Botão hamburguer (telas pequenas) -->
@@ -57,7 +56,11 @@
     </div>
 </nav>
 
+
+        {% block content %}
+        {% endblock %}
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-{% block extra_scripts %}{% endblock %}
+
 </body>
 </html>
