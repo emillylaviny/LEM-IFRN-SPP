@@ -1,6 +1,9 @@
 /* ===== Estilos globais (usados em várias telas: navbar, botão Entrar e seção "corpo") ===== */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap');
+
 .corpo {
     background-color: #00D0B3;
+    font-family: "Montserrat", sans-serif;
 }
 
 .navbar .nav-link {
@@ -25,40 +28,40 @@ body.login-page {
     min-height: 100vh;
 }
 
-body.login-page .left-panel,
-body.login-page .right-panel {
+.left-panel,
+.right-panel {
     height: 100vh;
 }
 
-body.login-page .form-wrapper {
+.form-wrapper {
     width: 100%;
     max-width: 440px;
 }
 
-body.login-page .login-title {
-    color: #7a7a7a;
+.login-title {
+    color: #444444;
     font-weight: 700;
 }
 
-body.login-page .form-label-custom {
-    color: #8a8a8a;
+.form-label-custom {
+    color: #444444;
     font-weight: 400;
 }
 
 /* Campos apenas com linha inferior, sem caixa, como na referência */
-body.login-page .input-underline {
+.input-underline {
     border: none;
     border-bottom: 1px solid #1b3a63;
     border-radius: 0;
     padding-left: 0;
     padding-right: 0;
 }
-body.login-page .input-underline:focus {
+.input-underline:focus {
     box-shadow: none;
     border-bottom: 2px solid #1b3a63;
 }
 
-body.login-page .btn-access {
+.btn-access {
     background-color: #00D1B4;
     color: #fff;
     font-weight: 700;
@@ -66,12 +69,12 @@ body.login-page .btn-access {
     padding-top: .75rem;
     padding-bottom: .75rem;
 }
-body.login-page .btn-access:hover {
+.btn-access:hover {
     background-color: #00b89e;
     color: #fff;
 }
 
-body.login-page .btn-google {
+.btn-google {
     border-radius: 50rem;
     border: 1px solid #d0d0d0;
     color: #444;
@@ -80,19 +83,19 @@ body.login-page .btn-google {
     padding-bottom: .55rem;
 }
 
-body.login-page .divider-text {
-    color: #9a9a9a;
+.divider-text {
+    color: #444444;
     white-space: nowrap;
 }
-body.login-page .divider-line {
-    border-top: 1px solid #d9d9d9;
+.divider-line {
+    border-top: 1px solid #444444;
 }
 
-body.login-page a.link-custom {
+a.link-custom {
     color: #1a56b0;
     text-decoration: none;
 }
-body.login-page a.link-custom:hover {
+a.link-custom:hover {
     text-decoration: underline;
 }
 
@@ -105,3 +108,456 @@ body.login-page a.link-custom:hover {
         height: 60vh;
     }
 }
+
+
+  :root {
+    --lemaq-teal-1: #0e9d8a;   /* verde-azulado mais escuro (esquerda do gradiente) */
+    --lemaq-teal-2: #1fbfa8;   /* verde-água (meio) */
+    --lemaq-teal-3: #2fd6b8;   /* verde-água claro (direita) */
+    --lemaq-navy: #0b3d63;     /* azul do botão "Saiba Mais" */
+    --lemaq-navy-dark: #082a45;
+    --text-white: #ffffff;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    background: #f4f4f4;
+  }
+
+  /* ===================== HERO WRAPPER ===================== */
+  .hero {
+    position: relative;
+    width: 100%;
+    min-height: 480px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    font-family: 'Baloo 2', sans-serif;
+  }
+
+  /* Camada 1: imagem de fundo (o usuário insere a imagem aqui) */
+  .hero-bg-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero-bg-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Camada 2: gradiente colorido com opacidade sobre a imagem (lado direito) */
+  .hero-gradient-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+      100deg,
+      rgba(14, 157, 138, 0) 0%,
+      rgba(14, 157, 138, 0) 32%,
+      rgba(20, 175, 152, 0.55) 42%,
+      rgba(31, 191, 168, 0.88) 52%,
+      rgba(47, 214, 184, 0.92) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Curva/recorte diagonal em forma de "onda" separando as duas metades,
+     replicando a borda curva do design original */
+  .hero-curve-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .hero-curve-layer svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Camada 3: conteúdo (texto e botão) */
+  .hero-content-layer {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+  }
+
+  .hero-content {
+    max-width: 560px;
+    padding: 2rem 1rem;
+  }
+
+  .hero-title {
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 2.9rem);
+    color: var(--text-white);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  }
+
+  .hero-subtitle {
+    font-weight: 600;
+    font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+    color: var(--text-white);
+    line-height: 1.35;
+    margin-bottom: 1.75rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+
+  .btn-lemaq {
+    background-color: var(--lemaq-navy);
+    color: var(--text-white);
+    font-weight: 600;
+    font-size: 1.05rem;
+    padding: 0.65rem 2.1rem;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 4px 14px rgba(8, 42, 69, 0.35);
+    transition: background-color 0.25s ease, transform 0.2s ease;
+  }
+
+  .btn-lemaq:hover {
+    background-color: var(--lemaq-navy-dark);
+    color: var(--text-white);
+    transform: translateY(-2px);
+  }
+
+  /* ===================== RESPONSIVIDADE ===================== */
+  @media (max-width: 991.98px) {
+    .hero {
+      min-height: 560px;
+    }
+    .hero-gradient-layer {
+      background: linear-gradient(
+        180deg,
+        rgba(14, 157, 138, 0) 0%,
+        rgba(14, 157, 138, 0) 38%,
+        rgba(20, 175, 152, 0.65) 50%,
+        rgba(31, 191, 168, 0.9) 62%,
+        rgba(47, 214, 184, 0.93) 100%
+      );
+    }
+    .hero-content-layer .row {
+      flex-direction: column;
+    }
+    .hero-content {
+      max-width: 100%;
+      padding: 2.5rem 1.5rem 2.5rem;
+      margin-top: auto;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .hero-title {
+      font-size: 1.7rem;
+    }
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+    .btn-lemaq {
+      font-size: 0.95rem;
+      padding: 0.55rem 1.6rem;
+    }
+  }
+
+
+  :root {
+    --lemaq-teal: #1fbfa8;
+    --lemaq-teal-light: #cdf2ea;
+    --lemaq-teal-lighter: #e2f6f1;
+    --lemaq-navy: #0b3d63;
+    --lemaq-navy-dark: #082a45;
+    --lemaq-gray-shape: #dfe6ee;
+    --text-dark: #14324a;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+
+  /* ===================== SEÇÃO WRAPPER ===================== */
+  .lab-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 3.5rem 0 3rem;
+    background: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  /* ---- Camada 1: formas decorativas de fundo ---- */
+  .lab-bg-shapes {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .shape-teal-left {
+    position: absolute;
+    top: -60px;
+    left: -120px;
+    width: 340px;
+    height: 340px;
+    background: var(--lemaq-teal-lighter);
+    border-radius: 50%;
+  }
+
+  .shape-gray-bottom-left {
+    position: absolute;
+    bottom: -40px;
+    left: 8%;
+    width: 0;
+    height: 0;
+    border-left: 90px solid transparent;
+    border-right: 90px solid transparent;
+    border-bottom: 140px solid var(--lemaq-gray-shape);
+    transform: rotate(18deg);
+    opacity: 0.7;
+  }
+
+  .shape-gray-bottom-right {
+    position: absolute;
+    bottom: -30px;
+    right: -40px;
+    width: 220px;
+    height: 220px;
+    background: var(--lemaq-gray-shape);
+    border-radius: 50%;
+    opacity: 0.8;
+  }
+
+  /* ---- Camada 2: conteúdo textual ---- */
+  .lab-content-layer {
+    position: relative;
+    z-index: 3;
+  }
+
+  .lab-eyebrow {
+    color: var(--lemaq-teal);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .lab-title {
+    color: var(--lemaq-navy);
+    font-weight: 800;
+    font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+    line-height: 1.25;
+    margin-bottom: 1.25rem;
+  }
+
+  .lab-text {
+    color: var(--lemaq-navy);
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 420px;
+    margin-bottom: 1.75rem;
+  }
+
+  .btn-lab-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background-color: #ffffff;
+    color: var(--lemaq-navy);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 50px;
+    border: 2px solid var(--lemaq-navy);
+    text-decoration: none;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
+  }
+
+  .btn-lab-outline:hover {
+    background-color: var(--lemaq-navy);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  .btn-lab-outline svg {
+    transition: transform 0.25s ease;
+  }
+
+  .btn-lab-outline:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* ---- Camada 3: bloco de imagens (fundo teal + fotos sobrepostas) ---- */
+  .lab-images-wrapper {
+    position: relative;
+    z-index: 3;
+    padding: 1.5rem 1.5rem;
+  }
+
+  .lab-images-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--lemaq-teal-light);
+    border-radius: 30px;
+    z-index: 1;
+  }
+
+  .lab-images-row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .lab-photo {
+    flex: 1 1 0;
+    min-width: 0;
+    aspect-ratio: 3 / 4;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(11, 61, 99, 0.15);
+    background-color: #d9d9d9;
+  }
+
+  .lab-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ---- Camada 4: card "Agende uma visita" ---- */
+  .visit-card-wrapper {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+    padding: 0 1.5rem;
+  }
+
+  .visit-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background-color: var(--lemaq-teal-lighter);
+    border: 1.5px solid var(--lemaq-teal);
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    max-width: 620px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .visit-icon {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background-color: #bdeee3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lemaq-teal);
+  }
+
+  .visit-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .visit-text {
+    flex: 1 1 220px;
+  }
+
+  .visit-title {
+    color: var(--lemaq-navy);
+    font-weight: 700;
+    font-size: 0.98rem;
+    margin-bottom: 0.15rem;
+    line-height: 1.3;
+  }
+
+  .visit-desc {
+    color: var(--lemaq-navy);
+    font-weight: 500;
+    font-size: 0.82rem;
+    margin-bottom: 0;
+    opacity: 0.85;
+    line-height: 1.35;
+  }
+
+  .btn-visit {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--lemaq-navy);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    border: none;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.25s ease, transform 0.2s ease;
+  }
+
+  .btn-visit:hover {
+    background-color: var(--lemaq-navy-dark);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  /* ===================== RESPONSIVIDADE ===================== */
+  @media (max-width: 991.98px) {
+    .lab-images-row {
+      margin-top: 2.5rem;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .lab-title {
+      font-size: 1.6rem;
+    }
+    .lab-text {
+      max-width: 100%;
+    }
+    .lab-images-row {
+      flex-wrap: wrap;
+    }
+    .lab-photo {
+      flex: 1 1 30%;
+      aspect-ratio: 1 / 1;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .visit-card {
+      justify-content: center;
+      text-align: center;
+    }
+    .visit-text {
+      flex-basis: 100%;
+    }
+    .btn-visit {
+      margin: 0 auto;
+    }
+  }

@@ -1,9 +1,116 @@
 {% extends "app/base.html" %}
 {% load static %}
 
+<!-- Bootstrap 5 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+
 {% block content %}
-    <header>
-    </header>
-    <section class="corpo vw-100 vh-100 bg-primary">
-    </section>
+
+<section class="hero vh-100">
+
+  <!-- CAMADA 1: Imagem de fundo (insira sua imagem na tag abaixo) -->
+  <div class="hero-bg-layer">
+    <img src="{%static 'app/assets/img/lab_home.jpeg'%}" alt="Laboratório de Ensino de Matemática do IFRN-SPP" class="w-100 vh-100 object-fit-cover">
+  </div>
+
+  <!-- CAMADA 2: Curva decorativa (formato de onda separando as áreas) -->
+  <div class="hero-curve-layer">
+    <svg viewBox="0 0 1000 500" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,0 L420,0 C520,0 480,180 560,250 C640,320 600,500 700,500 L0,500 Z"
+            fill="rgba(31,191,168,0.0)"/>
+    </svg>
+  </div>
+
+  <!-- CAMADA 3: Gradiente com opacidade sobre a imagem -->
+  <div class="hero-gradient-layer"></div>
+
+  <!-- CAMADA 4: Conteúdo (texto + botão) -->
+  <div class="hero-content-layer container-fluid" >
+    <div class="row">
+      <div class="col-lg-6 offset-lg-6 col-12 d-flex justify-content-start">
+        <div class="hero-content">
+          <h1 class="hero-title">Bem-vindo(a)!</h1>
+          <p class="hero-subtitle">Laboratório de Ensino de Matemática do IFRN-SPP</p>
+          <a href="#" class="btn btn-lemaq">Saiba Mais</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="lab-section vh-100 d-flex justify-content-center align-items-center" id="laboratorio">
+
+    <div>
+          <!-- CAMADA 1: formas decorativas de fundo -->
+  <div class="lab-bg-shapes">
+    <div class="shape-teal-left"></div>
+    <div class="shape-gray-bottom-left"></div>
+    <div class="shape-gray-bottom-right"></div>
+  </div>
+
+  <!-- CAMADA 2: conteúdo principal -->
+  <div class="lab-content-layer container">
+    <div class="row align-items-center gy-4">
+
+      <!-- Texto -->
+      <div class="col-lg-5 col-12">
+        <p class="lab-eyebrow">Conheça nosso laboratório</p>
+        <h2 class="lab-title">Um espaço para explorar e aprender Matemática</h2>
+        <p class="lab-text">O LEM oferece um ambiente acolhedor e materiais manipulativos que tornam o aprendizado mais iterativo e significativo</p>
+        <a href="#" class="btn-lab-outline">
+          Saiba mais sobre o laboratótio
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- CAMADA 3: bloco de imagens -->
+      <div class="col-lg-7 col-12">
+        <div class="lab-images-wrapper">
+          <div class="lab-images-bg"></div>
+          <div class="lab-images-row">
+            <div class="lab-photo">
+              <img src="{%static 'app/assets/img/lab_laboratorio.jpeg' %}" alt="Foto do laboratório de matemática 1">
+            </div>
+            <div class="lab-photo">
+              <img src="{%static 'app/assets/img/lab_laboratorio.jpeg' %}" alt="Foto do laboratório de matemática 2">
+            </div>
+            <div class="lab-photo">
+              <img src="{%static 'app/assets/img/lab_laboratorio.jpeg' %}" alt="Foto do laboratório de matemática 3">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CAMADA 4: card "Agende uma visita" -->
+  <div class="visit-card-wrapper">
+    <div class="visit-card">
+      <div class="visit-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <rect x="7" y="12" width="3" height="3" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="visit-text">
+        <p class="visit-title">Agende uma visita e venha conhecer!</p>
+        <p class="visit-desc">Entre em contato para conhecer nosso espaço.</p>
+      </div>
+      <a href="#" class="btn-visit">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Agendar visita
+      </a>
+    </div>
+  </div>
+    </div>
+
+</section>
 {% endblock %}
