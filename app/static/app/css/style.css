@@ -4,6 +4,19 @@
 .corpo {
     background-color: #00D0B3;
     font-family: "Montserrat", sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* opcional, dá profundidade quando o conteúdo passa por baixo */
 }
 
 .navbar .nav-link {
@@ -559,5 +572,319 @@ a.link-custom:hover {
     }
     .btn-visit {
       margin: 0 auto;
+    }
+  }
+
+  .mat-materiais {
+    --mat-teal-dark: #1c6f83;
+    --mat-teal: #2589a0;
+    --mat-teal-light: #bfe9e0;
+    --mat-teal-accent: #37c2a8;
+    --mat-navy: #005F8F;
+    --mat-white: #ffffff;
+
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+  }
+
+  .mat-materiais *,
+  .mat-materiais *::before,
+  .mat-materiais *::after {
+    box-sizing: border-box;
+  }
+
+  /* ---------- Bloco principal (fundo azul-petróleo) ---------- */
+  .mat-materiais .mat-hero-block {
+    position: relative;
+    background-color: var(--mat-teal-dark);
+    padding: 3rem 1rem 3.5rem;
+  }
+
+  .mat-materiais .mat-hero-title {
+    color: var(--mat-white);
+    font-weight: 800;
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    text-align: center;
+    line-height: 1.35;
+    margin-bottom: 1.25rem;
+  }
+
+  .mat-materiais .mat-hero-subtitle {
+    color: var(--mat-white);
+    font-weight: 600;
+    font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.5;
+  }
+
+  /* ---------- CAMADA: Carrossel ---------- */
+  .mat-materiais .mat-carousel-wrapper {
+    position: relative;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 70px;
+  }
+
+  .mat-materiais .mat-carousel-viewport {
+    overflow: hidden;
+  }
+
+  .mat-materiais .mat-carousel-track {
+    display: flex;
+    gap: 1.25rem;
+    transition: transform 0.45s ease;
+    will-change: transform;
+  }
+
+  .mat-materiais .mat-card {
+    flex: 0 0 calc((100% - 2.5rem) / 3);
+    background-color: var(--mat-white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mat-materiais .mat-card-img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background-color: #d9d9d9;
+    overflow: hidden;
+  }
+
+  .mat-materiais .mat-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .mat-materiais .mat-card-body {
+    padding: 1rem 1.1rem 1.25rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mat-materiais .mat-card-title {
+    color: var(--mat-teal-dark);
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .mat-materiais .mat-card-text {
+    color: var(--mat-navy);
+    font-weight: 500;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+  }
+
+  .mat-materiais .mat-card-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    align-self: flex-start;
+    background-color: var(--mat-white);
+    color: var(--mat-teal-dark);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding: 0.5rem 1.1rem;
+    border-radius: 50px;
+    border: 1.5px solid var(--mat-teal-dark);
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .mat-materiais .mat-card-btn:hover {
+    background-color: var(--mat-teal-dark);
+    color: var(--mat-white);
+  }
+
+  .mat-materiais .mat-card-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* ---------- Setas do carrossel ---------- */
+  .mat-materiais .mat-carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.15);
+    border: none;
+    color: var(--mat-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: background-color 0.2s ease;
+  }
+
+  .mat-materiais .mat-carousel-arrow:hover {
+    background-color: rgba(255,255,255,0.3);
+  }
+
+  .mat-materiais .mat-carousel-arrow:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .mat-materiais .mat-carousel-arrow.mat-arrow-prev {
+    left: -60px;
+  }
+
+  .mat-materiais .mat-carousel-arrow.mat-arrow-next {
+    right: -60px;
+  }
+
+  .mat-materiais .mat-carousel-arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* ---------- Botão "Ver todos os materiais" ---------- */
+  .mat-materiais .mat-view-all-wrapper {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .mat-materiais .mat-btn-view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--mat-navy);
+    color: var(--mat-white);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding: 0.65rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .mat-materiais .mat-btn-view-all:hover {
+    background-color: #082a45;
+    color: var(--mat-white);
+    transform: translateY(-2px);
+  }
+
+  /* ---------- Bloco "Como funciona" ---------- */
+  .mat-materiais .mat-how-block {
+    background-color: var(--mat-white);
+    padding: 2.75rem 1rem 3rem;
+    border: 1px solid #eef2f5;
+  }
+
+  .mat-materiais .mat-how-eyebrow {
+    color: var(--mat-teal-accent);
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .mat-materiais .mat-how-title {
+    color: var(--mat-navy);
+    font-weight: 800;
+    font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .mat-materiais .mat-steps-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .mat-materiais .mat-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 190px;
+  }
+
+  .mat-materiais .mat-step-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background-color: var(--mat-teal-accent);
+    color: var(--mat-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.9rem;
+  }
+
+  .mat-materiais .mat-step-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mat-materiais .mat-step-title {
+    color: var(--mat-teal-dark);
+    font-weight: 700;
+    font-size: 0.88rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .mat-materiais .mat-step-text {
+    color: var(--mat-navy);
+    font-weight: 500;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    margin-bottom: 0;
+    opacity: 0.85;
+  }
+
+  /* ---------- Responsividade ---------- */
+  @media (max-width: 991.98px) {
+    .mat-materiais .mat-card {
+      flex: 0 0 calc((100% - 1.25rem) / 2);
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .mat-materiais .mat-card {
+      flex: 0 0 100%;
+    }
+    .mat-materiais .mat-carousel-wrapper {
+      padding: 0 40px;
+    }
+    .mat-materiais .mat-carousel-arrow.mat-arrow-prev {
+      left: -30px;
+    }
+    .mat-materiais .mat-carousel-arrow.mat-arrow-next {
+      right: -30px;
+    }
+    .mat-materiais .mat-steps-row {
+      gap: 1.5rem;
+    }
+    .mat-materiais .mat-step {
+      max-width: 140px;
     }
   }

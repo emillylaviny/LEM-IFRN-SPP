@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<section class="hero vh-100">
+<section class="hero vh-100" id="home">
 
   <!-- CAMADA 1: Imagem de fundo (insira sua imagem na tag abaixo) -->
   <div class="hero-bg-layer">
@@ -113,4 +113,243 @@
     </div>
 
 </section>
+
+<section class="mat-materiais" id="materiais">
+
+  <!-- BLOCO 1: fundo azul-petróleo com título, subtítulo e carrossel -->
+  <div class="mat-hero-block">
+    <div class="container">
+
+      <h2 class="mat-hero-title">Encontre materiais<br>por conteúdo</h2>
+      <p class="mat-hero-subtitle">Explore os materiais do LEM e descubra os recursos utilizados em cada área.</p>
+
+      <div class="mat-carousel-wrapper">
+
+        <!-- Seta anterior -->
+        <button type="button" class="mat-carousel-arrow mat-arrow-prev" id="matPrevBtn" aria-label="Materiais anteriores">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M15 6l-6 6 6 6"/>
+          </svg>
+        </button>
+
+        <div class="mat-carousel-viewport">
+          <!-- CAMADA: track do carrossel — adicione quantos .mat-card desejar,
+               o carrossel desliza um cartão por vez ao clicar nas setas,
+               permitindo mais de 3 cards no total. -->
+          <div class="mat-carousel-track" id="matCarouselTrack">
+
+            <!-- Card 1 -->
+            <div class="mat-card">
+              <div class="mat-card-img">
+                <img src="{% static 'app/assets/img/abaco_materiais.jpg'%}" alt="Geometria Plana">
+              </div>
+              <div class="mat-card-body">
+                <p class="mat-card-title">Geometria Plana</p>
+                <p class="mat-card-text">Materiais para explorar figuras, formas e propriedades de geometria plana.</p>
+                <a href="#" class="mat-card-btn">
+                  Ver materias
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="mat-card">
+              <div class="mat-card-img">
+                <img src="{% static 'app/assets/img/abaco_materiais.jpg'%}" alt="Geometria Plana">
+              </div>
+              <div class="mat-card-body">
+                <p class="mat-card-title">Geometria Plana</p>
+                <p class="mat-card-text">Materiais para explorar figuras, formas e propriedades da geometria plana.</p>
+                <a href="#" class="mat-card-btn">
+                  Ver materias
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="mat-card">
+              <div class="mat-card-img">
+                <img src="{% static 'app/assets/img/abaco_materiais.jpg'%}" alt="Geometria Plana">
+              </div>
+              <div class="mat-card-body">
+                <p class="mat-card-title">Geometria Plana</p>
+                <p class="mat-card-text">Materiais para explorar figuras, formas e propriedades de geometria plana.</p>
+                <a href="#" class="mat-card-btn">
+                  Ver materias
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Card 4 (exemplo extra — aparece ao avançar o carrossel) -->
+            <div class="mat-card">
+              <div class="mat-card-img">
+                <img src="{% static 'app/assets/img/abaco_materiais.jpg'%}" alt="Geometria Espacial">
+              </div>
+              <div class="mat-card-body">
+                <p class="mat-card-title">Geometria Espacial</p>
+                <p class="mat-card-text">Materiais para explorar sólidos, volumes e propriedades espaciais.</p>
+                <a href="#" class="mat-card-btn">
+                  Ver materias
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Card 5 (exemplo extra) -->
+            <div class="mat-card">
+              <div class="mat-card-img">
+                <img src="{% static 'app/assets/img/abaco_materiais.jpg'%}" alt="Álgebra">
+              </div>
+              <div class="mat-card-body">
+                <p class="mat-card-title">Álgebra</p>
+                <p class="mat-card-text">Materiais manipulativos para introduzir conceitos algébricos.</p>
+                <a href="#" class="mat-card-btn">
+                  Ver materias
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Seta próxima -->
+        <button type="button" class="mat-carousel-arrow mat-arrow-next" id="matNextBtn" aria-label="Próximos materiais">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/>
+          </svg>
+        </button>
+
+      </div>
+
+      <div class="mat-view-all-wrapper">
+        <a href="#" class="mat-btn-view-all">Ver todos os materias</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BLOCO 2: "Como funciona" -->
+  <div class="mat-how-block">
+    <div class="container">
+      <p class="mat-how-eyebrow">Como funciona?</p>
+      <h3 class="mat-how-title">Empréstimo de materiais</h3>
+
+      <div class="mat-steps-row">
+
+        <div class="mat-step">
+          <div class="mat-step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/>
+              <path d="M20 20l-4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="mat-step-title">Escolha o material</p>
+          <p class="mat-step-text">Navegue pelos materiais e selecione o que deseja utilizar</p>
+        </div>
+
+        <div class="mat-step">
+          <div class="mat-step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M9 8h6M9 12h6M9 16h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="mat-step-title">Faça a sua solicitação</p>
+          <p class="mat-step-text">Preencha o formulário de empréstimo com os dados necessários</p>
+        </div>
+
+        <div class="mat-step">
+          <div class="mat-step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path d="M3 9l9-5 9 5-9 5-9-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M3 9v6l9 5 9-5V9" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="mat-step-title">Retire no LEM</p>
+          <p class="mat-step-text">Retire o material no laboratório no dia combinado</p>
+        </div>
+
+        <div class="mat-step">
+          <div class="mat-step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="mat-step-title">Devolva no prazo</p>
+          <p class="mat-step-text">Devolva o material conforme a data combinada</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Carrossel isolado — não interfere com nenhum outro script/carrossel da página
+  (function () {
+    var track = document.getElementById('matCarouselTrack');
+    var prevBtn = document.getElementById('matPrevBtn');
+    var nextBtn = document.getElementById('matNextBtn');
+    var cards = track.querySelectorAll('.mat-card');
+    var currentIndex = 0;
+
+    function getVisibleCount() {
+      var width = window.innerWidth;
+      if (width <= 575.98) return 1;
+      if (width <= 991.98) return 2;
+      return 3;
+    }
+
+    function getMaxIndex() {
+      var visible = getVisibleCount();
+      return Math.max(0, cards.length - visible);
+    }
+
+    function updateCarousel() {
+      var maxIndex = getMaxIndex();
+      if (currentIndex > maxIndex) currentIndex = maxIndex;
+      if (currentIndex < 0) currentIndex = 0;
+
+      var cardWidth = cards[0].getBoundingClientRect().width;
+      var gap = parseFloat(getComputedStyle(track).gap) || 0;
+      var offset = currentIndex * (cardWidth + gap);
+
+      track.style.transform = 'translateX(-' + offset + 'px)';
+
+      prevBtn.disabled = currentIndex <= 0;
+      nextBtn.disabled = currentIndex >= maxIndex;
+    }
+
+    prevBtn.addEventListener('click', function () {
+      currentIndex -= 1;
+      updateCarousel();
+    });
+
+    nextBtn.addEventListener('click', function () {
+      currentIndex += 1;
+      updateCarousel();
+    });
+
+    window.addEventListener('resize', updateCarousel);
+    window.addEventListener('load', updateCarousel);
+    updateCarousel();
+  })();
+</script>
 {% endblock %}
