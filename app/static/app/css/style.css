@@ -888,3 +888,1178 @@ a.link-custom:hover {
       max-width: 140px;
     }
   }
+
+   .hor-funcionamento {
+    --hor-navy: #0b3d63;
+    --hor-navy-dark: #082a45;
+    --hor-blue-medium: #7fa8c4;
+    --hor-blue-light: #eef2f6;
+    --hor-white: #ffffff;
+    --hor-bg: #eceef1;
+    --hor-text-gray: #5c6b7a;
+
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    background-color: var(--hor-bg);
+    padding: 2.5rem 1rem;
+  }
+
+  .hor-funcionamento *,
+  .hor-funcionamento *::before,
+  .hor-funcionamento *::after {
+    box-sizing: border-box;
+  }
+
+  .hor-funcionamento .hor-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ---------- Camada 1: Cabeçalho (fundo azul-marinho) ---------- */
+  .hor-funcionamento .hor-header-card {
+    background-color: var(--hor-navy);
+    border-radius: 18px;
+    padding: 1.75rem 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hor-funcionamento .hor-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: rgba(255,255,255,0.15);
+    color: var(--hor-white);
+    font-weight: 600;
+    font-size: 0.72rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    margin-bottom: 0.9rem;
+  }
+
+  .hor-funcionamento .hor-badge svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .hor-funcionamento .hor-header-title {
+    color: var(--hor-white);
+    font-weight: 800;
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    margin-bottom: 0.6rem;
+  }
+
+  .hor-funcionamento .hor-header-text {
+    color: var(--hor-white);
+    font-weight: 500;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    max-width: 480px;
+    margin: 0;
+  }
+
+  /* ---------- Camada 2: Grade semanal ---------- */
+  .hor-funcionamento .hor-grade-card {
+    background-color: var(--hor-white);
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+  }
+
+  .hor-funcionamento .hor-grade-header {
+    background-color: var(--hor-blue-medium);
+    padding: 1.1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .hor-funcionamento .hor-grade-header svg {
+    width: 22px;
+    height: 22px;
+    color: var(--hor-white);
+    flex-shrink: 0;
+  }
+
+  .hor-funcionamento .hor-grade-title {
+    color: var(--hor-white);
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0 0 0.15rem;
+  }
+
+  .hor-funcionamento .hor-grade-subtitle {
+    color: var(--hor-white);
+    font-weight: 500;
+    font-size: 0.75rem;
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  .hor-funcionamento .hor-table-wrapper {
+    padding: 0.5rem 1.5rem 1rem;
+  }
+
+  .hor-funcionamento .hor-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .hor-funcionamento .hor-table thead th {
+    text-align: left;
+    color: var(--hor-navy);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.9rem 0.5rem 0.7rem;
+    border-bottom: 1px solid #e5e9ee;
+  }
+
+  .hor-funcionamento .hor-table tbody td {
+    padding: 0.8rem 0.5rem;
+    border-bottom: 1px solid #eef1f4;
+    font-size: 0.85rem;
+    vertical-align: middle;
+  }
+
+  .hor-funcionamento .hor-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .hor-funcionamento .hor-day-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--hor-navy);
+    font-weight: 600;
+  }
+
+  .hor-funcionamento .hor-day-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background-color: var(--hor-blue-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .hor-funcionamento .hor-day-icon svg {
+    width: 14px;
+    height: 14px;
+    color: var(--hor-blue-medium);
+  }
+
+  .hor-funcionamento .hor-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background-color: var(--hor-navy);
+    color: var(--hor-white);
+    font-weight: 600;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    white-space: nowrap;
+  }
+
+  .hor-funcionamento .hor-status-badge svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  /* ---------- Camada 3: Calendário + Informações gerais ---------- */
+  .hor-funcionamento .hor-bottom-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hor-funcionamento .hor-calendar-card,
+  .hor-funcionamento .hor-info-card {
+    flex: 1 1 320px;
+    border-radius: 18px;
+    padding: 1.4rem 1.5rem 1.6rem;
+  }
+
+  .hor-funcionamento .hor-calendar-card {
+    background-color: var(--hor-blue-medium);
+  }
+
+  .hor-funcionamento .hor-info-card {
+    background-color: var(--hor-white);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+  }
+
+  .hor-funcionamento .hor-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .hor-funcionamento .hor-card-heading svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .hor-funcionamento .hor-calendar-card .hor-card-heading svg {
+    color: var(--hor-white);
+  }
+
+  .hor-funcionamento .hor-info-card .hor-card-heading svg {
+    color: var(--hor-navy);
+  }
+
+  .hor-funcionamento .hor-card-heading-title {
+    font-weight: 700;
+    font-size: 0.98rem;
+    margin: 0;
+  }
+
+  .hor-funcionamento .hor-calendar-card .hor-card-heading-title {
+    color: var(--hor-white);
+  }
+
+  .hor-funcionamento .hor-info-card .hor-card-heading-title {
+    color: var(--hor-navy);
+  }
+
+  /* Grade de meses */
+  .hor-funcionamento .hor-months-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hor-funcionamento .hor-month-cell {
+    background-color: rgba(255,255,255,0.9);
+    color: var(--hor-navy);
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-align: center;
+    padding: 0.55rem 0.3rem;
+    border-radius: 8px;
+  }
+
+  /* Ilustração simples do calendário (SVG decorativo) */
+  .hor-funcionamento .hor-illustration {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.5rem;
+    opacity: 0.95;
+  }
+
+  .hor-funcionamento .hor-illustration svg {
+    height: 55px;
+    width: auto;
+  }
+
+  /* Linhas de informação */
+  .hor-funcionamento .hor-info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background-color: var(--hor-blue-light);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .hor-funcionamento .hor-info-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: var(--hor-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .hor-funcionamento .hor-info-icon svg {
+    width: 16px;
+    height: 16px;
+    color: var(--hor-navy);
+  }
+
+  .hor-funcionamento .hor-info-label {
+    color: var(--hor-text-gray);
+    font-weight: 700;
+    font-size: 0.68rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    margin: 0 0 0.15rem;
+  }
+
+  .hor-funcionamento .hor-info-value {
+    color: var(--hor-navy);
+    font-weight: 600;
+    font-size: 0.83rem;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .hor-funcionamento .hor-btn-contact {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: var(--hor-navy);
+    color: var(--hor-white);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    text-decoration: none;
+    border: none;
+    margin-top: 0.3rem;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .hor-funcionamento .hor-btn-contact:hover {
+    background-color: var(--hor-navy-dark);
+    color: var(--hor-white);
+    transform: translateY(-2px);
+  }
+  
+  .mat-btn-view-all{
+    text-decoration: none;
+    color: white;
+
+  }
+
+  .hor-funcionamento .hor-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding: 0.65rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .hor-funcionamento .hor-status-badge:hover {
+    transform: translateY(-2px);
+  }
+
+  /* ---------- Responsividade ---------- */
+  @media (max-width: 767.98px) {
+    .hor-funcionamento .hor-table thead {
+      display: none;
+    }
+    .hor-funcionamento .hor-table tbody tr {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.7rem 0;
+    }
+    .hor-funcionamento .hor-table tbody td {
+      padding: 0;
+      border-bottom: none;
+      width: 100%;
+    }
+    .hor-funcionamento .hor-months-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .hor-funcionamento .hor-header-card {
+      padding: 1.4rem 1.25rem 1.6rem;
+    }
+    .hor-funcionamento .hor-months-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.4rem;
+    }
+    .hor-funcionamento .hor-month-cell {
+      font-size: 0.7rem;
+      padding: 0.45rem 0.2rem;
+    }
+  }
+
+  .lem-footer {
+    --lem-blue: #5b93b7;
+    --lem-white: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+  }
+
+  .lem-footer *,
+  .lem-footer *::before,
+  .lem-footer *::after {
+    box-sizing: border-box;
+  }
+
+  .lem-footer {
+    background-color: var(--lem-blue);
+    padding: 2.75rem 1rem 1.75rem;
+  }
+
+  /* ---------- Camada: logo + descrição ---------- */
+  .lem-footer .lem-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .lem-footer .lem-logo-img {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .lem-footer .lem-logo-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .lem-footer .lem-logo-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.68rem;
+    line-height: 1.3;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .lem-footer .lem-brand-desc {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    max-width: 260px;
+    margin-bottom: 1.6rem;
+    opacity: 0.95;
+  }
+
+  .lem-footer .lem-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-bottom: 0;
+  }
+
+  .lem-footer .lem-contact-item svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--lem-white);
+    margin-top: 2px;
+  }
+
+  .lem-footer .lem-contact-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  /* ---------- Camada: colunas de links ---------- */
+  .lem-footer .lem-col-title {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .lem-footer .lem-link-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lem-footer .lem-link-list li {
+    margin-bottom: 0.4rem;
+  }
+
+  .lem-footer .lem-link-list a {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-decoration: none;
+    opacity: 0.95;
+    transition: opacity 0.2s ease;
+  }
+
+  .lem-footer .lem-link-list a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  /* ---------- Camada: Links Úteis (contato) ---------- */
+  .lem-footer .lem-useful-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0;
+  }
+
+  .lem-footer .lem-useful-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--lem-white);
+  }
+
+  .lem-footer .lem-useful-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  /* ---------- Camada: Serviços + redes sociais ---------- */
+  .lem-footer .lem-social-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+  }
+
+  .lem-footer .lem-social-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lem-white);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .lem-footer .lem-social-icon:hover {
+    background-color: rgba(255,255,255,0.32);
+  }
+
+  .lem-footer .lem-social-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* ---------- Linha divisória inferior (opcional) ---------- */
+  .lem-footer .lem-footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.25);
+    margin-top: 2.25rem;
+    padding-top: 1rem;
+    text-align: center;
+  }
+
+  .lem-footer .lem-footer-bottom p {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.72rem;
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  /* ---------- Responsividade ---------- */
+  @media (max-width: 767.98px) {
+    .lem-footer .lem-col-block {
+      margin-top: 1.75rem;
+    }
+    .lem-footer .lem-contact-item,
+    .lem-footer .lem-useful-item {
+      margin-bottom: 0.9rem;
+    }
+  }
+
+  
+  .lem-footer {
+    --lem-blue: #5b93b7;
+    --lem-white: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+  }
+
+  .lem-footer *,
+  .lem-footer *::before,
+  .lem-footer *::after {
+    box-sizing: border-box;
+  }
+
+  .lem-footer {
+    background-color: var(--lem-blue);
+    padding: 2.75rem 1rem 1.75rem;
+  }
+
+  /* ---------- Camada: logo + descrição ---------- */
+  .lem-footer .lem-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .lem-footer .lem-logo-img {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .lem-footer .lem-logo-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .lem-footer .lem-logo-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.68rem;
+    line-height: 1.3;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .lem-footer .lem-brand-desc {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    max-width: 260px;
+    margin-bottom: 1.6rem;
+    opacity: 0.95;
+  }
+
+  .lem-footer .lem-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-bottom: 0;
+  }
+
+  .lem-footer .lem-contact-item svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--lem-white);
+    margin-top: 2px;
+  }
+
+  .lem-footer .lem-contact-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  /* ---------- Camada: colunas de links ---------- */
+  .lem-footer .lem-col-title {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .lem-footer .lem-link-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lem-footer .lem-link-list li {
+    margin-bottom: 0.4rem;
+  }
+
+  .lem-footer .lem-link-list a {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-decoration: none;
+    opacity: 0.95;
+    transition: opacity 0.2s ease;
+  }
+
+  .lem-footer .lem-link-list a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  /* ---------- Camada: Links Úteis (contato) ---------- */
+  .lem-footer .lem-useful-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0;
+  }
+
+  .lem-footer .lem-useful-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--lem-white);
+  }
+
+  .lem-footer .lem-useful-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  /* ---------- Camada: Serviços + redes sociais ---------- */
+  .lem-footer .lem-social-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+  }
+
+  .lem-footer .lem-social-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lem-white);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .lem-footer .lem-social-icon:hover {
+    background-color: rgba(255,255,255,0.32);
+  }
+
+  .lem-footer .lem-social-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* ---------- Linha divisória inferior (opcional) ---------- */
+  .lem-footer .lem-footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.25);
+    margin-top: 2.25rem;
+    padding-top: 1rem;
+    text-align: center;
+  }
+
+  .lem-footer .lem-footer-bottom p {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.72rem;
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  /* ---------- Responsividade ---------- */
+  @media (max-width: 767.98px) {
+    .lem-footer .lem-col-block {
+      margin-top: 1.75rem;
+    }
+    .lem-footer .lem-contact-item,
+    .lem-footer .lem-useful-item {
+      margin-bottom: 0.9rem;
+    }
+  }
+
+  .lem-footer {
+    --lem-blue: #5b93b7;
+    --lem-white: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+  }
+
+  .lem-footer *,
+  .lem-footer *::before,
+  .lem-footer *::after {
+    box-sizing: border-box;
+  }
+
+  .lem-footer {
+    background-color: var(--lem-blue);
+    padding: 2.75rem 1rem 1.75rem;
+  }
+
+  /* ---------- Camada: logo + descrição ---------- */
+  .lem-footer .lem-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .lem-footer .lem-logo-img {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .lem-footer .lem-logo-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .lem-footer .lem-logo-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.68rem;
+    line-height: 1.3;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .lem-footer .lem-brand-desc {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    max-width: 260px;
+    margin-bottom: 1.6rem;
+    opacity: 0.95;
+  }
+
+  .lem-footer .lem-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-bottom: 0;
+  }
+
+  .lem-footer .lem-contact-item svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--lem-white);
+    margin-top: 2px;
+  }
+
+  .lem-footer .lem-contact-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  /* ---------- Camada: colunas de links ---------- */
+  .lem-footer .lem-col-title {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .lem-footer .lem-link-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lem-footer .lem-link-list li {
+    margin-bottom: 0.4rem;
+  }
+
+  .lem-footer .lem-link-list a {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-decoration: none;
+    opacity: 0.95;
+    transition: opacity 0.2s ease;
+  }
+
+  .lem-footer .lem-link-list a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  /* ---------- Camada: Links Úteis (contato) ---------- */
+  .lem-footer .lem-useful-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0;
+  }
+
+  .lem-footer .lem-useful-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--lem-white);
+  }
+
+  .lem-footer .lem-useful-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  /* ---------- Camada: Serviços + redes sociais ---------- */
+  .lem-footer .lem-social-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+  }
+
+  .lem-footer .lem-social-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lem-white);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .lem-footer .lem-social-icon:hover {
+    background-color: rgba(255,255,255,0.32);
+  }
+
+  .lem-footer .lem-social-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* ---------- Linha divisória inferior (opcional) ---------- */
+  .lem-footer .lem-footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.25);
+    margin-top: 2.25rem;
+    padding-top: 1rem;
+    text-align: center;
+  }
+
+  .lem-footer .lem-footer-bottom p {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.72rem;
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  /* ---------- Responsividade ---------- */
+  @media (max-width: 767.98px) {
+    .lem-footer .lem-col-block {
+      margin-top: 1.75rem;
+    }
+    .lem-footer .lem-contact-item,
+    .lem-footer .lem-useful-item {
+      margin-bottom: 0.9rem;
+    }
+  }
+
+    .lem-footer {
+    --lem-blue: #5b93b7;
+    --lem-white: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+  }
+
+  .lem-footer *,
+  .lem-footer *::before,
+  .lem-footer *::after {
+    box-sizing: border-box;
+  }
+
+  .lem-footer {
+    background-color: var(--lem-blue);
+    padding: 2.75rem 1rem 1.75rem;
+  }
+
+  /* ---------- Camada: logo + descrição ---------- */
+  .lem-footer .lem-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .lem-footer .lem-logo-img {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .lem-footer .lem-logo-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .lem-footer .lem-logo-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.68rem;
+    line-height: 1.3;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .lem-footer .lem-brand-desc {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    max-width: 260px;
+    margin-bottom: 1.6rem;
+    opacity: 0.95;
+  }
+
+  .lem-footer .lem-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-bottom: 0;
+  }
+
+  .lem-footer .lem-contact-item svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--lem-white);
+    margin-top: 2px;
+  }
+
+  .lem-footer .lem-contact-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  /* ---------- Camada: colunas de links ---------- */
+  .lem-footer .lem-col-title {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .lem-footer .lem-link-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lem-footer .lem-link-list li {
+    margin-bottom: 0.4rem;
+  }
+
+  .lem-footer .lem-link-list a {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-decoration: none;
+    opacity: 0.95;
+    transition: opacity 0.2s ease;
+  }
+
+  .lem-footer .lem-link-list a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  /* ---------- Camada: Links Úteis (contato) ---------- */
+  .lem-footer .lem-useful-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0;
+  }
+
+  .lem-footer .lem-useful-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--lem-white);
+  }
+
+  .lem-footer .lem-useful-text {
+    color: var(--lem-white);
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  /* ---------- Camada: Serviços + redes sociais ---------- */
+  .lem-footer .lem-social-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+  }
+
+  .lem-footer .lem-social-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lem-white);
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .lem-footer .lem-social-icon:hover {
+    background-color: rgba(255,255,255,0.32);
+  }
+
+  .lem-footer .lem-social-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* ---------- Linha divisória inferior (opcional) ---------- */
+  .lem-footer .lem-footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.25);
+    margin-top: 2.25rem;
+    padding-top: 1rem;
+    text-align: center;
+  }
+
+  .lem-footer .lem-footer-bottom p {
+    color: var(--lem-white);
+    font-weight: 500;
+    font-size: 0.72rem;
+    opacity: 0.85;
+    margin: 0;
+  }
+
+  /* ---------- Responsividade ---------- */
+  @media (max-width: 767.98px) {
+    .lem-footer .lem-col-block {
+      margin-top: 1.75rem;
+    }
+    .lem-footer .lem-contact-item,
+    .lem-footer .lem-useful-item {
+      margin-bottom: 0.9rem;
+    }
+  }
