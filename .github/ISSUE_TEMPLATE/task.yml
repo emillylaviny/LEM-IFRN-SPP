@@ -1,7 +1,7 @@
 name: Tarefa técnica
 description: Registre uma atividade técnica que não representa bug nem funcionalidade.
 title: ""
-labels: ["task"]
+labels: ["tarefa técnica"]
 
 body:
   - type: textarea
