@@ -29,7 +29,7 @@ class cadastro_usuario(models.Model):
     class Meta:
         verbose_name = "Usuário"
         verbose_name_plural = "Usuários"
-        ordering = ["nome"]
+        ordering = ["nome_completo"]
 
     def __str__(self):
         return self.nome

@@ -4,5 +4,5 @@ from .models import (
     Visita, Duvida, FAQ, HistoricoAlteracao,
 )
 
-admin.site.register([Card, cadastro_usuario, Localizacao_lab, Cadastro_materiais, Emprestimo, Visita, LaboratorioInfo, Duvida, FAQ, HistoricoAlteracao])
+admin.site.register([Card, cadastro_usuario, Localizacao_lab, Cadastro_materiais, Emprestimo, Visita, Duvida, FAQ, HistoricoAlteracao])
 
