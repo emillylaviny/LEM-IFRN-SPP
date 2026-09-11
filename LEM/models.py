@@ -9,7 +9,7 @@ class Card(models.Model):
     def __str__(self):
         return self.titulo
 #Cadastros 
-class cadastro_usuario(models.Model):
+class CadastroUsuario(models.Model):
     nome_completo = models.CharField(max_length=300)
     apelido = models.CharField(max_length=300, blank=True)
     cpf = models.CharField(max_length=14, unique=True)
@@ -34,7 +34,7 @@ class cadastro_usuario(models.Model):
     def __str__(self):
         return self.nome
 
-class Localizacao_lab(models.Model):
+class LocalizacaoLab(models.Model):
     nome = models.CharField(max_length=120, unique=True)
     descricao = models.CharField(max_length=255, blank=True)
 
@@ -47,7 +47,7 @@ class Localizacao_lab(models.Model):
         return self.nome
 
 
-class Cadastro_materiais(models.Model):
+class CadastroMateriais(models.Model):
     nome = models.CharField(max_length=150)
     codigo = models.CharField(max_length=50, unique=True)
     descricao = models.TextField(blank=True)
