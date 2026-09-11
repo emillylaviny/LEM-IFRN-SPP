@@ -58,7 +58,7 @@ class CadastroMateriais(models.Model):
     quantidade = models.PositiveIntegerField(default=1)
     quantidade_disponivel = models.PositiveIntegerField(default=1)
     imagem = models.ImageField(upload_to="materiais/", blank=True, null=True)
-    localizacao = models.ForeignKey(Localizacao_lab, on_delete=models.SET_NULL, null=True, blank=True, related_name="materiais")
+    localizacao = models.ForeignKey(LocalizacaoLab, on_delete=models.SET_NULL, null=True, blank=True, related_name="materiais")
     ativo = models.BooleanField(default=True)
     data_cadastro = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True)
@@ -82,8 +82,8 @@ class Emprestimo(models.Model):
         ("ATRASADO", "Atrasado"),
         ("CANCELADO", "Cancelado"),
     ]
-    professor = models.ForeignKey(cadastro_usuario, on_delete=models.PROTECT, related_name="emprestimos")
-    material = models.ForeignKey(Cadastro_materiais, on_delete=models.PROTECT, related_name="emprestimos")
+    professor = models.ForeignKey(CadastroUsuario, on_delete=models.PROTECT, related_name="emprestimos")
+    material = models.ForeignKey(CadastroMateriais, on_delete=models.PROTECT, related_name="emprestimos")
     quantidade = models.PositiveIntegerField(default=1)
     data_solicitacao = models.DateTimeField(auto_now_add=True)
     data_retirada = models.DateField(blank=True, null=True)
@@ -109,7 +109,7 @@ class Visita(models.Model):
         ("REALIZADA", "Realizada"),
         ("CANCELADA", "Cancelada"),
     ]
-    professor = models.ForeignKey(cadastro_usuario, on_delete=models.PROTECT, related_name="visitas")
+    professor = models.ForeignKey(CadastroUsuario, on_delete=models.PROTECT, related_name="visitas")
     data = models.DateField()
     horario = models.TimeField()
     quantidade_visitantes = models.PositiveIntegerField(default=1)
@@ -132,7 +132,7 @@ class Duvida(models.Model):
         ("RESPONDIDA", "Respondida"),
         ("FAQ", "Pergunta frequente"),
     ]
-    usuario = models.ForeignKey(cadastro_usuario, on_delete=models.CASCADE, related_name="duvidas")
+    usuario = models.ForeignKey(CadastroUsuario, on_delete=models.CASCADE, related_name="duvidas")
     pergunta = models.TextField()
     resposta = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS, default="PENDENTE")
@@ -164,7 +164,7 @@ class FAQ(models.Model):
         return self.pergunta
 
 class HistoricoAlteracao(models.Model):
-    administrador = models.ForeignKey(cadastro_usuario, on_delete=models.SET_NULL, null=True, blank=True, related_name="alteracoes")
+    administrador = models.ForeignKey(CadastroUsuario, on_delete=models.SET_NULL, null=True, blank=True, related_name="alteracoes")
     acao = models.CharField(max_length=20)
     modulo = models.CharField(max_length=100)
     objeto_id = models.PositiveIntegerField(null=True, blank=True)
