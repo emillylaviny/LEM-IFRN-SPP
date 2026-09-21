@@ -8,6 +8,7 @@ class Card(models.Model):
 
     def __str__(self):
         return self.titulo
+
 #Cadastros 
 class CadastroUsuario(models.Model):
     nome_completo = models.CharField(max_length=300)
@@ -33,6 +34,20 @@ class CadastroUsuario(models.Model):
 
     def __str__(self):
         return self.nome
+
+class Escola(models.Model):
+    usario = models.ForeignKey(CadastroUsuario, on_delete=models.SET_NULL, null=True, blank=True, related_name="escolas")
+    nome = models.CharField(max_length=100, blank=True)
+    cidade = models.CharField(max_length=100, blank=True)
+    declaracao = models.CharField(max_length=100, blank=True)
+
+    class Meta:
+        ordering = ["nome"]
+        verbose_name = "Escola"
+        verbose_name_plural = "Escolas"
+
+    def __str__(self):
+        return self.nome       
 
 class LocalizacaoLab(models.Model):
     nome = models.CharField(max_length=120, unique=True)
@@ -71,7 +86,6 @@ class CadastroMateriais(models.Model):
     def __str__(self):
         return f"{self.codigo} - {self.nome}"
 
-####
 
 class Emprestimo(models.Model):
     STATUS = [
