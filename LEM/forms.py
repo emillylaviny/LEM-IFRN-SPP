@@ -13,9 +13,7 @@ from .models import (
 )
 
 
-# ---------------------------------------------------------------------------
 # Helpers
-# ---------------------------------------------------------------------------
 
 BOOTSTRAP_TEXT_CLASSES = "form-control"
 BOOTSTRAP_FILE_CLASSES = "form-control"
@@ -32,9 +30,7 @@ def _cpf_apenas_digitos(cpf: str) -> str:
     return re.sub(r"\D", "", cpf or "")
 
 
-# ---------------------------------------------------------------------------
 # Cadastro de usuário (professor)
-# ---------------------------------------------------------------------------
 
 class UserCreationForm(forms.ModelForm):
     """
@@ -159,9 +155,7 @@ class UserCreationForm(forms.ModelForm):
         return usuario
 
 
-# ---------------------------------------------------------------------------
 # Materiais do acervo
-# ---------------------------------------------------------------------------
 
 class MaterialForm(forms.ModelForm):
     class Meta:
@@ -235,9 +229,7 @@ class MaterialForm(forms.ModelForm):
         return cleaned_data
 
 
-# ---------------------------------------------------------------------------
 # Empréstimos
-# ---------------------------------------------------------------------------
 
 class EmprestimoForm(forms.ModelForm):
     """
@@ -316,9 +308,8 @@ class EmprestimoForm(forms.ModelForm):
         return cleaned_data
 
 
-# ---------------------------------------------------------------------------
+
 # Visitas
-# ---------------------------------------------------------------------------
 
 class VisitaForm(forms.ModelForm):
     class Meta:
@@ -364,9 +355,7 @@ class VisitaForm(forms.ModelForm):
         return data_visita
 
 
-# ---------------------------------------------------------------------------
 # Dúvidas
-# ---------------------------------------------------------------------------
 
 class DuvidaForm(forms.ModelForm):
     class Meta:
