@@ -62,7 +62,7 @@ class LocalizacaoLab(models.Model):
         return self.nome
 
 
-class CadastroMateriais(models.Model):
+class Materiais(models.Model):
     nome = models.CharField(max_length=150)
     codigo = models.CharField(max_length=50, unique=True)
     descricao = models.TextField(blank=True)
@@ -97,7 +97,7 @@ class Emprestimo(models.Model):
         ("CANCELADO", "Cancelado"),
     ]
     professor = models.ForeignKey(CadastroUsuario, on_delete=models.PROTECT, related_name="emprestimos")
-    material = models.ForeignKey(CadastroMateriais, on_delete=models.PROTECT, related_name="emprestimos")
+    material = models.ForeignKey(Materiais, on_delete=models.PROTECT, related_name="emprestimos")
     quantidade = models.PositiveIntegerField(default=1)
     data_solicitacao = models.DateTimeField(auto_now_add=True)
     data_retirada = models.DateField(blank=True, null=True)
