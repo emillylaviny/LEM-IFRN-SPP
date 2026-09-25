@@ -15,6 +15,12 @@ def home(request):
     }
     return render(request, "LEM/home.html", context)
 
+def dashboard(request):
+    context = {
+        "card": Card.objects.all(),
+    }
+    return render(request, "LEM/dashboard.html", context)
+
 #cadastros
 # @login_required
 # @permission_required("LEM.add_cadastromateriais")
@@ -33,19 +39,19 @@ def home(request):
 #     }
 #     return render(request, "LEM/form_material.html", context)
 
-def cadastro_usuario(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect("login")
-    else:
-        form = UserCreationForm()
+# def cadastro_usuario(request):
+#     if request.method == "POST":
+#         form = UserCreationForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("login")
+#     else:
+#         form = UserCreationForm()
 
-    context = {
-        "form": form,
-    }
-    return render(request, "LEM/cadastro_usuario.html", context)
+#     context = {
+#         "form": form,
+#     }
+#     return render(request, "LEM/cadastro_usuario.html", context)
 
 #MATERIAIS 
 
@@ -195,9 +201,7 @@ def cadastro(request):
     """
  
     if request.method == 'POST':
-        # ------------------------------------------------------------
-        # 1. Captura dos dados enviados pelo formulário
-        # ------------------------------------------------------------
+       
         nome = request.POST.get('nome', '').strip()
         sobrenome = request.POST.get('sobrenome', '').strip()
         cpf = request.POST.get('cpf', '').strip()
@@ -208,11 +212,6 @@ def cadastro(request):
  
         erros = []
  
-        # ------------------------------------------------------------
-        # 2. Validação básica no servidor
-        #    (a validação "amigável" já acontece no cliente via JS,
-        #     mas o servidor nunca deve confiar apenas nisso)
-        # ------------------------------------------------------------
         if not nome:
             erros.append('Informe o nome.')
  
