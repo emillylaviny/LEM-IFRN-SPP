@@ -1786,3 +1786,340 @@ a.link-custom:hover {
     margin-bottom: 0.9rem;
   }
 }
+
+
+
+
+
+
+/* =========================================================
+   LEM - Tela de Cadastro
+   ========================================================= */
+
+:root {
+  --cor-primaria: #17b8a6;
+  --cor-primaria-escura: #12988a;
+  --cor-texto: #2f3438;
+  --cor-texto-claro: #6b7378;
+  --cor-borda: #dfe3e6;
+  --cor-borda-foco: #17b8a6;
+  --cor-erro: #e0435c;
+  --cor-sucesso: #17b8a6;
+  --cor-fundo-branco: #ffffff;
+  --fonte: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --raio-campo: 8px;
+  --raio-painel: 40px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--fonte);
+  color: var(--cor-texto);
+}
+
+body {
+  background: var(--cor-fundo-branco);
+}
+
+.page {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ===================== PAINEL ESQUERDO ===================== */
+
+.side-panel {
+  flex: 0 0 38%;
+  max-width: 38%;
+  background: var(--cor-primaria);
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+}
+
+.side-panel__logo img {
+  height: 40px;
+  display: block;
+}
+
+.side-panel__text {
+  margin-top: 40px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.4;
+  max-width: 260px;
+  color: #ffffff;
+}
+
+.side-panel__illustration {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.side-panel__illustration img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===================== PAINEL DIREITO ===================== */
+
+.form-panel {
+  flex: 1;
+  background: var(--cor-fundo-branco);
+  display: flex;
+  justify-content: center;
+  padding: 56px 32px 64px;
+  border-top-left-radius: var(--raio-painel);
+  border-bottom-left-radius: var(--raio-painel);
+  margin-left: -1px;
+  position: relative;
+  overflow-y: auto;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 420px;
+}
+
+.form-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 2px;
+  color: var(--cor-texto);
+}
+
+.form-header h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: var(--cor-texto);
+}
+
+.login-hint {
+  margin: 0 0 28px;
+  font-size: 0.92rem;
+  color: var(--cor-texto-claro);
+}
+
+.link-entrar {
+  color: var(--cor-primaria-escura);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link-entrar:hover {
+  text-decoration: underline;
+}
+
+/* ===================== MENSAGENS (Django messages) ===================== */
+
+.form-messages {
+  margin-bottom: 20px;
+}
+
+.form-message {
+  margin: 0 0 8px;
+  padding: 10px 14px;
+  border-radius: var(--raio-campo);
+  font-size: 0.85rem;
+}
+
+.form-message--error {
+  background: #fdecef;
+  border: 1px solid var(--cor-erro);
+  color: var(--cor-erro);
+}
+
+.form-message--success {
+  background: #e6f7f5;
+  border: 1px solid var(--cor-sucesso);
+  color: var(--cor-primaria-escura);
+}
+
+/* ===================== SEÇÕES DO FORMULÁRIO ===================== */
+
+.form-section {
+  margin-bottom: 26px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 14px;
+  color: var(--cor-texto);
+}
+
+.section-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.section-description {
+  margin: -6px 0 14px;
+  font-size: 0.88rem;
+  color: var(--cor-texto-claro);
+  line-height: 1.4;
+}
+
+/* ===================== CAMPOS ===================== */
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--cor-texto);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"] {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-campo);
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--cor-texto);
+  background: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input::placeholder {
+  color: #b7bdc2;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--cor-borda-foco);
+  box-shadow: 0 0 0 3px rgba(23, 184, 166, 0.15);
+}
+
+/* ===================== SENHA ===================== */
+
+.password-requirements {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+}
+
+.password-requirements li {
+  font-size: 0.78rem;
+  color: var(--cor-texto-claro);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ===================== BOTÃO ===================== */
+
+.btn-cadastrar {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  margin: 8px auto 0;
+  padding: 13px 20px;
+  background: var(--cor-primaria);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-cadastrar:hover {
+  background: var(--cor-primaria-escura);
+}
+
+.btn-cadastrar:active {
+  transform: translateY(1px);
+}
+
+.btn-cadastrar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===================== RESPONSIVIDADE ===================== */
+
+@media (max-width: 900px) {
+  .page {
+    flex-direction: column;
+  }
+
+  .side-panel {
+    flex: none;
+    max-width: 100%;
+    width: 100%;
+    padding: 36px 28px;
+  }
+
+  .side-panel__text {
+    max-width: 100%;
+  }
+
+  .side-panel__illustration {
+    margin-top: 24px;
+  }
+
+  .side-panel__illustration img {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+
+  .form-panel {
+    border-top-left-radius: var(--raio-painel);
+    border-top-right-radius: var(--raio-painel);
+    border-bottom-left-radius: 0;
+    margin-left: 0;
+    margin-top: -24px;
+    padding: 40px 24px 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .form-header h2 {
+    font-size: 1.15rem;
+  }
+
+  .password-requirements {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-cadastrar {
+    max-width: 100%;
+  }
+}

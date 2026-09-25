@@ -10,4 +10,10 @@ urlpatterns = [
         auth_views.LoginView.as_view(template_name='LEM/login.html'),
         name='login'
     ),
+
+    path(
+        'cadastro/',
+        views.cadastro,
+        name='cadastro'
+    ),
 ]

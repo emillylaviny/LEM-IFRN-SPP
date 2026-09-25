@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro | LEM</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'LEM/static/css/style.css' %}">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- ===================== PAINEL ESQUERDO ===================== -->
+    <aside class="side-panel">
+      <div class="side-panel__logo">
+      <img src="{% static 'LEM/assets/LogoLEMnav.png' %}" alt="LEM - Laboratório de Ensino de Matemática">
+      </div>
+
+      <p class="side-panel__text">
+        Conectando a comunidade acadêmica aos recursos que transformam o ensino da Matemática.
+      </p>
+
+      <div class="side-panel__illustration">
+      <img src="{% static 'LEM/assets/LogoLEMnav.png' %}" alt="LEM - Laboratório de Ensino de Matemática">
+      </div>
+    </aside>
+
+    <!-- ===================== PAINEL DIREITO / FORMULÁRIO ===================== -->
+    <main class="form-panel">
+      <div class="form-wrapper">
+
+        <header class="form-header">
+          <h1>Seja bem-vindo(a)!</h1>
+          <h2>Faça seu cadastro no LEM</h2>
+          <p class="login-hint">
+            Já tem uma conta do LEM?
+            <a href="{% url 'login' %}" class="link-entrar">Entrar</a>
+          </p>
+        </header>
+
+        <!-- ---------- MENSAGENS DE ERRO/SUCESSO (geradas pelo Django) ---------- -->
+        {% if messages %}
+          <div class="form-messages">
+            {% for message in messages %}
+              <p class="form-message form-message--{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <form id="form-cadastro" method="POST" action="{% url 'cadastro' %}">
+          {% csrf_token %}
+
+          <!-- ---------- DADOS PESSOAIS ---------- -->
+          <section class="form-section">
+            <h3 class="section-title">
+              <span class="section-icon" aria-hidden="true">&#128100;</span>
+              Dados pessoais
+            </h3>
+
+            <div class="field">
+              <label for="id_nome">Nome*</label>
+              <input type="text" id="id_nome" name="nome" required autocomplete="given-name" value="{{ nome|default:'' }}">
+            </div>
+
+            <div class="field">
+              <label for="id_sobrenome">Sobrenome*</label>
+              <input type="text" id="id_sobrenome" name="sobrenome" required autocomplete="family-name" value="{{ sobrenome|default:'' }}">
+            </div>
+
+            <div class="field">
+              <label for="id_cpf">CPF*</label>
+              <input type="text" id="id_cpf" name="cpf" required maxlength="14" placeholder="000.000.000-00" inputmode="numeric" value="{{ cpf|default:'' }}">
+            </div>
+
+            <div class="field">
+              <label for="id_email">E-mail*</label>
+              <input type="email" id="id_email" name="email" required autocomplete="email" value="{{ email|default:'' }}">
+            </div>
+          </section>
+
+          <!-- ---------- VÍNCULO PROFISSIONAL ---------- -->
+          <section class="form-section">
+            <h3 class="section-title">
+              <span class="section-icon" aria-hidden="true">&#128221;</span>
+              Vínculo Profissional
+            </h3>
+
+            <p class="section-description">
+              Informe todas as instituições de ensino em que você atua atualmente.
+            </p>
+
+            <div class="field">
+              <label for="id_instituicoes" class="visually-hidden">Instituições de ensino</label>
+              <input type="text" id="id_instituicoes" name="instituicoes" placeholder="(campo de seleção e texto)" value="{{ instituicoes|default:'' }}">
+            </div>
+          </section>
+
+          <!-- ---------- SEGURANÇA ---------- -->
+          <section class="form-section">
+            <h3 class="section-title">
+              <span class="section-icon" aria-hidden="true">&#128274;</span>
+              Segurança
+            </h3>
+
+            <p class="section-description">
+              Sua conta está quase pronta. Crie sua senha.
+            </p>
+
+            <div class="field">
+              <label for="id_senha">Senha</label>
+              <input type="password" id="id_senha" name="senha" required minlength="6">
+
+              <ul class="password-requirements">
+                <li>Mínimo de 6 caracteres</li>
+                <li>Maiúscula (A-Z)</li>
+                <li>Caractere especial</li>
+                <li>Número</li>
+              </ul>
+            </div>
+
+            <div class="field">
+              <label for="id_confirmar_senha">Confirme sua senha</label>
+              <input type="password" id="id_confirmar_senha" name="confirmar_senha" required>
+            </div>
+          </section>
+
+          <!-- ---------- BOTÃO ---------- -->
+          <button type="submit" class="btn-cadastrar">Cadastrar</button>
+
+        </form>
+      </div>
+    </main>
+
+  </div>
+
+</body>
+</html>
