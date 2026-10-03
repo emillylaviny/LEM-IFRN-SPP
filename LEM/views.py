@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
-from .forms import CardMaterialForm
+from .forms import CardMaterialForm, CadastroForm
 from .models import Card, CadastroUsuario, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, FAQ, HistoricoAlteracao
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
@@ -14,6 +14,7 @@ def home(request):
         "card": Card.objects.all(),
     }
     return render(request, "LEM/home.html", context)
+
 
 #cadastros
 # @login_required
@@ -33,19 +34,6 @@ def home(request):
 #     }
 #     return render(request, "LEM/form_material.html", context)
 
-def cadastro_usuario(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect("login")
-    else:
-        form = UserCreationForm()
-
-    context = {
-        "form": form,
-    }
-    return render(request, "LEM/cadastro_usuario.html", context)
 
 #MATERIAIS 
 
@@ -188,87 +176,14 @@ def cadastro_usuario(request):
 
 # template - cadastro de usuario
 
-
 def cadastro(request):
-    """
-    Exibe o formulário de cadastro (GET) e processa o envio (POST).
-    """
- 
     if request.method == 'POST':
-        # ------------------------------------------------------------
-        # 1. Captura dos dados enviados pelo formulário
-        # ------------------------------------------------------------
-        nome = request.POST.get('nome', '').strip()
-        sobrenome = request.POST.get('sobrenome', '').strip()
-        cpf = request.POST.get('cpf', '').strip()
-        email = request.POST.get('email', '').strip()
-        instituicoes = request.POST.get('instituicoes', '').strip()
-        senha = request.POST.get('senha', '')
-        confirmar_senha = request.POST.get('confirmar_senha', '')
- 
-        erros = []
- 
-        # ------------------------------------------------------------
-        # 2. Validação básica no servidor
-        #    (a validação "amigável" já acontece no cliente via JS,
-        #     mas o servidor nunca deve confiar apenas nisso)
-        # ------------------------------------------------------------
-        if not nome:
-            erros.append('Informe o nome.')
- 
-        if not sobrenome:
-            erros.append('Informe o sobrenome.')
- 
-        cpf_numeros = ''.join(filter(str.isdigit, cpf))
-        if len(cpf_numeros) != 11:
-            erros.append('Informe um CPF válido.')
- 
-        if '@' not in email or '.' not in email:
-            erros.append('Informe um e-mail válido.')
- 
-        if len(senha) < 6:
-            erros.append('A senha deve ter no mínimo 6 caracteres.')
-        if not re.search(r'[A-Z]', senha):
-            erros.append('A senha deve conter ao menos uma letra maiúscula.')
-        if not re.search(r'[0-9]', senha):
-            erros.append('A senha deve conter ao menos um número.')
-        if not re.search(r'[^A-Za-z0-9]', senha):
-            erros.append('A senha deve conter ao menos um caractere especial.')
- 
-        if senha != confirmar_senha:
-            erros.append('As senhas não coincidem.')
- 
-        # ------------------------------------------------------------
-        # 3. Se houver erros, retorna ao formulário mantendo os dados
-        # ------------------------------------------------------------
-        if erros:
-            for erro in erros:
-                messages.error(request, erro)
- 
-            contexto = {
-                'nome': nome,
-                'sobrenome': sobrenome,
-                'cpf': cpf,
-                'email': email,
-                'instituicoes': instituicoes,
-            }
-            return render(request, 'LEM/cadastro.html', contexto)
- 
-        # ------------------------------------------------------------
-        # 4. Persistência (a implementar junto ao Model de usuário)
-        # ------------------------------------------------------------
-        # usuario = Usuario.objects.create_user(
-        #     nome=nome,
-        #     sobrenome=sobrenome,
-        #     cpf=cpf_numeros,
-        #     email=email,
-        #     instituicoes=instituicoes,
-        #     password=senha,
-        # )
- 
-        messages.success(request, 'Cadastro realizado com sucesso!')
-        return redirect('login')  # ajustar para a rota real pós-cadastro
- 
-    # GET: apenas exibe o formulário
-    return render(request, 'LEM/cadastro.html')
- 
+        form = CadastroForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = CadastroForm()
+
+    return render(request, 'LEM/cadastro.html', {'form': form})

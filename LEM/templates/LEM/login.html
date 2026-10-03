@@ -24,15 +24,21 @@
             <div class="form-wrapper py-5 px-4">
                 <h1 class="login-title mb-5">Login</h1>
 
-                <form>
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            Usuário ou senha incorretos. Verifique os dados e tente novamente.
+                        </div>
+                    {% endif %}
                     <div class="mb-4">
                         <label for="usuario" class="form-label form-label-custom">Usuário:</label>
-                        <input type="text" class="form-control input-underline" id="usuario" name="usuario">
+                        <input type="text" class="form-control input-underline" id="usuario" name="username" required> 
                     </div>
 
                     <div class="mb-3">
                         <label for="senha" class="form-label form-label-custom">Senha:</label>
-                        <input type="password" class="form-control input-underline" id="senha" name="senha">
+                        <input type="password" class="form-control input-underline" id="senha" name="password" required>
                     </div>
 
                     <div class="mb-4">
