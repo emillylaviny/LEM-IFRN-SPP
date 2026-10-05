@@ -61,12 +61,12 @@
 
             <div class="field">
               <label for="id_nome">Nome*</label>
-              <input type="text" id="id_nome" name="nome" required autocomplete="given-name" value="{{ nome|default:'' }}">
+              <input type="text" id="id_nome" name="first_name" required autocomplete="given-name" value="{{ nome|default:'' }}">
             </div>
 
             <div class="field">
               <label for="id_sobrenome">Sobrenome*</label>
-              <input type="text" id="id_sobrenome" name="sobrenome" required autocomplete="family-name" value="{{ sobrenome|default:'' }}">
+              <input type="text" id="id_sobrenome" name="last_name" required autocomplete="family-name" value="{{ sobrenome|default:'' }}">
             </div>
 
             <div class="field">
@@ -93,7 +93,7 @@
 
             <div class="field">
               <label for="id_instituicoes" class="visually-hidden">Instituições de ensino</label>
-              <input type="text" id="id_instituicoes" name="instituicoes" placeholder="(campo de seleção e texto)" value="{{ instituicoes|default:'' }}">
+              <input type="text" id="id_instituicoes" name="vinculo_profissional" placeholder="(campo de seleção e texto)" value="{{ instituicoes|default:'' }}">
             </div>
           </section>
 
@@ -110,7 +110,7 @@
 
             <div class="field">
               <label for="id_senha">Senha</label>
-              <input type="password" id="id_senha" name="senha" required minlength="6">
+              <input type="password" id="id_senha" name="password1" required minlength="6">
 
               <ul class="password-requirements">
                 <li>Mínimo de 6 caracteres</li>
@@ -122,7 +122,7 @@
 
             <div class="field">
               <label for="id_confirmar_senha">Confirme sua senha</label>
-              <input type="password" id="id_confirmar_senha" name="confirmar_senha" required>
+              <input type="password" id="id_confirmar_senha" name="password2" required>
             </div>
           </section>
 

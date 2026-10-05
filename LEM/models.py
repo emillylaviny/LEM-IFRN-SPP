@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Template - área materiais do home
 class Card(models.Model):
@@ -8,6 +9,10 @@ class Card(models.Model):
 
     def __str__(self):
         return self.titulo
+
+class User(AbstractUser):
+    vinculo_profissional = models.CharField(max_length=300)
+    cpf = models.CharField(max_length=14, unique=True)
 
 #Cadastros 
 class CadastroUsuario(models.Model):
@@ -22,7 +27,6 @@ class CadastroUsuario(models.Model):
     email = models.EmailField(unique=True)
     telefone = models.CharField(max_length=150)
     cidade_residencia = models.CharField(max_length=150)
-    senha = models.CharField(max_length=128)
     is_admin = models.BooleanField(default=False)
     ativo = models.BooleanField(default=True)
     data_cadastro = models.DateTimeField(auto_now_add=True)

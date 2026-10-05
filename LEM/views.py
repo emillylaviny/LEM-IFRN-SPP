@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
-from .forms import CardMaterialForm
+from .forms import CardMaterialForm, CadastroForm
 from .models import Card, CadastroUsuario, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, FAQ, HistoricoAlteracao
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
@@ -39,19 +39,6 @@ def dashboard(request):
 #     }
 #     return render(request, "LEM/form_material.html", context)
 
-# def cadastro_usuario(request):
-#     if request.method == "POST":
-#         form = UserCreationForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("login")
-#     else:
-#         form = UserCreationForm()
-
-#     context = {
-#         "form": form,
-#     }
-#     return render(request, "LEM/cadastro_usuario.html", context)
 
 #MATERIAIS 
 
@@ -194,12 +181,7 @@ def dashboard(request):
 
 # template - cadastro de usuario
 
-
 def cadastro(request):
-    """
-    Exibe o formulário de cadastro (GET) e processa o envio (POST).
-    """
- 
     if request.method == 'POST':
        
         nome = request.POST.get('nome', '').strip()

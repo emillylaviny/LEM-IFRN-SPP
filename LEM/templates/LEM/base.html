@@ -58,10 +58,29 @@
             </ul>
 
             <!-- Botão Entrar à direita -->
-            <a href="{% url 'login' %}"
-               class="btn btn-entrar d-flex align-items-center justify-content-center gap-1">
-                <i class="bi bi-box-arrow-in-right"></i> ENTRAR
-            </a>
+
+            {% if user.is_authenticated %}
+
+                <span class="me-2">
+                    Olá, {{ user.first_name }}!
+                </span>
+
+                <form method="POST" action="{% url 'logout' %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="btn btn-entrar d-flex align-items-center justify-content-center gap-1">
+                        <i class="bi bi-box-arrow-right"></i> SAIR
+                    </button>
+                </form>
+
+            {% else %}
+
+                <a href="{% url 'login' %}"
+                  class="btn btn-entrar d-flex align-items-center justify-content-center gap-1">
+                    <i class="bi bi-box-arrow-in-right"></i> ENTRAR
+                </a>
+
+            {% endif %}
         </div>
     </div>
 </nav>
