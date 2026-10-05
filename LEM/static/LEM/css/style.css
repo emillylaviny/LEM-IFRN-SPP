@@ -33,6 +33,18 @@
     --faq-text-gray: #6b7684;
     --faq-bg: #fbeae4;
     --faq-white: #ffffff;
+    --cor-primaria: #17b8a6;
+    --cor-primaria-escura: #12988a;
+    --cor-texto: #2f3438;
+    --cor-texto-claro: #6b7378;
+    --cor-borda: #dfe3e6;
+    --cor-borda-foco: #17b8a6;
+    --cor-erro: #e0435c;
+    --cor-sucesso: #17b8a6;
+    --cor-fundo-branco: #ffffff;
+    --fonte: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --raio-campo: 8px;
+    --raio-painel: 40px;
   }
 
 /* Barra de navegação */
@@ -1796,24 +1808,6 @@ a.link-custom:hover {
    LEM - Tela de Cadastro
    ========================================================= */
 
-:root {
-  --cor-primaria: #17b8a6;
-  --cor-primaria-escura: #12988a;
-  --cor-texto: #2f3438;
-  --cor-texto-claro: #6b7378;
-  --cor-borda: #dfe3e6;
-  --cor-borda-foco: #17b8a6;
-  --cor-erro: #e0435c;
-  --cor-sucesso: #17b8a6;
-  --cor-fundo-branco: #ffffff;
-  --fonte: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --raio-campo: 8px;
-  --raio-painel: 40px;
-}
-
-* {
-  box-sizing: border-box;
-}
 
 html, body {
   margin: 0;
@@ -1845,7 +1839,8 @@ body {
 }
 
 .side-panel__logo img {
-  height: 40px;
+  height: 100px;
+  width: 185px;
   display: block;
 }
 
