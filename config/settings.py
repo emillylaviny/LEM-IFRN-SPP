@@ -104,7 +104,7 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "LEM.User"
 
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "home"
 
 # Internationalization
