@@ -21,7 +21,7 @@ class CadastroForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
 
-        user.username = self.cleaned_data['first_name']
+        user.username = self.cleaned_data['email']
 
         if commit:
             user.save()
