@@ -48,6 +48,7 @@
     </script>
    <!--fim::Inicialização do Tema-->
 
+
     <!--início::Tags Meta de Acessibilidade-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light dark" />
@@ -104,6 +105,234 @@
       crossorigin="anonymous"
     />
   </head>
+
+  <script>
+
+const conteudoPrincipal = document.getElementById("conteudoPrincipal");
+
+const menus = document.querySelectorAll(".nav-link[data-page]");
+
+
+menus.forEach(menu => {
+
+    menu.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        // Remove o estado ativo de todos
+        menus.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        // Ativa o botão clicado
+        this.classList.add("active");
+
+        // Descobre qual página foi clicada
+        const pagina = this.dataset.page;
+
+        // Troca o conteúdo
+        carregarPagina(pagina);
+
+    });
+
+});
+
+
+function carregarPagina(pagina) {
+
+    switch (pagina) {
+
+        case "localizacao":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Localização</h1>
+
+                        <p>
+                            Conteúdo da página de localização.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+
+        case "emprestimos":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Empréstimos</h1>
+
+                        <p>
+                            Conteúdo da página de empréstimos.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+
+        case "solicitacoes":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Solicitações</h1>
+
+                        <p>
+                            Conteúdo da página de solicitações.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+
+        case "visitas":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Visitas</h1>
+
+                        <p>
+                            Conteúdo da página de visitas.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+
+        case "perguntas":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <div class="card">
+
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    Perguntas frequentes
+                                </h3>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="accordion" id="faqAccordion">
+
+                                    <div class="accordion-item">
+
+                                        <h2 class="accordion-header">
+
+                                            <button
+                                                class="accordion-button"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#faq1">
+
+                                                O que é o laboratório?
+
+                                            </button>
+
+                                        </h2>
+
+                                        <div
+                                            id="faq1"
+                                            class="accordion-collapse collapse show">
+
+                                            <div class="accordion-body">
+
+                                                Resposta da pergunta.
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="accordion-item">
+
+                                        <h2 class="accordion-header">
+
+                                            <button
+                                                class="accordion-button collapsed"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#faq2">
+
+                                                Como realizar uma solicitação?
+
+                                            </button>
+
+                                        </h2>
+
+                                        <div
+                                            id="faq2"
+                                            class="accordion-collapse collapse">
+
+                                            <div class="accordion-body">
+
+                                                Resposta da pergunta.
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+    }
+
+}
+
+</script>
 
   <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <!--begin::Envoltório do Aplicativo-->
@@ -328,19 +557,19 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./starter.html" class="nav-link">
+                <a href="./starter.html" class="nav-link" data-page="usuarios">
                   <i class="nav-icon bi bi-file-earmark"></i>
                   <p>Usuários</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./generate/theme.html" class="nav-link">
+                <a href="./generate/theme.html" class="nav-link" data-page="materiais">
                   <i class="nav-icon bi bi-palette"></i>
                   <p>Materiais</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-page="etiquetas">
                   <i class="nav-icon bi bi-box-seam-fill"></i>
                   <p>
                     Etiquetas
@@ -375,7 +604,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-page="localizacao">
                   <i class="nav-icon bi bi-clipboard-fill"></i>
                   <p>
                     Localização
@@ -459,7 +688,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-page="emprestimos">
                   <i class="nav-icon bi bi-tree-fill"></i>
                   <p>
                    Empréstimos
@@ -500,7 +729,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-page="solicitacoes">
                   <i class="nav-icon bi bi-envelope"></i>
                   <p>
                     Solicitações
@@ -530,7 +759,7 @@
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-page="visitas">
                   <i class="nav-icon bi bi-pencil-square"></i>
                   <p>
                     Visitas
@@ -577,10 +806,10 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-page="perguntas">
                   <i class="nav-icon bi bi-table"></i>
                   <p>
-                    Calendário de reservas
+                    Perguntas frequentes
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
                 </a>
@@ -897,7 +1126,7 @@
 
       
       <!--begin::App Main-->
-      <main class="app-main">
+      <main class="app-main" id="conteudoPrincipal">
         <!--begin::App Content Header-->
         <div class="app-content-header">
           <!--begin::Container-->

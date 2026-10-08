@@ -29,5 +29,12 @@ urlpatterns = [
             'dashboard/',
             views.dashboard,
             name='dashboard'
-        ),
+    ),
+
+    path(
+            'perguntasfaq/',
+            views.perguntasfaq,
+            name='perguntasfaq'
+    ),
+
 ]

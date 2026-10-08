@@ -34,6 +34,10 @@ def cadastro(request):
 def dashboard(request):
     return render(request, "LEM/dashboard.html")
 
+def perguntasfaq(request):
+    return render(request, "LEM/perguntasfaq.html")
+
+
 #cadastros
 # @login_required
 # @permission_required("LEM.add_cadastromateriais")
