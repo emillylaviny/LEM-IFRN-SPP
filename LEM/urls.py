@@ -26,15 +26,26 @@ urlpatterns = [
     ),
   
     path(
-            'dashboard/',
-            views.dashboard,
-            name='dashboard'
+        'dashboard/',
+        views.dashboard,
+        name='dashboard'
     ),
 
     path(
-            'perguntasfaq/',
-            views.perguntasfaq,
-            name='perguntasfaq'
+        'perguntasfaq/',
+        views.perguntasfaq,
+        name='perguntasfaq'
     ),
 
+    path(
+        'materiais/', 
+        views.materiais, 
+        name='materiais'
+    ),
+    
+    path(
+        'usuarios/', 
+        views.usuarios, 
+        name='usuarios'
+    ),
 ]

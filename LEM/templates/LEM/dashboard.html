@@ -78,8 +78,8 @@
     <!--Fonte Montsserrat-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+  
 
     <!--begin::Plugin de Terceiros (OverlayScrollbars)-->    <link
       rel="stylesheet"
@@ -105,234 +105,6 @@
       crossorigin="anonymous"
     />
   </head>
-
-  <script>
-
-const conteudoPrincipal = document.getElementById("conteudoPrincipal");
-
-const menus = document.querySelectorAll(".nav-link[data-page]");
-
-
-menus.forEach(menu => {
-
-    menu.addEventListener("click", function(event) {
-
-        event.preventDefault();
-
-        // Remove o estado ativo de todos
-        menus.forEach(item => {
-            item.classList.remove("active");
-        });
-
-        // Ativa o botão clicado
-        this.classList.add("active");
-
-        // Descobre qual página foi clicada
-        const pagina = this.dataset.page;
-
-        // Troca o conteúdo
-        carregarPagina(pagina);
-
-    });
-
-});
-
-
-function carregarPagina(pagina) {
-
-    switch (pagina) {
-
-        case "localizacao":
-
-            conteudoPrincipal.innerHTML = `
-
-                <div class="app-content">
-
-                    <div class="container-fluid">
-
-                        <h1>Localização</h1>
-
-                        <p>
-                            Conteúdo da página de localização.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            break;
-
-
-        case "emprestimos":
-
-            conteudoPrincipal.innerHTML = `
-
-                <div class="app-content">
-
-                    <div class="container-fluid">
-
-                        <h1>Empréstimos</h1>
-
-                        <p>
-                            Conteúdo da página de empréstimos.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            break;
-
-
-        case "solicitacoes":
-
-            conteudoPrincipal.innerHTML = `
-
-                <div class="app-content">
-
-                    <div class="container-fluid">
-
-                        <h1>Solicitações</h1>
-
-                        <p>
-                            Conteúdo da página de solicitações.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            break;
-
-
-        case "visitas":
-
-            conteudoPrincipal.innerHTML = `
-
-                <div class="app-content">
-
-                    <div class="container-fluid">
-
-                        <h1>Visitas</h1>
-
-                        <p>
-                            Conteúdo da página de visitas.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            break;
-
-
-        case "perguntas":
-
-            conteudoPrincipal.innerHTML = `
-
-                <div class="app-content">
-
-                    <div class="container-fluid">
-
-                        <div class="card">
-
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    Perguntas frequentes
-                                </h3>
-                            </div>
-
-                            <div class="card-body">
-
-                                <div class="accordion" id="faqAccordion">
-
-                                    <div class="accordion-item">
-
-                                        <h2 class="accordion-header">
-
-                                            <button
-                                                class="accordion-button"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#faq1">
-
-                                                O que é o laboratório?
-
-                                            </button>
-
-                                        </h2>
-
-                                        <div
-                                            id="faq1"
-                                            class="accordion-collapse collapse show">
-
-                                            <div class="accordion-body">
-
-                                                Resposta da pergunta.
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="accordion-item">
-
-                                        <h2 class="accordion-header">
-
-                                            <button
-                                                class="accordion-button collapsed"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#faq2">
-
-                                                Como realizar uma solicitação?
-
-                                            </button>
-
-                                        </h2>
-
-                                        <div
-                                            id="faq2"
-                                            class="accordion-collapse collapse">
-
-                                            <div class="accordion-body">
-
-                                                Resposta da pergunta.
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            break;
-
-    }
-
-}
-
-</script>
 
   <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <!--begin::Envoltório do Aplicativo-->
@@ -466,11 +238,11 @@ function carregarPagina(pagina) {
             <li class="nav-item dropdown user-menu">
               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                 <img
-                  src="./assets/img/user2-160x160.jpg"
+                  src="{% static 'LEM/assets/img/homem.jpg' %}"
                   class="user-image rounded-circle shadow"
-                  alt="Alexander Pierce"
+                  alt="Juliany Schivanni"
                 />
-                <span class="d-none d-md-inline">Alexander Pierce</span>
+                <span class="d-none d-md-inline">Juliany Schivanni</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                 <!--imagem do usuário-->
@@ -478,10 +250,10 @@ function carregarPagina(pagina) {
                   <img
                     src="./assets/img/user2-160x160.jpg"
                     class="rounded-circle shadow"
-                    alt="Alexander Pierce"
+                    alt="Juliany Schivanni"
                   />
                   <p>
-                    Alexander Pierce - Web Developer
+                    Juliany Schivanni - Teacher <br/>
                     <small>Member since Nov. 2023</small>
                   </p>
                 </li>
@@ -511,7 +283,7 @@ function carregarPagina(pagina) {
           <a href="./index.html" class="brand-link">
             <!-- imagem da logo-->
             <img
-              src="../assets/img/LogoLEMnav.png"
+              src="{% static 'LEM/assets/img/Logo Principal - Fundo transparente.png' %}"
               alt="LEM IFSPP"
               class="brand-image opacity-75 shadow"
             />
@@ -547,8 +319,8 @@ function carregarPagina(pagina) {
               data-accordion="false"
               id="navigation"
             >
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-speedometer"></i>
                   <p>
                     Dashboard
@@ -560,12 +332,14 @@ function carregarPagina(pagina) {
                 <a href="./starter.html" class="nav-link" data-page="usuarios">
                   <i class="nav-icon bi bi-file-earmark"></i>
                   <p>Usuários</p>
+                  <i class="nav-arrow bi bi-chevron-right"></i>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="./generate/theme.html" class="nav-link" data-page="materiais">
                   <i class="nav-icon bi bi-palette"></i>
                   <p>Materiais</p>
+                  <i class="nav-arrow bi bi-chevron-right"></i>
                 </a>
               </li>
               <li class="nav-item">
@@ -576,32 +350,6 @@ function carregarPagina(pagina) {
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="./widgets/small-box.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p> n sei </p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./widgets/info-box.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>n sei</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./widgets/cards.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>n sei</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./widgets/social.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>n sei</p>
-                    </a>
-                  </li>
-                </ul>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link" data-page="localizacao">
@@ -612,80 +360,6 @@ function carregarPagina(pagina) {
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="./layout/unfixed-sidebar.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>n sei</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/fixed-sidebar.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>n sei</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/fixed-header.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>n sei</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/fixed-footer.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>n sei</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/fixed-complete.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>n sei</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/layout-custom-area.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>n sei <small>n sei </small></p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/sidebar-mini.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Sidebar Mini</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/collapsed-sidebar.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Sidebar Mini <small>+ Collapsed</small></p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/collapsed-sidebar-without-hover.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Sidebar Mini <small>+ Collapsed + No Hover</small></p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/logo-switch.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Sidebar Mini <small>+ Logo Switch</small></p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/top-nav.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Top Nav <small>+ No Sidebar</small></p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./layout/layout-rtl.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Layout RTL</p>
-                    </a>
-                  </li>
-                </ul>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link" data-page="emprestimos">
@@ -695,38 +369,6 @@ function carregarPagina(pagina) {
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="./UI/general.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>General</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./UI/icons.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Icons</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./UI/timeline.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Timeline</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./UI/ribbons.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Ribbons</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./UI/colors.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Colors</p>
-                    </a>
-                  </li>
-                </ul>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link" data-page="solicitacoes">
@@ -736,28 +378,7 @@ function carregarPagina(pagina) {
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="./mailbox/inbox.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p> n sei</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./mailbox/read.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Read Message</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./mailbox/compose.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>n sei </p>
-                    </a>
-                  </li>
-                </ul>
               </li>
-
               <li class="nav-item">
                 <a href="#" class="nav-link" data-page="visitas">
                   <i class="nav-icon bi bi-pencil-square"></i>
@@ -766,360 +387,52 @@ function carregarPagina(pagina) {
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="./forms/elements.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Elements</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./forms/layout.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Layout</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./forms/validation.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Validation</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./forms/wizard.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Wizard</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./forms/advanced.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Advanced Elements</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./forms/editors.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Editors</p>
-                    </a>
-                  </li>
-                </ul>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link" data-page="perguntas">
+                <a href="{% url 'dashboard'%}" class="nav-link" data-page="perguntas">
                   <i class="nav-icon bi bi-table"></i>
                   <p>
                     Perguntas frequentes
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="./tables/simple.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Simple Tables</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./tables/data.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Data Tables</p>
-                    </a>
-                  </li>
-                </ul>
               </li>
 
               <li class="nav-header">Conteúdo do laboratório </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-page="Informações do Laboratório">
                   <i class="nav-icon bi bi-file-earmark-text"></i>
                   <p>
                     Informações do laboratório
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="./pages/profile.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Profile</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/settings.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Settings</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/invoice.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Invoice</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/calendar.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Calendar</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/kanban.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Kanban</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/chat.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Chat</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/file-manager.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>File Manager</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/projects.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Projects</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/gallery.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Gallery</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/search-results.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Search Results</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/pricing.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Pricing</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./pages/faq.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>FAQ</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>
-                        Error
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                      </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                      <li class="nav-item">
-                        <a href="./pages/404.html" class="nav-link">
-                          <i class="nav-icon bi bi-circle"></i>
-                          <p>404</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="./pages/500.html" class="nav-link">
-                          <i class="nav-icon bi bi-circle"></i>
-                          <p>500</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="./pages/maintenance.html" class="nav-link">
-                          <i class="nav-icon bi bi-circle"></i>
-                          <p>Maintenance</p>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
               </li>
               <li class="nav-item">
-                <a href="./users.html" class="nav-link">
+                <a href="./users.html" class="nav-link" data-page="Horários de funcionamento">
                   <i class="nav-icon bi bi-people"></i>
                   <p>Horártios de funcionamento</p>
+                  <i class="nav-arrow bi bi-chevron-right"></i>
                 </a>
               </li>
 
-              <li class="nav-header">EXAMPLES</li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                  <p>
-                    Auth
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                      <p>
-                        Version 1
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                      </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                      <li class="nav-item">
-                        <a href="./examples/login.html" class="nav-link">
-                          <i class="nav-icon bi bi-circle"></i>
-                          <p>Login</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="./examples/register.html" class="nav-link">
-                          <i class="nav-icon bi bi-circle"></i>
-                          <p>Register</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="./examples/forgot-password.html" class="nav-link">
-                          <i class="nav-icon bi bi-circle"></i>
-                          <p>Forgot Password</p>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                      <p>
-                        Version 2
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                      </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                      <li class="nav-item">
-                        <a href="./examples/login-v2.html" class="nav-link">
-                          <i class="nav-icon bi bi-circle"></i>
-                          <p>Login</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="./examples/register-v2.html" class="nav-link">
-                          <i class="nav-icon bi bi-circle"></i>
-                          <p>Register</p>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./examples/lockscreen.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Lockscreen</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
+              {% if user.is_authenticated %}
 
-              <li class="nav-header">MULTI LEVEL EXAMPLE</li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon bi bi-circle-fill"></i>
-                  <p>Level 1</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon bi bi-circle-fill"></i>
-                  <p>
-                    Level 1
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Level 2</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>
-                        Level 2
-                        <i class="nav-arrow bi bi-chevron-right"></i>
-                      </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          <i class="nav-icon bi bi-record-circle-fill"></i>
-                          <p>Level 3</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          <i class="nav-icon bi bi-record-circle-fill"></i>
-                          <p>Level 3</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          <i class="nav-icon bi bi-record-circle-fill"></i>
-                          <p>Level 3</p>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Level 2</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon bi bi-circle-fill"></i>
-                  <p>Level 1</p>
-                </a>
-              </li>
+                <span class="me-2 c-white">
+                    Olá, {{ user.first_name }}!
+                </span>
 
-              <li class="nav-header">LABELS</li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon bi bi-circle text-danger"></i>
-                  <p class="text">Important</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon bi bi-circle text-warning"></i>
-                  <p>Warning</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon bi bi-circle text-info"></i>
-                  <p>Informational</p>
-                </a>
-              </li>
-            </ul>
-            <!--end::Sidebar Menu-->
+                <form method="POST" action="{% url 'logout' %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="btn btn-entrar d-flex align-items-center justify-content-center gap-1 c-white">
+                        <i class="bi bi-box-arrow-right"></i> SAIR
+                    </button>
+                </form>
 
-            <!-- Docs CTA (bottom of sidebar) -->
-            <div class="p-3 mt-3 border-top border-secondary border-opacity-25">
-              <a
-                href="./docs/introduction.html"
-                class="btn btn-sm btn-outline-light w-100 d-flex align-items-center justify-content-center gap-2"
-              >
-                <i class="bi bi-book" aria-hidden="true"></i>
-                View documentation
-              </a>
-            </div>
-          </nav>
-        </div>
+            {% else %}
+            {% endif %}
+            
         <!--end::Sidebar Wrapper-->
       </aside>
       <!--end::Sidebar-->
@@ -2493,6 +1806,258 @@ function carregarPagina(pagina) {
       // - END PIE CHART -
       //-----------------
     </script>
+      <script>
+
+const conteudoPrincipal = document.getElementById("conteudoPrincipal");
+
+const menus = document.querySelectorAll(".nav-link[data-page]");
+
+
+menus.forEach(menu => {
+
+    menu.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        // Remove o estado ativo de todos
+        menus.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        // Ativa o botão clicado
+        this.classList.add("active");
+
+        // Descobre qual página foi clicada
+        const pagina = this.dataset.page;
+
+        // Troca o conteúdo
+        carregarPagina(pagina);
+
+    });
+
+});
+
+
+function carregarPagina(pagina) {
+
+    switch (pagina) {
+
+        case "dashboard":
+
+            fetch("/dashboard/")
+                .then(response => response.text())
+                .then(html => {
+                    conteudoPrincipal.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar perguntas:", error);
+                });
+
+            break;
+        
+        case "usuarios":
+
+            fetch("/usuarios/")
+                .then(response => response.text())
+                .then(html => {
+                    conteudoPrincipal.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar perguntas:", error);
+                });
+
+            break;
+
+        case "etiquetas":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Etiquetas</h1>
+
+                        <p>
+                            Conteúdo da página de Etiquetas.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+        case "localizacao":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Localização</h1>
+
+                        <p>
+                            Conteúdo da página de localização.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+
+        case "emprestimos":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Empréstimos</h1>
+
+                        <p>
+                            Conteúdo da página de empréstimos.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+
+        case "solicitacoes":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Solicitações</h1>
+
+                        <p>
+                            Conteúdo da página de solicitações.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+
+        case "visitas":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Visitas</h1>
+
+                        <p>
+                            Conteúdo da página de visitas.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+
+        case "perguntas":
+
+            fetch("/perguntasfaq/")
+                .then(response => response.text())
+                .then(html => {
+                    conteudoPrincipal.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar perguntas:", error);
+                });
+
+            break;
+
+        case "materiais":
+
+            fetch("/materiais/")
+                .then(response => response.text())
+                .then(html => {
+                    conteudoPrincipal.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error("Erro ao carregar perguntas:", error);
+                });
+
+            break;
+        
+        case "Informações do Laboratório":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Informações do Laboratório</h1>
+
+                        <p>
+                            Conteúdo da página de localização.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+        case "Horários de funcionamento":
+
+            conteudoPrincipal.innerHTML = `
+
+                <div class="app-content">
+
+                    <div class="container-fluid">
+
+                        <h1>Horários de Funcionamento</h1>
+
+                        <p>
+                            Conteúdo da página de localização.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            break;
+
+        
+    }
+
+}
+
+</script>
     <!--end::Script-->
   </body>
   <!--end::Body-->

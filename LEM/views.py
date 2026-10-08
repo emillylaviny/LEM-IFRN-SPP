@@ -37,6 +37,12 @@ def dashboard(request):
 def perguntasfaq(request):
     return render(request, "LEM/perguntasfaq.html")
 
+def materiais(request):
+    return render(request, "LEM/materiais.html")
+
+def usuarios(request):
+    return render(request, "LEM/usuarios.html")
+
 
 #cadastros
 # @login_required

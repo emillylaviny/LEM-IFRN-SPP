@@ -1,0 +1,384 @@
+{% comment %}
+  Parcial da tela "Materiais" do dashboard.
+  Carregado via fetch() dentro de #conteudoPrincipal (veja a view parcial_materiais).
+  A busca, os filtros e a paginação estão no <script> no final deste arquivo.
+  Atenção: innerHTML não executa <script>. Carregue este parcial com a função
+  injetarHTML() do dashboard.html, que recria os scripts depois da injeção.
+{% endcomment %}
+<style>
+  .lem-mat {
+    --lm-ink: #14261e;
+    --lm-muted: #5b6b64;
+    --lm-primary: #0b6b4d;
+    --lm-primary-dark: #085a40;
+    --lm-border: #dfe7e3;
+    --lm-row-border: #e8eeeb;
+    --lm-head-bg: #eef4f1;
+    --lm-icon-bg: #e4efe9;
+    --lm-danger: #c8293c;
+    font-family: inherit;
+    color: var(--lm-ink);
+  }
+
+  /* Cabeçalho */
+  .lem-mat-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .lem-mat-title { margin: 0; font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+  .lem-mat-subtitle { margin: 4px 0 0; font-size: .875rem; color: var(--lm-muted); }
+  .lem-mat-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .lem-mat-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 10px;
+    border: 1px solid var(--lm-border);
+    background: #fff;
+    color: var(--lm-ink);
+    font-size: .875rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(20, 38, 30, .06);
+    transition: background-color .15s, border-color .15s;
+  }
+  .lem-mat-btn:hover { background: #f4f8f6; border-color: #c9d6d0; }
+  .lem-mat-btn--primary { background: var(--lm-primary); border-color: var(--lm-primary); color: #fff; }
+  .lem-mat-btn--primary:hover { background: var(--lm-primary-dark); border-color: var(--lm-primary-dark); }
+
+  /* Cartão principal */
+  .lem-mat-card {
+    background: #fff;
+    border: 1px solid var(--lm-border);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(20, 38, 30, .05);
+  }
+
+  /* Barra de busca e filtros */
+  .lem-mat-toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .lem-mat-search { position: relative; flex: 1 1 280px; }
+  .lem-mat-search i {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--lm-muted); pointer-events: none;
+  }
+  .lem-mat-input,
+  .lem-mat-select {
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--lm-border);
+    border-radius: 10px;
+    background-color: #fff;
+    color: var(--lm-ink);
+    font: inherit;
+    font-size: .875rem;
+  }
+  .lem-mat-input { padding: 0 12px 0 38px; }
+  .lem-mat-input::placeholder { color: var(--lm-muted); }
+  .lem-mat-select {
+    appearance: none;
+    padding: 0 34px 0 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16' fill='none' stroke='%235b6b64' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+  .lem-mat-filter { flex: 0 1 200px; min-width: 160px; }
+  .lem-mat-input:focus-visible,
+  .lem-mat-select:focus-visible,
+  .lem-mat-btn:focus-visible,
+  .lem-mat-icon-btn:focus-visible,
+  .lem-mat-page-btn:focus-visible {
+    outline: 2px solid var(--lm-primary);
+    outline-offset: 2px;
+  }
+
+  /* Tabela */
+  .lem-mat-table-wrap {
+    border: 1px solid var(--lm-border);
+    border-radius: 12px;
+    overflow-x: auto;
+  }
+  .lem-mat-table { width: 100%; min-width: 900px; border-collapse: collapse; font-size: .8125rem; }
+  .lem-mat-table th {
+    background: var(--lm-head-bg);
+    padding: 12px;
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--lm-muted);
+    white-space: nowrap;
+  }
+  .lem-mat-table td { padding: 14px 12px; vertical-align: middle; border-top: 1px solid var(--lm-row-border); }
+  .lem-mat-table th:last-child,
+  .lem-mat-table td:last-child { text-align: right; white-space: nowrap; }
+
+  .lem-mat-name { display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  .lem-mat-thumb {
+    flex: none;
+    display: grid; place-items: center;
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--lm-icon-bg);
+    color: #4b5d55;
+  }
+  .lem-mat-code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .75rem; color: #3a4a43; white-space: nowrap; }
+  .lem-mat-sub { display: block; font-size: .75rem; color: var(--lm-muted); }
+  .lem-mat-nowrap { white-space: nowrap; }
+  .lem-mat-stock { white-space: nowrap; }
+  .lem-mat-stock strong { font-weight: 700; }
+  .lem-mat-stock-total { color: var(--lm-muted); }
+
+  .lem-mat-icon-btn {
+    display: inline-grid; place-items: center;
+    width: 32px; height: 32px;
+    border: 0; border-radius: 8px;
+    background: transparent;
+    color: var(--lm-ink);
+    cursor: pointer;
+  }
+  .lem-mat-icon-btn:hover { background: var(--lm-head-bg); }
+  .lem-mat-icon-btn--danger { color: var(--lm-danger); }
+  .lem-mat-icon-btn--danger:hover { background: #fbe9ec; }
+
+  .lem-mat-empty td { padding: 32px 12px; text-align: center !important; color: var(--lm-muted); }
+
+  /* Rodapé / paginação */
+  .lem-mat-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--lm-row-border);
+    font-size: .75rem; color: var(--lm-muted);
+  }
+  .lem-mat-pager { display: flex; gap: 8px; }
+  .lem-mat-page-btn {
+    height: 34px; padding: 0 14px;
+    border: 1px solid var(--lm-border); border-radius: 8px;
+    background: #fff; color: var(--lm-ink);
+    font-size: .8125rem; font-weight: 500; cursor: pointer;
+  }
+  .lem-mat-page-btn:hover:not(:disabled) { background: #f4f8f6; }
+  .lem-mat-page-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lem-mat-btn { transition: none; }
+  }
+</style>
+
+<div class="app-content lem-mat" data-lem-materiais data-total="{{ materiais|length }}">
+  <div class="container-fluid">
+
+    <div class="lem-mat-header">
+      <div>
+        <h1 class="lem-mat-title">Materiais</h1>
+        <p class="lem-mat-subtitle">Acervo de recursos didáticos do Laboratório de Ensino de Matemática.</p>
+      </div>
+      <div class="lem-mat-actions">
+        <button type="button" class="lem-mat-btn" data-acao="gerar-etiquetas">
+          <i class="bi bi-tag" aria-hidden="true"></i> Gerar etiquetas
+        </button>
+        <button type="button" class="lem-mat-btn lem-mat-btn--primary" data-acao="novo-material">
+          <i class="bi bi-plus-lg" aria-hidden="true"></i> Novo material
+        </button>
+      </div>
+    </div>
+
+    <div class="lem-mat-card">
+
+      <div class="lem-mat-toolbar">
+        <div class="lem-mat-search">
+          <i class="bi bi-search" aria-hidden="true"></i>
+          <input type="search" class="lem-mat-input" data-mat-busca
+                 placeholder="Pesquisar por nome, código ou conceito matemático"
+                 aria-label="Pesquisar materiais">
+        </div>
+
+        <div class="lem-mat-filter">
+          <select class="lem-mat-select" data-mat-nivel aria-label="Filtrar por nível">
+            <option value="">Todos os níveis</option>
+            {% for nivel in niveis %}
+              <option value="{{ nivel }}">{{ nivel }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="lem-mat-filter">
+          <select class="lem-mat-select" data-mat-local aria-label="Filtrar por localização">
+            <option value="">Todas as localizações</option>
+            {% for local in localizacoes %}
+              <option value="{{ local.id }}">{{ local.nome }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="lem-mat-table-wrap">
+        <table class="lem-mat-table">
+          <thead>
+            <tr>
+              <th scope="col">Material</th>
+              <th scope="col">Código</th>
+              <th scope="col">Conceito</th>
+              <th scope="col">Nível / Série</th>
+              <th scope="col">Localização</th>
+              <th scope="col">Disponibilidade</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m in materiais %}
+              <tr data-mat-linha
+                  data-busca="{{ m.nome }} {{ m.codigo }} {{ m.conceito_matematico }}"
+                  data-nivel="{{ m.nivel }}"
+                  data-local="{{ m.localizacao_id|default_if_none:'' }}">
+                <td>
+                  <div class="lem-mat-name">
+                    <span class="lem-mat-thumb"><i class="bi bi-image" aria-hidden="true"></i></span>
+                    <span>{{ m.nome }}</span>
+                  </div>
+                </td>
+                <td><span class="lem-mat-code">{{ m.codigo }}</span></td>
+                <td>{{ m.conceito_matematico|default:"—" }}</td>
+                <td class="lem-mat-nowrap">
+                  {{ m.nivel|default:"—" }}
+                  {% if m.series %}<span class="lem-mat-sub">{{ m.series }}</span>{% endif %}
+                </td>
+                <td>{{ m.localizacao.nome|default:"—" }}</td>
+                <td class="lem-mat-stock">
+                  <strong>{{ m.quantidade_disponivel }}</strong>
+                  <span class="lem-mat-stock-total">/ {{ m.quantidade }} disponíveis</span>
+                  <span class="lem-mat-sub">{{ m.emprestados }} emprestado(s)</span>
+                </td>
+                <td>
+                  <button type="button" class="lem-mat-icon-btn" data-acao="editar" data-id="{{ m.id }}"
+                          aria-label="Editar {{ m.nome }}" title="Editar">
+                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="lem-mat-icon-btn lem-mat-icon-btn--danger" data-acao="remover" data-id="{{ m.id }}"
+                          aria-label="Remover {{ m.nome }}" title="Remover">
+                    <i class="bi bi-trash" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            {% endfor %}
+            <tr class="lem-mat-empty" data-mat-vazio hidden>
+              <td colspan="7"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="lem-mat-footer">
+        <span data-mat-contagem>{{ materiais|length }} registro(s) — página 1 de 1</span>
+        <div class="lem-mat-pager">
+          <button type="button" class="lem-mat-page-btn" data-mat-anterior disabled>Anterior</button>
+          <button type="button" class="lem-mat-page-btn" data-mat-proxima disabled>Próxima</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+    "use strict";
+
+    var POR_PAGINA = 10;
+
+    function normalizar(texto) {
+        return (texto || "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    }
+
+    function raizDe(elemento) {
+        return elemento.closest("[data-lem-materiais]");
+    }
+
+    function paginaAtual(raiz) {
+        return parseInt(raiz.dataset.pagina || "1", 10);
+    }
+
+    function atualizar(raiz, pagina) {
+        var busca = normalizar(raiz.querySelector("[data-mat-busca]").value.trim());
+        var nivel = raiz.querySelector("[data-mat-nivel]").value;
+        var local = raiz.querySelector("[data-mat-local]").value;
+
+        var linhas = Array.prototype.slice.call(raiz.querySelectorAll("tr[data-mat-linha]"));
+
+        var filtradas = linhas.filter(function (tr) {
+            if (busca && normalizar(tr.dataset.busca).indexOf(busca) === -1) return false;
+            if (nivel && tr.dataset.nivel !== nivel) return false;
+            if (local && tr.dataset.local !== local) return false;
+            return true;
+        });
+
+        var totalPaginas = Math.max(1, Math.ceil(filtradas.length / POR_PAGINA));
+        pagina = Math.min(Math.max(1, pagina), totalPaginas);
+        raiz.dataset.pagina = pagina;
+
+        var inicio = (pagina - 1) * POR_PAGINA;
+        var visiveis = filtradas.slice(inicio, inicio + POR_PAGINA);
+
+        linhas.forEach(function (tr) {
+            tr.hidden = visiveis.indexOf(tr) === -1;
+        });
+
+        var vazio = raiz.querySelector("[data-mat-vazio]");
+        var semResultados = filtradas.length === 0;
+        vazio.hidden = !semResultados;
+        if (semResultados) {
+            vazio.querySelector("td").textContent =
+                raiz.dataset.total === "0"
+                    ? "Nenhum material cadastrado. Clique em Novo material para começar."
+                    : "Nenhum material encontrado. Ajuste a busca ou os filtros.";
+        }
+
+        raiz.querySelector("[data-mat-contagem]").textContent =
+            filtradas.length + " registro(s) — página " + pagina + " de " + totalPaginas;
+        raiz.querySelector("[data-mat-anterior]").disabled = pagina <= 1;
+        raiz.querySelector("[data-mat-proxima]").disabled = pagina >= totalPaginas;
+    }
+
+    // Os listeners ficam no document e são registrados uma única vez,
+    // mesmo que o usuário abra a aba Materiais várias vezes.
+    if (!window.__lemMateriaisListeners) {
+        window.__lemMateriaisListeners = true;
+
+        document.addEventListener("input", function (e) {
+            if (!e.target.matches("[data-mat-busca]")) return;
+            atualizar(raizDe(e.target), 1);
+        });
+
+        document.addEventListener("change", function (e) {
+            if (!e.target.matches("[data-mat-nivel], [data-mat-local]")) return;
+            atualizar(raizDe(e.target), 1);
+        });
+
+        document.addEventListener("click", function (e) {
+            var anterior = e.target.closest("[data-mat-anterior]");
+            var proxima = e.target.closest("[data-mat-proxima]");
+            if (!anterior && !proxima) return;
+
+            var raiz = raizDe(e.target);
+            atualizar(raiz, paginaAtual(raiz) + (proxima ? 1 : -1));
+        });
+    }
+
+    // Inicializa a tela que acabou de ser carregada
+    document.querySelectorAll("[data-lem-materiais]").forEach(function (raiz) {
+        atualizar(raiz, 1);
+    });
+})();
+</script>

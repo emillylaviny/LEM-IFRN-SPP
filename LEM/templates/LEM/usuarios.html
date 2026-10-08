@@ -1,0 +1,396 @@
+{% comment %}
+  Parcial da tela "Usuários" do dashboard.
+  Carregado via fetch() dentro de #conteudoPrincipal (veja a view parcial_usuarios).
+  A busca, o filtro e a paginação estão no <script> no final deste arquivo.
+  Atenção: innerHTML não executa <script>. Carregue este parcial com a função
+  injetarHTML() do dashboard.html, que recria os scripts depois da injeção.
+{% endcomment %}
+<style>
+  .lem-usr {
+    --lu-ink: #14261e;
+    --lu-muted: #5b6b64;
+    --lu-primary: #0b6b4d;
+    --lu-primary-dark: #085a40;
+    --lu-border: #dfe7e3;
+    --lu-row-border: #e8eeeb;
+    --lu-head-bg: #eef4f1;
+    --lu-icon-bg: #e4efe9;
+    --lu-danger: #c8293c;
+    font-family: inherit;
+    color: var(--lu-ink);
+  }
+
+  /* Cabeçalho */
+  .lem-usr-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .lem-usr-title { margin: 0; font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+  .lem-usr-subtitle { margin: 4px 0 0; font-size: .875rem; color: var(--lu-muted); }
+  .lem-usr-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .lem-usr-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 10px;
+    border: 1px solid var(--lu-border);
+    background: #fff;
+    color: var(--lu-ink);
+    font-size: .875rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(20, 38, 30, .06);
+    transition: background-color .15s, border-color .15s;
+  }
+  .lem-usr-btn:hover { background: #f4f8f6; border-color: #c9d6d0; }
+  .lem-usr-btn--primary { background: var(--lu-primary); border-color: var(--lu-primary); color: #fff; }
+  .lem-usr-btn--primary:hover { background: var(--lu-primary-dark); border-color: var(--lu-primary-dark); }
+
+  /* Cartão principal */
+  .lem-usr-card {
+    background: #fff;
+    border: 1px solid var(--lu-border);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(20, 38, 30, .05);
+  }
+
+  /* Barra de busca e filtros */
+  .lem-usr-toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .lem-usr-search { position: relative; flex: 1 1 280px; }
+  .lem-usr-search i {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--lu-muted); pointer-events: none;
+  }
+  .lem-usr-input,
+  .lem-usr-select {
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--lu-border);
+    border-radius: 10px;
+    background-color: #fff;
+    color: var(--lu-ink);
+    font: inherit;
+    font-size: .875rem;
+  }
+  .lem-usr-input { padding: 0 12px 0 38px; }
+  .lem-usr-input::placeholder { color: var(--lu-muted); }
+  .lem-usr-select {
+    appearance: none;
+    padding: 0 34px 0 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16' fill='none' stroke='%235b6b64' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+  .lem-usr-filter { flex: 0 1 220px; min-width: 170px; }
+  .lem-usr-input:focus-visible,
+  .lem-usr-select:focus-visible,
+  .lem-usr-btn:focus-visible,
+  .lem-usr-icon-btn:focus-visible,
+  .lem-usr-page-btn:focus-visible {
+    outline: 2px solid var(--lu-primary);
+    outline-offset: 2px;
+  }
+
+  /* Tabela */
+  .lem-usr-table-wrap {
+    border: 1px solid var(--lu-border);
+    border-radius: 12px;
+    overflow-x: auto;
+  }
+  .lem-usr-table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: .8125rem; }
+  .lem-usr-table th {
+    background: var(--lu-head-bg);
+    padding: 12px;
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--lu-muted);
+    white-space: nowrap;
+  }
+  .lem-usr-table td { padding: 14px 12px; vertical-align: middle; border-top: 1px solid var(--lu-row-border); }
+  .lem-usr-table th:last-child,
+  .lem-usr-table td:last-child { text-align: right; white-space: nowrap; }
+
+
+  .lem-usr-icon-btn {
+    display: inline-grid; place-items: center;
+    width: 32px; height: 32px;
+    border: 0; border-radius: 8px;
+    background: transparent;
+    color: var(--lu-ink);
+    cursor: pointer;
+  }
+  .lem-usr-icon-btn:hover { background: var(--lu-head-bg); }
+  .lem-usr-icon-btn--danger { color: var(--lu-danger); }
+  .lem-usr-icon-btn--danger:hover { background: #fbe9ec; }
+
+  .lem-usr-empty td { padding: 32px 12px; text-align: center !important; color: var(--lu-muted); }
+
+  /* Rodapé / paginação */
+  .lem-usr-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--lu-row-border);
+    font-size: .75rem; color: var(--lu-muted);
+  }
+  .lem-usr-pager { display: flex; gap: 8px; }
+  .lem-usr-page-btn {
+    height: 34px; padding: 0 14px;
+    border: 1px solid var(--lu-border); border-radius: 8px;
+    background: #fff; color: var(--lu-ink);
+    font-size: .8125rem; font-weight: 500; cursor: pointer;
+  }
+  .lem-usr-page-btn:hover:not(:disabled) { background: #f4f8f6; }
+  .lem-usr-page-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lem-usr-btn { transition: none; }
+  }
+
+  /* Usuário: avatar + nome + vínculo */
+  .lem-usr-user { display: flex; align-items: center; gap: 12px; }
+  .lem-usr-avatar {
+    flex: none;
+    display: grid; place-items: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #dff0e8;
+    color: #1c6f55;
+    font-size: .6875rem;
+    font-weight: 600;
+  }
+  .lem-usr-user-name { font-weight: 600; }
+  .lem-usr-sub { display: block; font-size: .75rem; color: var(--lu-muted); }
+  .lem-usr-nowrap { white-space: nowrap; }
+
+  /* Situação */
+  .lem-usr-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    border: 1px solid;
+    font-size: .75rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .lem-usr-badge--ativo { background: #e6f5ec; color: #1c8a5a; border-color: #b9e0c9; }
+  .lem-usr-badge--inativo { background: #e9f0ed; color: #4b5d55; border-color: #cfdad5; }
+</style>
+
+<div class="app-content lem-usr" data-lem-usuarios data-total="{{ usuarios|length }}">
+  <div class="container-fluid">
+
+    <div class="lem-usr-header">
+      <div>
+        <h1 class="lem-usr-title">Usuários</h1>
+        <p class="lem-usr-subtitle">Consulte, cadastre e mantenha os perfis dos usuários da plataforma.</p>
+      </div>
+      <div class="lem-usr-actions">
+        <button type="button" class="lem-usr-btn lem-usr-btn--primary" data-acao="novo-usuario">
+          <i class="bi bi-person-plus" aria-hidden="true"></i> Novo usuário
+        </button>
+      </div>
+    </div>
+
+    <div class="lem-usr-card">
+
+      <div class="lem-usr-toolbar">
+        <div class="lem-usr-search">
+          <i class="bi bi-search" aria-hidden="true"></i>
+          <input type="search" class="lem-usr-input" data-usr-busca
+                 placeholder="Pesquisar por nome, CPF, e-mail ou escola"
+                 aria-label="Pesquisar usuários">
+        </div>
+
+        <div class="lem-usr-filter">
+          <select class="lem-usr-select" data-usr-situacao aria-label="Filtrar por situação">
+            <option value="">Todas as situações</option>
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="lem-usr-table-wrap">
+        <table class="lem-usr-table">
+          <thead>
+            <tr>
+              <th scope="col">Usuário</th>
+              <th scope="col">CPF</th>
+              <th scope="col">E-mail</th>
+              <th scope="col">Escola</th>
+              <th scope="col">Cidade</th>
+              <th scope="col">Situação</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for u in usuarios %}
+              <tr data-usr-linha
+                  data-busca="{{ u.nome_completo }} {{ u.cpf }} {{ u.email }} {{ u.escola }}"
+                  data-cpf="{{ u.cpf }}"
+                  data-situacao="{% if u.ativo %}ativo{% else %}inativo{% endif %}">
+                <td>
+                  <div class="lem-usr-user">
+                    <span class="lem-usr-avatar" aria-hidden="true">{{ u.iniciais }}</span>
+                    <div>
+                      <span class="lem-usr-user-name">{{ u.nome_completo }}</span>
+                      <span class="lem-usr-sub">{% if u.is_admin %}Administrador{% else %}Professor{% endif %}</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="lem-usr-nowrap">{{ u.cpf }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.escola|default:"—" }}</td>
+                <td>{{ u.cidade_escola|default:"—" }}</td>
+                <td>
+                  {% if u.ativo %}
+                    <span class="lem-usr-badge lem-usr-badge--ativo">Ativo</span>
+                  {% else %}
+                    <span class="lem-usr-badge lem-usr-badge--inativo">Inativo</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <button type="button" class="lem-usr-icon-btn" data-acao="ver" data-id="{{ u.id }}"
+                          aria-label="Ver {{ u.nome_completo }}" title="Ver">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="lem-usr-icon-btn" data-acao="editar" data-id="{{ u.id }}"
+                          aria-label="Editar {{ u.nome_completo }}" title="Editar">
+                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                  </button>
+                  <button type="button" class="lem-usr-icon-btn lem-usr-icon-btn--danger" data-acao="remover" data-id="{{ u.id }}"
+                          aria-label="Remover {{ u.nome_completo }}" title="Remover">
+                    <i class="bi bi-trash" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            {% endfor %}
+            <tr class="lem-usr-empty" data-usr-vazio hidden>
+              <td colspan="7"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="lem-usr-footer">
+        <span data-usr-contagem>{{ usuarios|length }} registro(s) — página 1 de 1</span>
+        <div class="lem-usr-pager">
+          <button type="button" class="lem-usr-page-btn" data-usr-anterior disabled>Anterior</button>
+          <button type="button" class="lem-usr-page-btn" data-usr-proxima disabled>Próxima</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+    "use strict";
+
+    var POR_PAGINA = 10;
+
+    function normalizar(texto) {
+        return (texto || "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    }
+
+    function soDigitos(texto) {
+        return (texto || "").replace(/\D/g, "");
+    }
+
+    function raizDe(elemento) {
+        return elemento.closest("[data-lem-usuarios]");
+    }
+
+    function paginaAtual(raiz) {
+        return parseInt(raiz.dataset.pagina || "1", 10);
+    }
+
+    function atualizar(raiz, pagina) {
+        var busca = normalizar(raiz.querySelector("[data-usr-busca]").value.trim());
+        var buscaDigitos = soDigitos(busca);
+        var situacao = raiz.querySelector("[data-usr-situacao]").value;
+
+        var linhas = Array.prototype.slice.call(raiz.querySelectorAll("tr[data-usr-linha]"));
+
+        var filtradas = linhas.filter(function (tr) {
+            if (situacao && tr.dataset.situacao !== situacao) return false;
+            if (!busca) return true;
+            if (normalizar(tr.dataset.busca).indexOf(busca) !== -1) return true;
+            // permite buscar o CPF só com números, sem pontos e traço
+            return buscaDigitos.length > 0 && soDigitos(tr.dataset.cpf).indexOf(buscaDigitos) !== -1;
+        });
+
+        var totalPaginas = Math.max(1, Math.ceil(filtradas.length / POR_PAGINA));
+        pagina = Math.min(Math.max(1, pagina), totalPaginas);
+        raiz.dataset.pagina = pagina;
+
+        var inicio = (pagina - 1) * POR_PAGINA;
+        var visiveis = filtradas.slice(inicio, inicio + POR_PAGINA);
+
+        linhas.forEach(function (tr) {
+            tr.hidden = visiveis.indexOf(tr) === -1;
+        });
+
+        var vazio = raiz.querySelector("[data-usr-vazio]");
+        var semResultados = filtradas.length === 0;
+        vazio.hidden = !semResultados;
+        if (semResultados) {
+            vazio.querySelector("td").textContent =
+                raiz.dataset.total === "0"
+                    ? "Nenhum usuário cadastrado. Clique em Novo usuário para começar."
+                    : "Nenhum usuário encontrado. Ajuste a busca ou o filtro.";
+        }
+
+        raiz.querySelector("[data-usr-contagem]").textContent =
+            filtradas.length + " registro(s) — página " + pagina + " de " + totalPaginas;
+        raiz.querySelector("[data-usr-anterior]").disabled = pagina <= 1;
+        raiz.querySelector("[data-usr-proxima]").disabled = pagina >= totalPaginas;
+    }
+
+    // Os listeners ficam no document e são registrados uma única vez,
+    // mesmo que o usuário abra a aba Usuários várias vezes.
+    if (!window.__lemUsuariosListeners) {
+        window.__lemUsuariosListeners = true;
+
+        document.addEventListener("input", function (e) {
+            if (!e.target.matches("[data-usr-busca]")) return;
+            atualizar(raizDe(e.target), 1);
+        });
+
+        document.addEventListener("change", function (e) {
+            if (!e.target.matches("[data-usr-situacao]")) return;
+            atualizar(raizDe(e.target), 1);
+        });
+
+        document.addEventListener("click", function (e) {
+            var anterior = e.target.closest("[data-usr-anterior]");
+            var proxima = e.target.closest("[data-usr-proxima]");
+            if (!anterior && !proxima) return;
+
+            var raiz = raizDe(e.target);
+            atualizar(raiz, paginaAtual(raiz) + (proxima ? 1 : -1));
+        });
+    }
+
+    // Inicializa a tela que acabou de ser carregada
+    document.querySelectorAll("[data-lem-usuarios]").forEach(function (raiz) {
+        atualizar(raiz, 1);
+    });
+})();
+</script>
