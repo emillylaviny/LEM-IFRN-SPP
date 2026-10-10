@@ -1869,25 +1869,24 @@ function carregarPagina(pagina) {
             break;
 
         case "etiquetas":
+          fetch("/etiquetas/")
+        .then(response => {
+            if (!response.ok) throw new Error("Erro ao carregar etiquetas.");
+            return response.text();
+        })
+        .then(html => {
+            conteudoPrincipal.innerHTML = html;
 
-            conteudoPrincipal.innerHTML = `
-
-                <div class="app-content">
-
-                    <div class="container-fluid">
-
-                        <h1>Etiquetas</h1>
-
-                        <p>
-                            Conteúdo da página de Etiquetas.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
+            // innerHTML não executa <script>, então recriamos cada um
+            conteudoPrincipal.querySelectorAll("script").forEach(scriptAntigo => {
+                const scriptNovo = document.createElement("script");
+                Array.from(scriptAntigo.attributes).forEach(a => scriptNovo.setAttribute(a.name, a.value));
+                scriptNovo.textContent = scriptAntigo.textContent;
+                scriptAntigo.replaceWith(scriptNovo);
+            });
+        })
+        .catch(error => console.error("Erro ao carregar etiquetas:", error));
+    break;
             break;
 
         case "localizacao":

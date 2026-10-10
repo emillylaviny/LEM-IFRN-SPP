@@ -57,6 +57,9 @@ def materiais(request):
 
     return render(request, "LEM/materiais.html", context)
 
+def etiquetas(request):
+    return render(request, "LEM/etiquetas.html")
+
 @login_required
 # @permission_required("LEM.add_cadastromateriais")
 def novo_material(request):

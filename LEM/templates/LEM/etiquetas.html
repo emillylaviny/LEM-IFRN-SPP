@@ -1,0 +1,519 @@
+{% block content %}
+{% comment %}
+  Parcial da tela "Geração de Etiquetas" do dashboard.
+  Carregado via fetch() dentro de #conteudoPrincipal (veja a view etiquetas).
+  A seleção, a busca, o filtro e a geração das etiquetas estão no <script> no final deste arquivo.
+  Atenção: innerHTML não executa <script>. Carregue este parcial com a função
+  injetarHTML() do dashboard.html, que recria os scripts depois da injeção.
+
+  Os registros abaixo são dados simulados. Para integrar com o banco, troque as linhas
+  fixas do <tbody> por:
+    {% for m in materiais %} ... {{ m.nome }} / {{ m.conceito_matematico }} / {{ m.codigo }} / {{ m.localizacao.nome }} ... {% endfor %}
+{% endcomment %}
+<style>
+  .lem-etq {
+    --le-ink: #14261e;
+    --le-muted: #5b6b64;
+    --le-primary: #0b6b4d;
+    --le-primary-dark: #085a40;
+    --le-border: #dfe7e3;
+    --le-row-border: #e8eeeb;
+    --le-head-bg: #eef4f1;
+    --le-danger: #c8293c;
+    font-family: inherit;
+    color: var(--le-ink);
+  }
+
+  /* Cabeçalho */
+  .lem-etq-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .lem-etq-title { margin: 0; font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+  .lem-etq-subtitle { margin: 4px 0 0; font-size: .875rem; color: var(--le-muted); }
+  .lem-etq-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .lem-etq-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 10px;
+    border: 1px solid var(--le-border);
+    background: #fff;
+    color: var(--le-ink);
+    font-size: .875rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(20, 38, 30, .06);
+    transition: background-color .15s, border-color .15s;
+  }
+  .lem-etq-btn:hover:not(:disabled) { background: #f4f8f6; border-color: #c9d6d0; }
+  .lem-etq-btn--primary { background: var(--le-primary); border-color: var(--le-primary); color: #fff; }
+  .lem-etq-btn--primary:hover:not(:disabled) { background: var(--le-primary-dark); border-color: var(--le-primary-dark); }
+  .lem-etq-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  /* Aviso de dados simulados */
+  .lem-etq-notice {
+    margin-bottom: 20px;
+    padding: 8px 12px;
+    font-size: .75rem;
+    color: var(--le-muted);
+    background: #f0f5f2;
+    border: 1px dashed #cdd9d3;
+    border-radius: 10px;
+  }
+  .lem-etq-notice strong { color: var(--le-ink); font-weight: 600; }
+
+  /* Cartões */
+  .lem-etq-card {
+    background: #fff;
+    border: 1px solid var(--le-border);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(20, 38, 30, .05);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .lem-etq-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--le-border);
+  }
+  .lem-etq-card-title { margin: 0; font-size: 1rem; font-weight: 700; }
+  .lem-etq-card-sub { margin: 2px 0 0; font-size: .75rem; color: var(--le-muted); }
+  .lem-etq-card-body { padding: 20px; }
+
+  .lem-etq-clear {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 0; background: none; padding: 6px 4px;
+    font: inherit; font-size: .75rem; color: var(--le-muted);
+    cursor: pointer;
+  }
+  .lem-etq-clear:hover:not(:disabled) { color: var(--le-ink); }
+  .lem-etq-clear:disabled { opacity: .6; cursor: default; }
+
+  /* Barra de busca e filtro */
+  .lem-etq-toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .lem-etq-search { position: relative; flex: 1 1 280px; }
+  .lem-etq-search i {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--le-muted); pointer-events: none;
+  }
+  .lem-etq-input,
+  .lem-etq-select {
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--le-border);
+    border-radius: 10px;
+    background-color: #fff;
+    color: var(--le-ink);
+    font: inherit;
+    font-size: .875rem;
+  }
+  .lem-etq-input { padding: 0 12px 0 38px; }
+  .lem-etq-input::placeholder { color: var(--le-muted); }
+  .lem-etq-select {
+    appearance: none;
+    padding: 0 34px 0 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16' fill='none' stroke='%235b6b64' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+  .lem-etq-filter { flex: 0 1 220px; min-width: 180px; }
+  .lem-etq-input:focus-visible,
+  .lem-etq-select:focus-visible,
+  .lem-etq-btn:focus-visible,
+  .lem-etq-clear:focus-visible,
+  .lem-etq-check:focus-visible {
+    outline: 2px solid var(--le-primary);
+    outline-offset: 2px;
+  }
+
+  /* Tabela */
+  .lem-etq-table-wrap {
+    border: 1px solid var(--le-border);
+    border-radius: 12px;
+    overflow-x: auto;
+  }
+  .lem-etq-table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: .8125rem; }
+  .lem-etq-table th {
+    background: var(--le-head-bg);
+    padding: 12px;
+    font-size: .6875rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--le-muted);
+    white-space: nowrap;
+  }
+  .lem-etq-table td { padding: 14px 12px; vertical-align: middle; border-top: 1px solid var(--le-row-border); }
+  .lem-etq-table .lem-etq-col-check { width: 48px; padding-right: 0; }
+  .lem-etq-table tbody tr[data-etq-linha] { cursor: pointer; }
+  .lem-etq-table tbody tr[data-etq-linha]:hover { background: #fafcfb; }
+  .lem-etq-table tbody tr[data-etq-linha].is-selected { background: #f1f8f5; }
+
+  .lem-etq-name { font-size: .875rem; }
+  .lem-etq-sub { display: block; font-size: .75rem; color: var(--le-muted); margin-top: 2px; }
+  .lem-etq-code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .75rem; color: #3a4a43; white-space: nowrap; }
+  .lem-etq-empty td { padding: 32px 12px; text-align: center !important; color: var(--le-muted); }
+
+  /* Seleção circular */
+  .lem-etq-check {
+    appearance: none;
+    display: inline-grid; place-items: center;
+    width: 18px; height: 18px; margin: 0;
+    border: 1.5px solid var(--le-primary);
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  .lem-etq-check:checked {
+    background: var(--le-primary)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 8.5l2.7 2.7L12 5.5'/%3E%3C/svg%3E")
+      center / 12px no-repeat;
+  }
+  .lem-etq-check:indeterminate {
+    background: var(--le-primary)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M4.5 8h7'/%3E%3C/svg%3E")
+      center / 12px no-repeat;
+  }
+
+  /* Pré-visualização */
+  .lem-etq-placeholder {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; min-height: 156px;
+    border: 1px dashed #cdd9d3;
+    border-radius: 12px;
+    font-size: .875rem;
+    text-align: center;
+  }
+  .lem-etq-placeholder i { font-size: 1.75rem; color: #4b5d55; line-height: 1; }
+  .lem-etq-placeholder p { margin: 0; }
+
+  .lem-etq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .lem-etq-label {
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--le-ink);
+    border-radius: 10px;
+    background: #fff;
+    break-inside: avoid;
+  }
+  .lem-etq-label-brand {
+    font-size: .625rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--le-primary);
+  }
+  .lem-etq-label-name { font-size: .9375rem; font-weight: 700; line-height: 1.25; }
+  .lem-etq-label-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .875rem; font-weight: 700; letter-spacing: .04em;
+    padding: 4px 8px; margin-top: 4px;
+    background: var(--le-head-bg); border-radius: 6px; align-self: flex-start;
+  }
+  .lem-etq-label-loc { font-size: .75rem; color: var(--le-muted); }
+
+  @media print {
+    body * { visibility: hidden; }
+    .lem-etq-print, .lem-etq-print * { visibility: visible; }
+    .lem-etq-print { position: absolute; inset: 0 auto auto 0; width: 100%; }
+    .lem-etq-print .lem-etq-card-head { display: none; }
+    .lem-etq-print .lem-etq-card, .lem-etq-print .lem-etq-card-body { border: 0; box-shadow: none; padding: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lem-etq-btn { transition: none; }
+  }
+</style>
+
+<div class="app-content lem-etq" data-lem-etiquetas>
+  <div class="container-fluid">
+
+    <div class="lem-etq-header">
+      <div>
+        <h1 class="lem-etq-title">Geração de Etiquetas</h1>
+        <p class="lem-etq-subtitle">Identificação dos materiais do Laboratório de Ensino de Matemática.</p>
+      </div>
+      <div class="lem-etq-actions">
+        <button type="button" class="lem-etq-btn lem-etq-btn--primary" data-etq-gerar disabled>
+          <i class="bi bi-tags" aria-hidden="true"></i> Gerar etiqueta
+        </button>
+        <button type="button" class="lem-etq-btn" data-etq-imprimir disabled>
+          <i class="bi bi-printer" aria-hidden="true"></i> Imprimir
+        </button>
+      </div>
+    </div>
+
+    <div class="lem-etq-notice">
+      Os registros exibidos são <strong>dados simulados</strong> para demonstração da interface.
+      A estrutura está preparada para integração com Django (MTV) e banco de dados MySQL.
+    </div>
+
+    <!-- Materiais do acervo -->
+    <section class="lem-etq-card">
+      <div class="lem-etq-card-head">
+        <div>
+          <h2 class="lem-etq-card-title">Materiais do acervo</h2>
+          <p class="lem-etq-card-sub" data-etq-contagem>0 material(is) selecionado(s)</p>
+        </div>
+        <button type="button" class="lem-etq-clear" data-etq-limpar disabled>
+          <i class="bi bi-x-lg" aria-hidden="true"></i> Limpar seleção
+        </button>
+      </div>
+
+      <div class="lem-etq-card-body">
+        <div class="lem-etq-toolbar">
+          <div class="lem-etq-search">
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <input type="search" class="lem-etq-input" data-etq-busca
+                   placeholder="Pesquisar por nome, código ou conceito"
+                   aria-label="Pesquisar materiais">
+          </div>
+          <div class="lem-etq-filter">
+            <select class="lem-etq-select" data-etq-local aria-label="Filtrar por localização">
+              <option value="">Todas as localizações</option>
+              <option value="Estante A">Estante A</option>
+              <option value="Armário B">Armário B</option>
+              <option value="Prateleira C">Prateleira C</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="lem-etq-table-wrap">
+          <table class="lem-etq-table">
+            <thead>
+              <tr>
+                <th scope="col" class="lem-etq-col-check">
+                  <input type="checkbox" class="lem-etq-check" data-etq-todos aria-label="Selecionar todos os materiais">
+                </th>
+                <th scope="col">Material</th>
+                <th scope="col">Código automático</th>
+                <th scope="col">Localização</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-etq-linha data-busca="Sólidos geométricos (kit demonstrativo) LEM-GEO-0001 Geometria espacial"
+                  data-nome="Sólidos geométricos (kit demonstrativo)" data-codigo="LEM-GEO-0001" data-local="Estante A">
+                <td class="lem-etq-col-check"><input type="checkbox" class="lem-etq-check" data-etq-item aria-label="Selecionar Sólidos geométricos"></td>
+                <td><span class="lem-etq-name">Sólidos geométricos (kit demonstrativo)</span><span class="lem-etq-sub">Geometria espacial</span></td>
+                <td><span class="lem-etq-code">LEM-GEO-0001</span></td>
+                <td>Estante A</td>
+              </tr>
+              <tr data-etq-linha data-busca="Material dourado (kit demonstrativo) LEM-ALG-0002 Sistema de numeração decimal"
+                  data-nome="Material dourado (kit demonstrativo)" data-codigo="LEM-ALG-0002" data-local="Armário B">
+                <td class="lem-etq-col-check"><input type="checkbox" class="lem-etq-check" data-etq-item aria-label="Selecionar Material dourado"></td>
+                <td><span class="lem-etq-name">Material dourado (kit demonstrativo)</span><span class="lem-etq-sub">Sistema de numeração decimal</span></td>
+                <td><span class="lem-etq-code">LEM-ALG-0002</span></td>
+                <td>Armário B</td>
+              </tr>
+              <tr data-etq-linha data-busca="Discos de frações (kit demonstrativo) LEM-FRA-0003 Números racionais"
+                  data-nome="Discos de frações (kit demonstrativo)" data-codigo="LEM-FRA-0003" data-local="Prateleira C">
+                <td class="lem-etq-col-check"><input type="checkbox" class="lem-etq-check" data-etq-item aria-label="Selecionar Discos de frações"></td>
+                <td><span class="lem-etq-name">Discos de frações (kit demonstrativo)</span><span class="lem-etq-sub">Números racionais</span></td>
+                <td><span class="lem-etq-code">LEM-FRA-0003</span></td>
+                <td>Prateleira C</td>
+              </tr>
+              <tr data-etq-linha data-busca="Jogo de trilha matemática (demonstrativo) LEM-JOG-0004 Operações fundamentais"
+                  data-nome="Jogo de trilha matemática (demonstrativo)" data-codigo="LEM-JOG-0004" data-local="Armário B">
+                <td class="lem-etq-col-check"><input type="checkbox" class="lem-etq-check" data-etq-item aria-label="Selecionar Jogo de trilha matemática"></td>
+                <td><span class="lem-etq-name">Jogo de trilha matemática (demonstrativo)</span><span class="lem-etq-sub">Operações fundamentais</span></td>
+                <td><span class="lem-etq-code">LEM-JOG-0004</span></td>
+                <td>Armário B</td>
+              </tr>
+              <tr class="lem-etq-empty" data-etq-vazio hidden>
+                <td colspan="4">Nenhum material encontrado. Ajuste a busca ou o filtro.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pré-visualização -->
+    <section class="lem-etq-card lem-etq-print">
+      <div class="lem-etq-card-head">
+        <div>
+          <h2 class="lem-etq-card-title">Pré-visualização das etiquetas</h2>
+          <p class="lem-etq-card-sub" data-etq-previa-contagem>Nenhuma etiqueta gerada</p>
+        </div>
+      </div>
+      <div class="lem-etq-card-body">
+        <div class="lem-etq-placeholder" data-etq-placeholder>
+          <i class="bi bi-inbox" aria-hidden="true"></i>
+          <p>Nenhuma etiqueta gerada.</p>
+        </div>
+        <div class="lem-etq-grid" data-etq-previa hidden></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function () {
+    "use strict";
+
+    function normalizar(texto) {
+        return (texto || "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    }
+
+    function raizDe(elemento) {
+        return elemento.closest("[data-lem-etiquetas]");
+    }
+
+    function linhasDe(raiz) {
+        return Array.prototype.slice.call(raiz.querySelectorAll("tr[data-etq-linha]"));
+    }
+
+    function selecionadas(raiz) {
+        return linhasDe(raiz).filter(function (tr) {
+            return tr.querySelector("[data-etq-item]").checked;
+        });
+    }
+
+    function criarEtiqueta(tr) {
+        var div = document.createElement("div");
+        div.className = "lem-etq-label";
+
+        var itens = [
+            ["lem-etq-label-brand", "LEM · IFRN-SPP"],
+            ["lem-etq-label-name", tr.dataset.nome],
+            ["lem-etq-label-code", tr.dataset.codigo],
+            ["lem-etq-label-loc", tr.dataset.local]
+        ];
+        itens.forEach(function (par) {
+            var span = document.createElement("span");
+            span.className = par[0];
+            span.textContent = par[1];
+            div.appendChild(span);
+        });
+        return div;
+    }
+
+    // Atualiza contador, botões e estado do "selecionar todos"
+    function atualizarSelecao(raiz) {
+        var total = selecionadas(raiz).length;
+        var visiveis = linhasDe(raiz).filter(function (tr) { return !tr.hidden; });
+        var marcadasVisiveis = visiveis.filter(function (tr) {
+            return tr.querySelector("[data-etq-item]").checked;
+        });
+
+        linhasDe(raiz).forEach(function (tr) {
+            tr.classList.toggle("is-selected", tr.querySelector("[data-etq-item]").checked);
+        });
+
+        raiz.querySelector("[data-etq-contagem]").textContent =
+            total + " material(is) selecionado(s)";
+        raiz.querySelector("[data-etq-gerar]").disabled = total === 0;
+        raiz.querySelector("[data-etq-limpar]").disabled = total === 0;
+
+        var todos = raiz.querySelector("[data-etq-todos]");
+        todos.checked = visiveis.length > 0 && marcadasVisiveis.length === visiveis.length;
+        todos.indeterminate = marcadasVisiveis.length > 0 && marcadasVisiveis.length < visiveis.length;
+    }
+
+    function filtrar(raiz) {
+        var busca = normalizar(raiz.querySelector("[data-etq-busca]").value.trim());
+        var local = raiz.querySelector("[data-etq-local]").value;
+        var algumaVisivel = false;
+
+        linhasDe(raiz).forEach(function (tr) {
+            var ok = true;
+            if (busca && normalizar(tr.dataset.busca).indexOf(busca) === -1) ok = false;
+            if (local && tr.dataset.local !== local) ok = false;
+            tr.hidden = !ok;
+            if (ok) algumaVisivel = true;
+        });
+
+        raiz.querySelector("[data-etq-vazio]").hidden = algumaVisivel;
+        atualizarSelecao(raiz);
+    }
+
+    function gerar(raiz) {
+        var linhas = selecionadas(raiz);
+        var previa = raiz.querySelector("[data-etq-previa]");
+        previa.textContent = "";
+        linhas.forEach(function (tr) { previa.appendChild(criarEtiqueta(tr)); });
+
+        var tem = linhas.length > 0;
+        previa.hidden = !tem;
+        raiz.querySelector("[data-etq-placeholder]").hidden = tem;
+        raiz.querySelector("[data-etq-previa-contagem]").textContent =
+            tem ? linhas.length + " etiqueta(s) gerada(s)" : "Nenhuma etiqueta gerada";
+        raiz.querySelector("[data-etq-imprimir]").disabled = !tem;
+    }
+
+    // Os listeners ficam no document e são registrados uma única vez,
+    // mesmo que o usuário abra a aba Etiquetas várias vezes.
+    if (!window.__lemEtiquetasListeners) {
+        window.__lemEtiquetasListeners = true;
+
+        document.addEventListener("input", function (e) {
+            if (!e.target.matches("[data-etq-busca]")) return;
+            filtrar(raizDe(e.target));
+        });
+
+        document.addEventListener("change", function (e) {
+            var raiz = e.target.closest("[data-lem-etiquetas]");
+            if (!raiz) return;
+
+            if (e.target.matches("[data-etq-local]")) {
+                filtrar(raiz);
+            } else if (e.target.matches("[data-etq-todos]")) {
+                linhasDe(raiz).forEach(function (tr) {
+                    if (!tr.hidden) tr.querySelector("[data-etq-item]").checked = e.target.checked;
+                });
+                atualizarSelecao(raiz);
+            } else if (e.target.matches("[data-etq-item]")) {
+                atualizarSelecao(raiz);
+            }
+        });
+
+        document.addEventListener("click", function (e) {
+            var raiz = e.target.closest("[data-lem-etiquetas]");
+            if (!raiz) return;
+
+            if (e.target.closest("[data-etq-gerar]")) {
+                gerar(raiz);
+            } else if (e.target.closest("[data-etq-imprimir]")) {
+                window.print();
+            } else if (e.target.closest("[data-etq-limpar]")) {
+                linhasDe(raiz).forEach(function (tr) {
+                    tr.querySelector("[data-etq-item]").checked = false;
+                });
+                atualizarSelecao(raiz);
+            } else {
+                // Clicar na linha alterna a seleção (exceto no próprio checkbox)
+                var linha = e.target.closest("tr[data-etq-linha]");
+                if (linha && !e.target.matches("[data-etq-item]")) {
+                    var caixa = linha.querySelector("[data-etq-item]");
+                    caixa.checked = !caixa.checked;
+                    atualizarSelecao(raiz);
+                }
+            }
+        });
+    }
+
+    // Inicializa a tela que acabou de ser carregada
+    document.querySelectorAll("[data-lem-etiquetas]").forEach(function (raiz) {
+        filtrar(raiz);
+    });
+})();
+</script>
+{% endblock %}

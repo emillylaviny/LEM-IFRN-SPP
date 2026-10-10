@@ -67,4 +67,8 @@ urlpatterns = [
         views.usuarios, 
         name='usuarios'
     ),
+
+    path('etiquetas/', 
+         views.etiquetas, 
+         name='etiquetas'),
 ]
