@@ -1,3 +1,4 @@
+{% block content %}
 {% comment %}
   Parcial da tela "Materiais" do dashboard.
   Carregado via fetch() dentro de #conteudoPrincipal (veja a view parcial_materiais).
@@ -186,9 +187,9 @@
         <button type="button" class="lem-mat-btn" data-acao="gerar-etiquetas">
           <i class="bi bi-tag" aria-hidden="true"></i> Gerar etiquetas
         </button>
-        <button type="button" class="lem-mat-btn lem-mat-btn--primary" data-acao="novo-material">
-          <i class="bi bi-plus-lg" aria-hidden="true"></i> Novo material
-        </button>
+        <a href="{% url 'novo_material' %}" class="lem-mat-btn lem-mat-btn--primary">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i> Novo material
+        </a>
       </div>
     </div>
 
@@ -259,14 +260,19 @@
                   <span class="lem-mat-sub">{{ m.emprestados }} emprestado(s)</span>
                 </td>
                 <td>
-                  <button type="button" class="lem-mat-icon-btn" data-acao="editar" data-id="{{ m.id }}"
-                          aria-label="Editar {{ m.nome }}" title="Editar">
+                  <a href="{% url 'editar_material' m.id %}"
+                    class="lem-mat-icon-btn"
+                    aria-label="Editar {{ m.nome }}"
+                    title="Editar">
                     <i class="bi bi-pencil" aria-hidden="true"></i>
-                  </button>
-                  <button type="button" class="lem-mat-icon-btn lem-mat-icon-btn--danger" data-acao="remover" data-id="{{ m.id }}"
-                          aria-label="Remover {{ m.nome }}" title="Remover">
+                  </a>
+                  <a href="{% url 'remover_material' m.id %}"
+                    class="lem-mat-icon-btn lem-mat-icon-btn--danger"
+                    aria-label="Remover {{ m.nome }}"
+                    title="Remover"
+                    onclick="return confirm('Tem certeza que deseja excluir este material?');">
                     <i class="bi bi-trash" aria-hidden="true"></i>
-                  </button>
+                  </a>
                 </td>
               </tr>
             {% endfor %}
@@ -382,3 +388,4 @@
     });
 })();
 </script>
+{% endblock %}

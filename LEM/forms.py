@@ -55,3 +55,49 @@ class CardMaterialForm(forms.ModelForm):
                 css_class='btn btn-primary'
             )
         )
+
+class MaterialForm(forms.ModelForm):
+    class Meta:
+        model = Materiais
+        fields = [
+            'nome',
+            'codigo',
+            'descricao',
+            'orientacao_uso',
+            'conceito_matematico',
+            'nivel',
+            'series',
+            'quantidade',
+            'quantidade_disponivel',
+            'imagem',
+            'localizacao',
+            'ativo',
+        ]
+
+        widgets = {
+            'nome': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Nome do material',
+            }),
+            'codigo': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Código do material',
+            }),
+            'descricao': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+            }),
+            'orientacao_uso': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+            }),
+            'conceito_matematico': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),
+            'nivel': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),
+            'series': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),
+        }

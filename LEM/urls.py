@@ -43,6 +43,25 @@ urlpatterns = [
         name='materiais'
     ),
     
+    
+    path(
+        'materiais/novo/',
+        views.novo_material,
+        name='novo_material'
+    ),
+
+    path(
+        'materiais/<int:material_id>/editar/',
+        views.editar_material,
+        name='editar_material'
+    ),
+
+    path(
+        'materiais/<int:material_id>/remover/',
+        views.remover_material,
+        name='remover_material'
+    ),
+    
     path(
         'usuarios/', 
         views.usuarios, 

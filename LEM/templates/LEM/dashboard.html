@@ -1996,16 +1996,32 @@ function carregarPagina(pagina) {
             break;
 
         case "materiais":
-
             fetch("/materiais/")
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro ao carregar materiais.");
+                    }
+                    return response.text();
+                })
                 .then(html => {
                     conteudoPrincipal.innerHTML = html;
+
+                    const scripts = conteudoPrincipal.querySelectorAll("script");
+
+                    scripts.forEach(scriptAntigo => {
+                        const scriptNovo = document.createElement("script");
+
+                        Array.from(scriptAntigo.attributes).forEach(atributo => {
+                            scriptNovo.setAttribute(atributo.name, atributo.value);
+                        });
+
+                        scriptNovo.textContent = scriptAntigo.textContent;
+                        scriptAntigo.replaceWith(scriptNovo);
+                    });
                 })
                 .catch(error => {
-                    console.error("Erro ao carregar perguntas:", error);
+                    console.error("Erro ao carregar materiais:", error);
                 });
-
             break;
         
         case "Informações do Laboratório":
