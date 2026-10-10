@@ -68,6 +68,10 @@ urlpatterns = [
         name='usuarios'
     ),
 
+    path('usuarios/novo/', 
+         views.form_usuario, 
+         name='form_usuario'),
+
     path('etiquetas/', 
          views.etiquetas, 
          name='etiquetas'),

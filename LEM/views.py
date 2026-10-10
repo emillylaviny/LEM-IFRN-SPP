@@ -19,6 +19,9 @@ def home(request):
 def usuarios(request):
     return render(request, "LEM/usuarios.html")
 
+def form_usuario(request):
+    return render(request, "LEM/form_usuario.html")
+
 def cadastro(request):
     if request.method == 'POST':
         form = CadastroForm(request.POST)

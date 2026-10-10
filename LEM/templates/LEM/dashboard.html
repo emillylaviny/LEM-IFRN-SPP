@@ -1838,6 +1838,34 @@ menus.forEach(menu => {
 });
 
 
+function injetarHTML(html) {
+    conteudoPrincipal.innerHTML = html;
+    conteudoPrincipal.querySelectorAll("script").forEach(scriptAntigo => {
+        const scriptNovo = document.createElement("script");
+        Array.from(scriptAntigo.attributes).forEach(a => scriptNovo.setAttribute(a.name, a.value));
+        scriptNovo.textContent = scriptAntigo.textContent;
+        scriptAntigo.replaceWith(scriptNovo);
+    });
+}
+
+document.addEventListener("click", function (e) {
+    const botao = e.target.closest("[data-acao]");
+    if (!botao) return;
+
+    const rotas = {
+        "novo-usuario": "/usuarios/novo/",
+        "voltar-usuarios": "/usuarios/"
+    };
+    const url = rotas[botao.dataset.acao];
+    if (!url) return;
+
+    fetch(url)
+        .then(response => response.text())
+        .then(injetarHTML)
+        .catch(error => console.error("Erro ao carregar tela:", error));
+});
+
+
 function carregarPagina(pagina) {
 
     switch (pagina) {

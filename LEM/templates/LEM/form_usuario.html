@@ -1,0 +1,306 @@
+{% block content %}
+{% comment %}
+  Parcial da tela "Cadastro de Usuário" do dashboard.
+  Carregado via fetch() dentro de #conteudoPrincipal (veja a view form_usuario).
+  As máscaras (CPF e telefone) e a validação das senhas estão no <script> no final deste arquivo.
+  Atenção: innerHTML não executa <script>. Recrie os scripts depois da injeção
+  (mesmo bloco usado nos cases "materiais" e "etiquetas" do dashboard.html).
+
+  Os campos seguem os nomes do model CadastroUsuario. Defina o action do <form>
+  quando a view de gravação existir.
+{% endcomment %}
+<style>
+  .lem-frm {
+    --lf-ink: #14261e;
+    --lf-muted: #5b6b64;
+    --lf-primary: #0b6b4d;
+    --lf-primary-dark: #085a40;
+    --lf-border: #dfe7e3;
+    --lf-danger: #c8293c;
+    font-family: inherit;
+    color: var(--lf-ink);
+  }
+
+  /* Cabeçalho */
+  .lem-frm-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .lem-frm-title { margin: 0; font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+  .lem-frm-subtitle { margin: 4px 0 0; font-size: .8125rem; color: var(--lf-muted); }
+
+  .lem-frm-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 10px;
+    border: 1px solid var(--lf-border);
+    background: #fff;
+    color: var(--lf-ink);
+    font-size: .8125rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(20, 38, 30, .06);
+    transition: background-color .15s, border-color .15s;
+  }
+  .lem-frm-btn:hover { background: #f4f8f6; border-color: #c9d6d0; color: var(--lf-ink); }
+  .lem-frm-btn--primary { background: var(--lf-primary); border-color: var(--lf-primary); color: #fff; font-weight: 600; }
+  .lem-frm-btn--primary:hover { background: var(--lf-primary-dark); border-color: var(--lf-primary-dark); color: #fff; }
+
+  /* Seções */
+  .lem-frm-card {
+    background: #fff;
+    border: 1px solid var(--lf-border);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(20, 38, 30, .05);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .lem-frm-card-head { padding: 14px 18px; border-bottom: 1px solid var(--lf-border); }
+  .lem-frm-card-title { margin: 0; font-size: .875rem; font-weight: 700; }
+  .lem-frm-card-sub { margin: 2px 0 0; font-size: .6875rem; color: var(--lf-muted); }
+  .lem-frm-card-body {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 14px;
+    padding: 24px 18px 22px;
+  }
+  .lem-frm-field { min-width: 0; }
+
+  /* Campos */
+  .lem-frm-label { display: block; margin-bottom: 4px; font-size: .75rem; font-weight: 500; }
+  .lem-frm-req { color: var(--lf-danger); margin-left: 2px; }
+  .lem-frm-opt { font-size: .625rem; font-weight: 400; color: var(--lf-muted); margin-left: 2px; }
+  .lem-frm-input {
+    display: block;
+    width: 100%;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--lf-border);
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(20, 38, 30, .05);
+    color: var(--lf-ink);
+    font: inherit;
+    font-size: .75rem;
+  }
+  .lem-frm-input::placeholder { color: #7a8a83; }
+  .lem-frm-input:focus-visible,
+  .lem-frm-btn:focus-visible {
+    outline: 2px solid var(--lf-primary);
+    outline-offset: 2px;
+  }
+  .lem-frm-input:user-invalid { border-color: var(--lf-danger); }
+  .lem-frm-input[type="file"] { padding: 0 12px; line-height: 30px; cursor: pointer; }
+  .lem-frm-input[type="file"]::file-selector-button {
+    border: 0; background: none; padding: 0; margin-right: 4px;
+    font: inherit; color: var(--lf-ink); cursor: pointer;
+  }
+  .lem-frm-hint { margin: 6px 0 0; font-size: .625rem; color: var(--lf-muted); }
+  .lem-frm-upload { display: flex; align-items: center; gap: 12px; }
+  .lem-frm-upload .bi { color: var(--lf-muted); font-size: .875rem; }
+
+  /* Ações */
+  .lem-frm-actions { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+
+  @media (max-width: 767.98px) {
+    .lem-frm-card-body { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lem-frm-btn { transition: none; }
+  }
+</style>
+
+<div class="app-content lem-frm" data-lem-form-usuario>
+  <div class="container-fluid">
+
+    <div class="lem-frm-header">
+      <div>
+        <h1 class="lem-frm-title">Cadastro de Usuário</h1>
+        <p class="lem-frm-subtitle">Campos marcados com <span aria-hidden="true">*</span> são obrigatórios.</p>
+      </div>
+      <button type="button" class="lem-frm-btn" data-acao="voltar-usuarios">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar
+      </button>
+    </div>
+
+    {# Defina o action quando a view de gravação existir, ex.: action="{% url 'novo_usuario' %}" #}
+    <form method="post" enctype="multipart/form-data" data-form-usuario>
+      {% csrf_token %}
+
+      <!-- Dados pessoais -->
+      <section class="lem-frm-card">
+        <div class="lem-frm-card-head">
+          <h2 class="lem-frm-card-title">Dados pessoais</h2>
+        </div>
+        <div class="lem-frm-card-body">
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-nome">Nome completo <span class="lem-frm-req">*</span></label>
+            <input type="text" id="usr-nome" name="nome_completo" class="lem-frm-input"
+                   placeholder="Nome completo do usuário" maxlength="300" required>
+          </div>
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-apelido">Apelido <span class="lem-frm-opt">(opcional)</span></label>
+            <input type="text" id="usr-apelido" name="apelido" class="lem-frm-input"
+                   placeholder="Como deseja ser chamado" maxlength="300">
+          </div>
+
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-cpf">CPF <span class="lem-frm-req">*</span></label>
+            <input type="text" id="usr-cpf" name="cpf" class="lem-frm-input" data-mascara="cpf"
+                   placeholder="000.000.000-00" inputmode="numeric" maxlength="14" required>
+          </div>
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-nascimento">Data de nascimento <span class="lem-frm-req">*</span></label>
+            <input type="date" id="usr-nascimento" name="data_nascimento" class="lem-frm-input" required>
+          </div>
+
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-foto">Fotografia <span class="lem-frm-opt">(opcional)</span></label>
+            <div class="lem-frm-upload">
+              <input type="file" id="usr-foto" name="foto" class="lem-frm-input" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+              <i class="bi bi-upload" aria-hidden="true"></i>
+            </div>
+            <p class="lem-frm-hint">Formatos aceitos: JPG ou PNG.</p>
+          </div>
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-cidade-residencia">Cidade onde reside <span class="lem-frm-req">*</span></label>
+            <input type="text" id="usr-cidade-residencia" name="cidade_residencia" class="lem-frm-input"
+                   placeholder="Cidade" maxlength="150" required>
+          </div>
+        </div>
+      </section>
+
+      <!-- Vínculo escolar -->
+      <section class="lem-frm-card">
+        <div class="lem-frm-card-head">
+          <h2 class="lem-frm-card-title">Vínculo escolar</h2>
+          <p class="lem-frm-card-sub">Um usuário pode atuar em mais de uma escola.</p>
+        </div>
+        <div class="lem-frm-card-body">
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-escola">Escola(s) em que atua <span class="lem-frm-req">*</span></label>
+            <input type="text" id="usr-escola" name="escola" class="lem-frm-input"
+                   placeholder="Nome da escola" maxlength="150" required>
+          </div>
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-cidade-escola">Cidade da escola <span class="lem-frm-req">*</span></label>
+            <input type="text" id="usr-cidade-escola" name="cidade_escola" class="lem-frm-input"
+                   placeholder="Cidade da escola" maxlength="150" required>
+          </div>
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-declaracao">Declaração da escola <span class="lem-frm-req">*</span></label>
+            <input type="file" id="usr-declaracao" name="declaracao_escola" class="lem-frm-input"
+                   accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/*" required>
+            <p class="lem-frm-hint">Documento em PDF ou imagem.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contato e acesso -->
+      <section class="lem-frm-card">
+        <div class="lem-frm-card-head">
+          <h2 class="lem-frm-card-title">Contato e acesso</h2>
+        </div>
+        <div class="lem-frm-card-body">
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-email">E-mail <span class="lem-frm-req">*</span></label>
+            <input type="email" id="usr-email" name="email" class="lem-frm-input"
+                   placeholder="usuario@exemplo.edu.br" autocomplete="email" required>
+          </div>
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-telefone">Telefone <span class="lem-frm-req">*</span></label>
+            <input type="tel" id="usr-telefone" name="telefone" class="lem-frm-input" data-mascara="telefone"
+                   placeholder="(00) 00000-0000" inputmode="tel" maxlength="15" required>
+          </div>
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-senha">Senha <span class="lem-frm-req">*</span></label>
+            <input type="password" id="usr-senha" name="senha" class="lem-frm-input"
+                   minlength="8" autocomplete="new-password" required>
+            <p class="lem-frm-hint">Mínimo de 8 caracteres.</p>
+          </div>
+          <div class="lem-frm-field">
+            <label class="lem-frm-label" for="usr-senha2">Confirmação de senha <span class="lem-frm-req">*</span></label>
+            <input type="password" id="usr-senha2" name="confirmacao_senha" class="lem-frm-input"
+                   minlength="8" autocomplete="new-password" required>
+          </div>
+        </div>
+      </section>
+
+      <div class="lem-frm-actions">
+        <button type="button" class="lem-frm-btn" data-acao="voltar-usuarios">Cancelar</button>
+        <button type="submit" class="lem-frm-btn lem-frm-btn--primary">Cadastrar usuário</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<script>
+(function () {
+    "use strict";
+
+    function somenteDigitos(valor) {
+        return (valor || "").replace(/\D/g, "");
+    }
+
+    function mascaraCpf(valor) {
+        var d = somenteDigitos(valor).slice(0, 11);
+        return d
+            .replace(/^(\d{3})(\d)/, "$1.$2")
+            .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+            .replace(/\.(\d{3})(\d)/, ".$1-$2");
+    }
+
+    function mascaraTelefone(valor) {
+        var d = somenteDigitos(valor).slice(0, 11);
+        if (d.length <= 2) return d.length ? "(" + d : "";
+        if (d.length <= 6) return "(" + d.slice(0, 2) + ") " + d.slice(2);
+        if (d.length <= 10) return "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6);
+        return "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7);
+    }
+
+    // Os listeners ficam no document e são registrados uma única vez,
+    // mesmo que o usuário abra a tela várias vezes.
+    if (!window.__lemFormUsuarioListeners) {
+        window.__lemFormUsuarioListeners = true;
+
+        document.addEventListener("input", function (e) {
+            var campo = e.target;
+            if (!campo.closest("[data-lem-form-usuario]")) return;
+
+            if (campo.matches("[data-mascara='cpf']")) {
+                campo.value = mascaraCpf(campo.value);
+            } else if (campo.matches("[data-mascara='telefone']")) {
+                campo.value = mascaraTelefone(campo.value);
+            }
+
+            // Limpa o aviso de senhas diferentes ao digitar
+            if (campo.id === "usr-senha" || campo.id === "usr-senha2") {
+                document.getElementById("usr-senha2").setCustomValidity("");
+            }
+        });
+
+        document.addEventListener("submit", function (e) {
+            var form = e.target.closest("[data-form-usuario]");
+            if (!form) return;
+
+            var senha = form.querySelector("#usr-senha");
+            var confirmacao = form.querySelector("#usr-senha2");
+            if (senha.value !== confirmacao.value) {
+                confirmacao.setCustomValidity("As senhas não coincidem.");
+                confirmacao.reportValidity();
+                e.preventDefault();
+            }
+        });
+    }
+})();
+</script>
+{% endblock %}
