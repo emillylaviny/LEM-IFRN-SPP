@@ -101,3 +101,11 @@ class MaterialForm(forms.ModelForm):
                 'class': 'form-control',
             }),
         }
+        
+# Iniciando CRUD de perguntas fequentes
+
+# class FAQForm(forms.ModelForm):
+#     class Meta:
+#         model = FAQ
+#         fields = ["pergunta", "resposta", "ativa", "ordem"]
+

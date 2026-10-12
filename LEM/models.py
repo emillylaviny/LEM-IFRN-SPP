@@ -165,6 +165,8 @@ class Duvida(models.Model):
     def __str__(self):
         return f"Dúvida de {self.usuario.nome}"
 
+# Iniciando CRUD de perguntas fequentes
+
 class FAQ(models.Model):
     pergunta = models.CharField(max_length=255)
     resposta = models.TextField()

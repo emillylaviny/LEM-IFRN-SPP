@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
 from .forms import CardMaterialForm, CadastroForm, MaterialForm
-from .models import Card, CadastroUsuario, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, FAQ, HistoricoAlteracao
+from .models import Card, CadastroUsuario, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, HistoricoAlteracao, FAQ
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -40,8 +40,15 @@ def cadastro(request):
 def dashboard(request):
     return render(request, "LEM/dashboard.html")
 
+
 def perguntasfaq(request):
-    return render(request, "LEM/perguntasfaq.html")
+    faqs = FAQ.objects.filter(ativa=True).order_by("ordem", "id")
+
+    context = {
+        "faqs": faqs,
+    }
+
+    return render(request, "LEM/perguntasfaq.html", context)
 
 
 def materiais(request):
@@ -147,6 +154,21 @@ def remover_material(request, material_id):
         "LEM/confirmar_remocao.html",
         {"material": material}
     )
+
+# Iniciando CRUD de perguntas fequentes
+
+# @login_required
+# def faq_cadastrar(request):
+#     if request.method == "POST":
+#         form = FAQForm(request.POST)
+
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Pergunta cadastrada com sucesso!")
+#         else:
+#             messages.error(request, "Verifique os campos do formulário.")
+
+#     return redirect("dashboard")
 
 
 
