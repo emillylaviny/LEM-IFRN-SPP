@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'LEM',
     'crispy_forms',
+    'dashboard'
 ]
 
 MIDDLEWARE = [

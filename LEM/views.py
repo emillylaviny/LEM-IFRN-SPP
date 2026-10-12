@@ -1,4 +1,4 @@
-import re
+import render
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
@@ -16,12 +16,6 @@ def home(request):
     }
     return render(request, "LEM/home.html", context)
 
-def usuarios(request):
-    return render(request, "LEM/usuarios.html")
-
-def form_usuario(request):
-    return render(request, "LEM/form_usuario.html")
-
 def cadastro(request):
     if request.method == 'POST':
         form = CadastroForm(request.POST)
@@ -35,125 +29,6 @@ def cadastro(request):
         form = CadastroForm()
 
     return render(request, 'LEM/cadastro.html', {'form': form})
-
-
-def dashboard(request):
-    return render(request, "LEM/dashboard.html")
-
-
-def perguntasfaq(request):
-    faqs = FAQ.objects.filter(ativa=True).order_by("ordem", "id")
-
-    context = {
-        "faqs": faqs,
-    }
-
-    return render(request, "LEM/perguntasfaq.html", context)
-
-
-def materiais(request):
-    lista_materiais = Materiais.objects.select_related(
-        "localizacao"
-    ).all()
-
-    context = {
-        "materiais": lista_materiais,
-        "niveis": lista_materiais
-            .exclude(nivel="")
-            .values_list("nivel", flat=True)
-            .distinct(),
-        "localizacoes": LocalizacaoLab.objects.all(),
-    }
-
-    return render(request, "LEM/materiais.html", context)
-
-def etiquetas(request):
-    return render(request, "LEM/etiquetas.html")
-
-@login_required
-# @permission_required("LEM.add_cadastromateriais")
-def novo_material(request):
-    if request.method == "POST":
-        form = MaterialForm(
-            request.POST,
-            request.FILES
-        )
-
-        if form.is_valid():
-            form.save()
-            messages.success(
-                request,
-                "Material cadastrado com sucesso!"
-            )
-            return redirect("materiais")
-    else:
-        form = MaterialForm()
-
-    return render(
-        request,
-        "LEM/form_material.html",
-        {
-            "form": form,
-            "titulo": "Cadastrar material",
-        }
-    )
-
-@login_required
-# @permission_required("LEM.change_cadastromateriais")
-def editar_material(request, material_id):
-    material = get_object_or_404(
-        Materiais,
-        id=material_id
-    )
-
-    if request.method == "POST":
-        form = MaterialForm(
-            request.POST,
-            request.FILES,
-            instance=material
-        )
-
-        if form.is_valid():
-            form.save()
-            messages.success(
-                request,
-                "Material atualizado com sucesso!"
-            )
-            return redirect("materiais")
-    else:
-        form = MaterialForm(instance=material)
-
-    return render(
-        request,
-        "LEM/form_material.html",
-        {
-            "form": form,
-            "material": material,
-            "titulo": "Editar material",
-        }
-    )
-
-@login_required
-# @permission_required("LEM.change_cadastromateriais")
-def remover_material(request, material_id):
-    material = get_object_or_404(
-        Materiais,
-        id=material_id
-    )
-
-    if request.method == "POST":
-        material.delete()
-        messages.success(
-            request,
-            "Material removido com sucesso!"
-        )
-        return redirect("materiais")
-
-    return render(
-        request,
-        "LEM/confirmar_remocao.html",
-        {"material": material}
-    )
 
 # Iniciando CRUD de perguntas fequentes
 
