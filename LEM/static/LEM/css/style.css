@@ -1588,6 +1588,114 @@ a.link-custom:hover {
   height: 15px;
 }
 
+/* Cartão da pergunta */
+.faq-question-card {
+  overflow: hidden;
+  border: 1px solid #e5eaf2;
+  border-radius: 14px;
+  background: #fff;
+  transition: border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.faq-question-card.faq-aberta {
+  border-color: #c7d8f5;
+  box-shadow: 0 5px 18px rgba(30, 64, 120, 0.07);
+}
+
+/* Linha da pergunta */
+.faq-question-card .faq-question-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 20px;
+}
+
+.faq-question-card .faq-question-text {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Botão da setinha */
+.faq-question-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #e5eaf2;
+  border-radius: 50%;
+  background: #f7f9fc;
+  color: #355b91;
+  cursor: pointer;
+  transition: background 0.25s ease,
+              transform 0.25s ease;
+}
+
+.faq-question-toggle:hover {
+  background: #eaf1fc;
+}
+
+.faq-question-arrow {
+  width: 17px;
+  height: 17px;
+  transition: transform 0.25s ease;
+}
+
+.faq-question-toggle[aria-expanded="true"] .faq-question-arrow {
+  transform: rotate(90deg);
+}
+
+/* Abinha da resposta */
+.faq-answer-wrapper {
+  margin: 0 14px 14px;
+  padding-top: 12px;
+  border-top: 1px solid #edf0f5;
+  animation: faqAbrir 0.25s ease;
+}
+
+.faq-answer-wrapper[hidden] {
+  display: none;
+}
+
+.faq-answer-content {
+  padding: 15px 17px;
+  border-radius: 10px;
+  background: #f5f8fd;
+  color: #475569;
+  font-size: 0.94rem;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.faq-answer-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #355b91;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.faq-answer-content p {
+  margin: 0;
+}
+
+@keyframes faqAbrir {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 @media (max-width: 767.98px) {
   .faq-perguntas .faq-questions-grid {
     grid-template-columns: repeat(2, 1fr);

@@ -553,118 +553,50 @@
       </a>
     </div>
 
+
     <!-- grid de perguntas -->
     <div class="faq-questions-grid">
 
-      <div class="faq-question-card">
-        <div class="faq-question-top">
-          <span class="faq-question-avatar-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-              <path stroke="currentColor" stroke-width="2" d="M9.5 9.5a2.5 2.5 0 115 0c0 1.5-2.5 1.5-2.5 3.5"/>
-              <circle cx="12" cy="16.5" r="0.6" fill="currentColor"/>
-            </svg>
-          </span>
-        </div>
-        <div class="faq-question-body">
-          <p class="faq-question-text">O que devo fazer para agendar uma visita ao laboratório?</p>
-          <svg class="faq-question-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/>
-          </svg>
-        </div>
-      </div>
+      {% for faq in faqs %}
+        <div class="faq-question-card">
 
-      <div class="faq-question-card">
-        <div class="faq-question-top">
-          <span class="faq-question-avatar-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-              <path stroke="currentColor" stroke-width="2" d="M9.5 9.5a2.5 2.5 0 115 0c0 1.5-2.5 1.5-2.5 3.5"/>
-              <circle cx="12" cy="16.5" r="0.6" fill="currentColor"/>
-            </svg>
-          </span>
-        </div>
-        <div class="faq-question-body">
-          <p class="faq-question-text">O que devo fazer para agendar uma visita ao laboratório?</p>
-          <svg class="faq-question-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/>
-          </svg>
-        </div>
-      </div>
+          <div class="faq-question-body">
+            <p class="faq-question-text">{{ faq.pergunta }}</p>
 
-      <div class="faq-question-card">
-        <div class="faq-question-top">
-          <span class="faq-question-avatar-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-              <path stroke="currentColor" stroke-width="2" d="M9.5 9.5a2.5 2.5 0 115 0c0 1.5-2.5 1.5-2.5 3.5"/>
-              <circle cx="12" cy="16.5" r="0.6" fill="currentColor"/>
-            </svg>
-          </span>
-        </div>
-        <div class="faq-question-body">
-          <p class="faq-question-text">O que devo fazer para agendar uma visita ao laboratório?</p>
-          <svg class="faq-question-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/>
-          </svg>
-        </div>
-      </div>
+            <button
+              type="button"
+              class="faq-question-toggle"
+              aria-expanded="false"
+              aria-controls="faq-resposta-{{ faq.id }}"
+              aria-label="Mostrar resposta"
+            >
+              <svg class="faq-question-arrow"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M9 6l6 6-6 6"/>
+              </svg>
+            </button>
+          </div>
 
-      <div class="faq-question-card">
-        <div class="faq-question-top">
-          <span class="faq-question-avatar-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-              <path stroke="currentColor" stroke-width="2" d="M9.5 9.5a2.5 2.5 0 115 0c0 1.5-2.5 1.5-2.5 3.5"/>
-              <circle cx="12" cy="16.5" r="0.6" fill="currentColor"/>
-            </svg>
-          </span>
-        </div>
-        <div class="faq-question-body">
-          <p class="faq-question-text">O que devo fazer para agendar uma visita ao laboratório?</p>
-          <svg class="faq-question-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/>
-          </svg>
-        </div>
-      </div>
+          <div class="faq-answer-wrapper" id="faq-resposta-{{ faq.id }}" hidden>
+            <div class="faq-answer-content">
+              <span class="faq-answer-label">Resposta</span>
+              <p>{{ faq.resposta|linebreaksbr }}</p>
+            </div>
+          </div>
 
-      <div class="faq-question-card">
-        <div class="faq-question-top">
-          <span class="faq-question-avatar-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-              <path stroke="currentColor" stroke-width="2" d="M9.5 9.5a2.5 2.5 0 115 0c0 1.5-2.5 1.5-2.5 3.5"/>
-              <circle cx="12" cy="16.5" r="0.6" fill="currentColor"/>
-            </svg>
-          </span>
         </div>
-        <div class="faq-question-body">
-          <p class="faq-question-text">O que devo fazer para agendar uma visita ao laboratório?</p>
-          <svg class="faq-question-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/>
-          </svg>
-        </div>
-      </div>
 
-      <div class="faq-question-card">
-        <div class="faq-question-top">
-          <span class="faq-question-avatar-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-              <path stroke="currentColor" stroke-width="2" d="M9.5 9.5a2.5 2.5 0 115 0c0 1.5-2.5 1.5-2.5 3.5"/>
-              <circle cx="12" cy="16.5" r="0.6" fill="currentColor"/>
-            </svg>
-          </span>
-        </div>
-        <div class="faq-question-body">
-          <p class="faq-question-text">O que devo fazer para agendar uma visita ao laboratório?</p>
-          <svg class="faq-question-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/>
-          </svg>
-        </div>
-      </div>
+      {% empty %}
+      <p>Nenhuma dúvida frequente disponível no momento.</p>
+      {% endfor %}
 
     </div>
+      
 
     <!-- barra "Sua dúvida é importante para nós!" -->
     <div class="faq-cta-bar">
@@ -690,8 +622,28 @@
     </div>
 
   </div>
+
 </section>
 
+<script>
+document.querySelectorAll(".faq-question-toggle").forEach(function(botao) {
+  botao.addEventListener("click", function() {
+    const idResposta = botao.getAttribute("aria-controls");
+    const resposta = document.getElementById(idResposta);
+
+    const vaiAbrir = resposta.hidden;
+
+    resposta.hidden = !vaiAbrir;
+    botao.setAttribute("aria-expanded", vaiAbrir);
+    botao.setAttribute(
+      "aria-label",
+      vaiAbrir ? "Ocultar resposta" : "Mostrar resposta"
+    );
+
+    botao.closest(".faq-question-card").classList.toggle("faq-aberta", vaiAbrir);
+  });
+});
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 

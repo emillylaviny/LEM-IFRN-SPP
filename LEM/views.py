@@ -12,6 +12,7 @@ from django.contrib import messages
 def home(request):
     context = {
         "card": Card.objects.all(),
+        "faqs": FAQ.objects.filter(ativa=True).order_by("ordem", "id"),
     }
     return render(request, "LEM/home.html", context)
 
@@ -29,20 +30,6 @@ def cadastro(request):
 
     return render(request, 'LEM/cadastro.html', {'form': form})
 
-# Iniciando CRUD de perguntas fequentes
-
-# @login_required
-# def faq_cadastrar(request):
-#     if request.method == "POST":
-#         form = FAQForm(request.POST)
-
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "Pergunta cadastrada com sucesso!")
-#         else:
-#             messages.error(request, "Verifique os campos do formulário.")
-
-#     return redirect("dashboard")
 
 
 

@@ -13,6 +13,22 @@ urlpatterns = [
         views.perguntasfaq,
         name='perguntasfaq'
     ),
+    
+    path(
+        'dashboard/faq/cadastrar/',
+        views.faq_cadastrar,
+        name='faq_cadastrar'
+    ),
+    path(
+        'dashboard/faq/<int:id>/editar/',
+        views.faq_editar,
+        name='faq_editar'
+    ),
+    path(
+        'dashboard/faq/<int:id>/excluir/',
+        views.faq_excluir,
+        name='faq_excluir'
+    ),
 
     path(
         'materiais/', 

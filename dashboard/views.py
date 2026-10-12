@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from LEM.forms import MaterialForm
+from LEM.forms import MaterialForm, FAQForm
 from LEM.models import Materiais, LocalizacaoLab, FAQ
 
 def usuarios(request):
@@ -14,14 +14,72 @@ def dashboard(request):
     return render(request, "dashboard/dashboard.html")
 
 
+
+
+@login_required
 def perguntasfaq(request):
-    faqs = FAQ.objects.filter(ativa=True).order_by("ordem", "id")
+    faqs = FAQ.objects.all().order_by("ordem", "id")
 
-    context = {
-        "faqs": faqs,
-    }
+    return render(
+        request,
+        "dashboard/perguntasfaq.html",
+        {"faqs": faqs}
+    )
 
-    return render(request, "dashboard/perguntasfaq.html", context)
+
+@login_required
+def faq_cadastrar(request):
+    if request.method == "POST":
+        form = FAQForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, "Pergunta cadastrada com sucesso!"
+            )
+        else:
+            messages.error(
+                request,
+                "Não foi possível cadastrar. Verifique os campos."
+            )
+
+    return redirect("perguntasfaq")
+
+
+@login_required
+def faq_editar(request, id):
+    faq = get_object_or_404(FAQ, id=id)
+
+    if request.method == "POST":
+        form = FAQForm(request.POST, instance=faq)
+
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, "Pergunta atualizada com sucesso!"
+            )
+        else:
+            messages.error(
+                request,
+                "Não foi possível atualizar. Verifique os campos."
+            )
+
+    return redirect("perguntasfaq")
+
+
+@login_required
+def faq_excluir(request, id):
+    faq = get_object_or_404(FAQ, id=id)
+
+    if request.method == "POST":
+        faq.delete()
+        messages.success(
+            request, "Pergunta excluída com sucesso!"
+        )
+
+    return redirect("perguntasfaq")
+
+
 
 def materiais(request):
     lista_materiais = Materiais.objects.select_related(

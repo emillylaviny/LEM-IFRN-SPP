@@ -195,8 +195,18 @@ body {
     <header class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
       <div>
         <h1 class="page-title">Perguntas Frequentes</h1>
-        <p class="page-subtitle">Gerencie as perguntas e respostas exibidas aos usuários. 2 publicada(s) de 3.</p>
+          <p class="page-subtitle">
+            Gerencie as perguntas e respostas exibidas aos usuários.
+            Total de registros: {{ faqs|length }}.
+          </p>     
       </div>
+      <button type="button"
+              class="btn btn-lem"
+              data-bs-toggle="modal"
+              data-bs-target="#modalNovaFaq">
+        <i class="bi bi-plus-lg"></i>
+        Nova pergunta
+      </button>
   
     </header>
 
@@ -239,53 +249,67 @@ body {
               <th scope="col" class="col-actions">Ações</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
+          
+          <tbody id="faqTableBody">
+            {% for faq in faqs %}
+            <tr data-status="{% if faq.ativa %}publicada{% else %}rascunho{% endif %}"
+                data-search="{{ faq.pergunta|lower }} {{ faq.resposta|lower }}">
               <td>
-                <button class="question-toggle" data-bs-toggle="collapse" data-bs-target="#resp1" aria-expanded="false" aria-controls="resp1">
-                  <i class="bi bi-chevron-down"></i> É possível vincular mais de uma escola ao cadastro?
-                </button>
-                <div class="collapse" id="resp1"><div class="answer">Resposta da pergunta (dados simulados).</div></div>
+                <span class="fw-medium">{{ faq.pergunta }}</span>
               </td>
-              <td><span class="status-badge status-draft">Rascunho</span></td>
-              <td class="col-date">28/08/2026</td>
+
+              <td>
+                {% if faq.ativa %}
+                  <span class="status-badge status-published">Publicada</span>
+                {% else %}
+                  <span class="status-badge status-draft">Rascunho</span>
+                {% endif %}
+              </td>
+
+              <td class="col-date">{{ faq.ordem }}</td>
+
               <td class="col-actions text-nowrap">
-                <button class="action-btn" title="Publicar" aria-label="Publicar"><i class="bi bi-eye"></i></button>
-                <button class="action-btn" title="Editar" aria-label="Editar"><i class="bi bi-pencil"></i></button>
-                <button class="action-btn danger" title="Excluir" aria-label="Excluir"><i class="bi bi-trash3"></i></button>
+                <!-- Visualizar -->
+                <button type="button"
+                        class="action-btn"
+                        title="Visualizar"
+                        aria-label="Visualizar pergunta"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalVerFaq{{ faq.id }}">
+                  <i class="bi bi-eye"></i>
+                </button>
+
+                <!-- Editar -->
+                <button type="button"
+                        class="action-btn"
+                        title="Editar"
+                        aria-label="Editar pergunta"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalEditarFaq{{ faq.id }}">
+                  <i class="bi bi-pencil"></i>
+                </button>
+
+                <!-- Excluir -->
+                <button type="button"
+                        class="action-btn danger"
+                        title="Excluir"
+                        aria-label="Excluir pergunta"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalExcluirFaq{{ faq.id }}">
+                  <i class="bi bi-trash3"></i>
+                </button>
               </td>
             </tr>
+
+            {% empty %}
             <tr>
-              <td>
-                <button class="question-toggle" data-bs-toggle="collapse" data-bs-target="#resp2" aria-expanded="false" aria-controls="resp2">
-                  <i class="bi bi-chevron-down"></i> Como solicitar o empréstimo de um material?
-                </button>
-                <div class="collapse" id="resp2"><div class="answer">Resposta da pergunta (dados simulados).</div></div>
-              </td>
-              <td><span class="status-badge status-published">Publicada</span></td>
-              <td class="col-date">14/08/2026</td>
-              <td class="col-actions text-nowrap">
-                <button class="action-btn" title="Despublicar" aria-label="Despublicar"><i class="bi bi-eye-slash"></i></button>
-                <button class="action-btn" title="Editar" aria-label="Editar"><i class="bi bi-pencil"></i></button>
-                <button class="action-btn danger" title="Excluir" aria-label="Excluir"><i class="bi bi-trash3"></i></button>
+              <td colspan="4" class="text-center py-4 text-secondary">
+                Nenhuma pergunta cadastrada.
               </td>
             </tr>
-            <tr>
-              <td>
-                <button class="question-toggle" data-bs-toggle="collapse" data-bs-target="#resp3" aria-expanded="false" aria-controls="resp3">
-                  <i class="bi bi-chevron-down"></i> Quem pode agendar uma visita ao laboratório?
-                </button>
-                <div class="collapse" id="resp3"><div class="answer">Resposta da pergunta (dados simulados).</div></div>
-              </td>
-              <td><span class="status-badge status-published">Publicada</span></td>
-              <td class="col-date">30/07/2026</td>
-              <td class="col-actions text-nowrap">
-                <button class="action-btn" title="Despublicar" aria-label="Despublicar"><i class="bi bi-eye-slash"></i></button>
-                <button class="action-btn" title="Editar" aria-label="Editar"><i class="bi bi-pencil"></i></button>
-                <button class="action-btn danger" title="Excluir" aria-label="Excluir"><i class="bi bi-trash3"></i></button>
-              </td>
-            </tr>
+            {% endfor %}
           </tbody>
+
         </table>
       </div>
 
@@ -299,6 +323,270 @@ body {
     </section>
   </main>
 
+  <!-- Modal de cadastro -->
+  <div class="modal fade" id="modalNovaFaq" tabindex="-1"
+      aria-labelledby="tituloNovaFaq" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <form method="post" action="{% url 'faq_cadastrar' %}">
+          {% csrf_token %}
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="tituloNovaFaq">
+              Nova pergunta frequente
+            </h5>
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="novaPergunta" class="form-label">Pergunta</label>
+              <input type="text" class="form-control"
+                    id="novaPergunta" name="pergunta" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="novaResposta" class="form-label">Resposta</label>
+              <textarea class="form-control" id="novaResposta"
+                        name="resposta" rows="5" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="novaOrdem" class="form-label">
+                Ordem de exibição
+              </label>
+              <input type="number" class="form-control"
+                    id="novaOrdem" name="ordem" value="1" min="0" required>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox"
+                    id="novaAtiva" name="ativa" value="on">
+              <label class="form-check-label" for="novaAtiva">
+                Publicar pergunta
+              </label>
+              <div class="form-text">
+                Se desmarcada, a pergunta ficará como rascunho.
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-lem">Salvar pergunta</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  {% for faq in faqs %}
+
+  <!-- Modal de visualização (READ) -->
+  <div class="modal fade" id="modalVerFaq{{ faq.id }}" tabindex="-1"
+      aria-labelledby="tituloVerFaq{{ faq.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tituloVerFaq{{ faq.id }}">
+            Detalhes da pergunta
+          </h5>
+          <button type="button" class="btn-close"
+                  data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+
+        <div class="modal-body">
+          <p class="text-secondary small mb-1">PERGUNTA</p>
+          <p class="fw-semibold">{{ faq.pergunta }}</p>
+
+          <hr>
+
+          <p class="text-secondary small mb-1">RESPOSTA</p>
+          <p class="text-break">{{ faq.resposta|linebreaksbr }}</p>
+
+          <hr>
+
+          <p class="mb-2">
+            <strong>Status:</strong>
+            {% if faq.ativa %}
+              <span class="status-badge status-published">Publicada</span>
+            {% else %}
+              <span class="status-badge status-draft">Rascunho</span>
+            {% endif %}
+          </p>
+
+          <p class="mb-0">
+            <strong>Ordem de exibição:</strong> {{ faq.ordem }}
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary"
+                  data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal de edição (UPDATE) -->
+  <div class="modal fade" id="modalEditarFaq{{ faq.id }}" tabindex="-1"
+      aria-labelledby="tituloEditarFaq{{ faq.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <form method="post" action="{% url 'faq_editar' faq.id %}">
+          {% csrf_token %}
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="tituloEditarFaq{{ faq.id }}">
+              Editar pergunta
+            </h5>
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="pergunta{{ faq.id }}" class="form-label">
+                Pergunta
+              </label>
+              <input type="text" class="form-control"
+                    id="pergunta{{ faq.id }}" name="pergunta"
+                    value="{{ faq.pergunta }}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="resposta{{ faq.id }}" class="form-label">
+                Resposta
+              </label>
+              <textarea class="form-control"
+                        id="resposta{{ faq.id }}" name="resposta"
+                        rows="5" required>{{ faq.resposta }}</textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="ordem{{ faq.id }}" class="form-label">
+                Ordem de exibição
+              </label>
+              <input type="number" class="form-control"
+                    id="ordem{{ faq.id }}" name="ordem"
+                    value="{{ faq.ordem }}" min="0" required>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox"
+                    id="ativa{{ faq.id }}" name="ativa" value="on"
+                    {% if faq.ativa %}checked{% endif %}>
+              <label class="form-check-label" for="ativa{{ faq.id }}">
+                Publicar pergunta
+              </label>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-lem">
+              Salvar alterações
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal de confirmação de exclusão (DELETE) -->
+  <div class="modal fade" id="modalExcluirFaq{{ faq.id }}" tabindex="-1"
+      aria-labelledby="tituloExcluirFaq{{ faq.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form method="post" action="{% url 'faq_excluir' faq.id %}">
+          {% csrf_token %}
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="tituloExcluirFaq{{ faq.id }}">
+              Excluir pergunta
+            </h5>
+            <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+
+          <div class="modal-body">
+            Tem certeza de que deseja excluir esta pergunta?
+            <p class="fw-semibold mt-2 mb-0">{{ faq.pergunta }}</p>
+            <p class="text-danger small mt-2 mb-0">
+              Essa ação não pode ser desfeita.
+            </p>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">
+              Confirmar exclusão
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const campoPesquisa = document.querySelector(
+      'input[aria-label="Pesquisar"]'
+    );
+    const filtroStatus = document.querySelector(
+      'select[aria-label="Filtrar por situação"]'
+    );
+    const filtroOrdem = document.querySelector(
+      'select[aria-label="Ordenar"]'
+    );
+    const corpoTabela = document.getElementById("faqTableBody");
+
+    function filtrarFAQs() {
+      const termo = campoPesquisa.value.toLocaleLowerCase("pt-BR").trim();
+      const status = filtroStatus.value;
+      const linhas = Array.from(corpoTabela.querySelectorAll("tr[data-status]"));
+
+      linhas.forEach(function (linha) {
+        const texto = linha.dataset.search || "";
+        const situacao = linha.dataset.status;
+
+        const correspondeTexto = texto.includes(termo);
+        const correspondeStatus =
+          status === "Todas" ||
+          (status === "Publicadas" && situacao === "publicada") ||
+          (status === "Rascunhos" && situacao === "rascunho");
+
+        linha.hidden = !(correspondeTexto && correspondeStatus);
+      });
+
+      const visiveis = linhas.filter(linha => !linha.hidden);
+
+      if (filtroOrdem.value === "Mais antigas") {
+        visiveis.reverse().forEach(linha => corpoTabela.appendChild(linha));
+      } else {
+        linhas.filter(linha => linha.hidden)
+          .forEach(linha => corpoTabela.appendChild(linha));
+        visiveis.forEach(linha => corpoTabela.appendChild(linha));
+      }
+    }
+
+    campoPesquisa.addEventListener("input", filtrarFAQs);
+    filtroStatus.addEventListener("change", filtrarFAQs);
+    filtroOrdem.addEventListener("change", filtrarFAQs);
+  });
+  </script>
+
 </body>
 </html>
