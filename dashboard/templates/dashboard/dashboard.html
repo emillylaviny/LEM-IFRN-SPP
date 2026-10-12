@@ -1827,13 +1827,23 @@ menus.forEach(menu => {
         // Ativa o botão clicado
         this.classList.add("active");
 
-        // Descobre qual página foi clicada
-        const pagina = new URLSearchParams(window.location.search).get("pagina");
-                // Troca o conteúdo
-        if (pagina) carregarPagina(pagina);
-    });
 
+                // Descobre qual página foi clicada
+        const pagina = this.dataset.page;
+
+        // Troca o conteúdo
+        carregarPagina(pagina);
+    });
 });
+
+
+
+const paginaInicial = new URLSearchParams(window.location.search).get("pagina");
+if (paginaInicial) {
+    carregarPagina(paginaInicial);
+    const link = document.querySelector(`.nav-link[data-page="${paginaInicial}"]`);
+    if (link) link.classList.add("active");
+}
 
 
 function injetarHTML(html) {
@@ -1870,16 +1880,7 @@ function carregarPagina(pagina) {
 
         case "dashboard":
 
-            fetch("/dashboard/")
-                .then(response => response.text())
-                .then(html => {
-                    conteudoPrincipal.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar perguntas:", error);
-                });
-
-            break;
+            window.location.href = "{% url 'dashboard' %}"
         
         case "usuarios":
 
