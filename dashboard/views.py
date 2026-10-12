@@ -1,8 +1,8 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required, permission_required
-from dashboard.forms import CardMaterialForm, CadastroForm, MaterialForm
-from dashboard.models import CadastroUsuario, Materiais, LocalizacaoLab
-
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from LEM.forms import MaterialForm
+from LEM.models import Materiais, LocalizacaoLab, FAQ
 
 def usuarios(request):
     return render(request, "dashboard/usuarios.html")

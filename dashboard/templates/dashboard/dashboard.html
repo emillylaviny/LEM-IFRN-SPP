@@ -1828,11 +1828,9 @@ menus.forEach(menu => {
         this.classList.add("active");
 
         // Descobre qual página foi clicada
-        const pagina = this.dataset.page;
-
-        // Troca o conteúdo
-        carregarPagina(pagina);
-
+        const pagina = new URLSearchParams(window.location.search).get("pagina");
+                // Troca o conteúdo
+        if (pagina) carregarPagina(pagina);
     });
 
 });
