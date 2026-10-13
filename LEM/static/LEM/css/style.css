@@ -1684,6 +1684,10 @@ a.link-custom:hover {
   margin: 0;
 }
 
+.faq-hero-block {
+  height: 200px;
+}
+
 @keyframes faqAbrir {
   from {
     opacity: 0;

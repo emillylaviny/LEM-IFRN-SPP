@@ -10,6 +10,7 @@ def usuarios(request):
 def form_usuario(request):
     return render(request, "dashboard/form_usuario.html")
 
+@login_required
 def dashboard(request):
     return render(request, "dashboard/dashboard.html")
 

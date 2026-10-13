@@ -105,5 +105,10 @@ class MaterialForm(forms.ModelForm):
 class FAQForm(forms.ModelForm):
     class Meta:
         model = FAQ
-        fields = ["pergunta", "resposta", "ativa", "ordem"]
+        fields = [
+            "pergunta", 
+            "resposta", 
+            "ativa", 
+            "ordem"
+        ]
 
