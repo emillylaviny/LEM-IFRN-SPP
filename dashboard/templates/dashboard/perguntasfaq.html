@@ -314,10 +314,24 @@ body {
       </div>
 
       <footer class="panel-footer">
-        <span>3 registro(s) — página 1 de 1</span>
-        <div class="d-flex gap-2">
-          <button class="btn btn-outline-secondary btn-page" disabled>Anterior</button>
-          <button class="btn btn-outline-secondary btn-page" disabled>Próxima</button>
+        <div class="pagination c-danger">
+            <span class="step-links">
+
+                {% if faqs.has_previous %}
+                    <a href="{% url 'perguntasfaq' %}?pagina=1">&laquo; Início</a>
+                    <a href="{% url 'perguntasfaq' %}?pagina={{ faqs.previous_page_number }}">Anterior</a>
+                {% endif %}
+
+                <span class="current">
+                    Página {{ faqs.number }} de {{ faqs.paginator.num_pages }}.
+                </span>
+            </span>
+        </div>
+        <div>
+                {% if faqs.has_next %}
+                    <a href="{% url 'perguntasfaq' %}?pagina={{ faqs.next_page_number }}">Próxima</a>
+                    <a href="{% url 'perguntasfaq' %}?pagina={{ faqs.paginator.num_pages }}">Última &raquo;</a>
+                {% endif %}
         </div>
       </footer>
     </section>

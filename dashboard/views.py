@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -15,11 +16,13 @@ def dashboard(request):
     return render(request, "dashboard/dashboard.html")
 
 
-
-
 @login_required
 def perguntasfaq(request):
-    faqs = FAQ.objects.all().order_by("ordem", "id")
+    lista_faqs = FAQ.objects.all().order_by("ordem", "id")
+
+    paginator = Paginator(lista_faqs, 5)
+    numero_da_pagina = request.GET.get("pagina", 1)
+    faqs = paginator.get_page(numero_da_pagina)
 
     return render(
         request,
@@ -185,3 +188,4 @@ def remover_material(request, material_id):
 
 def etiquetas(request):
     return render(request, "dashboard/etiquetas.html")
+
