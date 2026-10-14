@@ -48,6 +48,56 @@
     </script>
    <!--fim::Inicialização do Tema-->
 
+<!-- Funcionar botão menu lateral -->
+    <style>
+  /* Animação ao esconder/mostrar */
+  .app-sidebar { transition: margin-left .25s ease; }
+
+  /* Desktop: esconde o menu e o conteúdo ocupa a largura toda */
+  @media (min-width: 992px) {
+    body.menu-recolhido .app-sidebar {
+      margin-left: calc(var(--lte-sidebar-width, 250px) * -1) !important;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener("click", function (e) {
+    const botao = e.target.closest('[data-lte-toggle="sidebar"]');
+
+    if (botao) {
+        e.preventDefault();
+        if (window.innerWidth < 992) {
+            // Celular/tablet: abre o menu por cima da página
+            document.body.classList.toggle("sidebar-open");
+        } else {
+            // Tela grande: esconde e mostra o menu
+            const recolhido = document.body.classList.toggle("menu-recolhido");
+            try { localStorage.setItem("menuRecolhido", recolhido ? "1" : "0"); } catch (err) {}
+        }
+        return;
+    }
+
+    // Celular: clicar fora do menu fecha
+    if (window.innerWidth < 992
+        && document.body.classList.contains("sidebar-open")
+        && !e.target.closest(".app-sidebar")) {
+        document.body.classList.remove("sidebar-open");
+    }
+});
+
+document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") document.body.classList.remove("sidebar-open");
+});
+
+// Lembra se o menu estava escondido ao recarregar a página
+try {
+    if (localStorage.getItem("menuRecolhido") === "1") {
+        document.body.classList.add("menu-recolhido");
+    }
+} catch (err) {}
+   </script>
+
 
     <!--início::Tags Meta de Acessibilidade-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
@@ -1572,7 +1622,7 @@
       crossorigin="anonymous"
     ></script>
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-    <script src="./js/adminlte.js"></script>
+    <!-- Linha que deveria funcionar o botao do menu <script src="./js/adminlte.js"></script> -->
     <!--end::Required Plugin(AdminLTE)-->
     <!--begin::OverlayScrollbars Configure-->
     <script>
