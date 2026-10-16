@@ -62,17 +62,6 @@ def cadastro(request):
 
 
 # @login_required
-# @permission_required("LEM.delete_cadastromateriais")
-# def remover_material(request, material_id):
-#     if request.method == "POST":
-#         material = get_object_or_404(CadastroMateriais, id=material_id)
-#         material.delete()
-#         messages.success(request, 'Material removido com sucesso!')
-#         return redirect("materiais_lista")
-#     else:
-#         return render(request, "LEM/confirmar_remocao.html")
-
-# @login_required
 # def emprestimo_solicitar(request):
 #     if request.method == "POST":
 #         form = EmprestimoForm(request.POST)
@@ -124,7 +113,7 @@ def cadastro(request):
 #     }
 #     return render(request, "LEM/minhas_visitas.html", context)
 
-# #FAQ - PERGUNTAS FREQUENTES ==========================================
+# #FAQ - PERGUNTAS FREQUENTES 
 # def faq_lista(request):
 #     context = {
 #         "faqs": FAQ.objects.filter(ativa=True),
@@ -147,15 +136,6 @@ def cadastro(request):
 #         "form": form,
 #     }
 #     return render(request, "LEM/duvidas.html", context)
-
-# views.py
-#
-# View responsável por renderizar e processar o formulário de cadastro
-# do sistema LEM. O processamento de dados (validação de servidor e
-# persistência no banco) está deixado preparado, mas comentado, para
-# que possa ser conectado posteriormente ao Model de usuário do LEM.
-
-
 
 # template - cadastro de usuario
 

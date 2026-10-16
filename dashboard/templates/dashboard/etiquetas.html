@@ -1,15 +1,4 @@
 {% block content %}
-{% comment %}
-  Parcial da tela "Geração de Etiquetas" do dashboard.
-  Carregado via fetch() dentro de #conteudoPrincipal (veja a view etiquetas).
-  A seleção, a busca, o filtro e a geração das etiquetas estão no <script> no final deste arquivo.
-  Atenção: innerHTML não executa <script>. Carregue este parcial com a função
-  injetarHTML() do dashboard.html, que recria os scripts depois da injeção.
-
-  Os registros abaixo são dados simulados. Para integrar com o banco, troque as linhas
-  fixas do <tbody> por:
-    {% for m in materiais %} ... {{ m.nome }} / {{ m.conceito_matematico }} / {{ m.codigo }} / {{ m.localizacao.nome }} ... {% endfor %}
-{% endcomment %}
 <style>
   .lem-etq {
     --le-ink: #14261e;

@@ -1,11 +1,4 @@
 {% block content %}
-{% comment %}
-  Parcial da tela "Materiais" do dashboard.
-  Carregado via fetch() dentro de #conteudoPrincipal (veja a view parcial_materiais).
-  A busca, os filtros e a paginação estão no <script> no final deste arquivo.
-  Atenção: innerHTML não executa <script>. Carregue este parcial com a função
-  injetarHTML() do dashboard.html, que recria os scripts depois da injeção.
-{% endcomment %}
 <style>
   .lem-mat {
     --lm-ink: #14261e;
@@ -174,6 +167,9 @@
     .lem-mat-btn { transition: none; }
   }
 </style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+
 
 <div class="app-content lem-mat" data-lem-materiais data-total="{{ materiais|length }}">
   <div class="container-fluid">
@@ -187,9 +183,13 @@
         <button type="button" class="lem-mat-btn" data-acao="gerar-etiquetas">
           <i class="bi bi-tag" aria-hidden="true"></i> Gerar etiquetas
         </button>
-        <a href="{% url 'novo_material' %}" class="lem-mat-btn lem-mat-btn--primary">
-            <i class="bi bi-plus-lg" aria-hidden="true"></i> Novo material
-        </a>
+        <button type="button"
+                class="lem-mat-btn lem-mat-btn--primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalNovoMaterial">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            Novo material
+        </button>
       </div>
     </div>
 
@@ -260,21 +260,236 @@
                   <span class="lem-mat-sub">{{ m.emprestados }} emprestado(s)</span>
                 </td>
                 <td>
-                  <a href="{% url 'editar_material' m.id %}"
-                    class="lem-mat-icon-btn"
-                    aria-label="Editar {{ m.nome }}"
-                    title="Editar">
-                    <i class="bi bi-pencil" aria-hidden="true"></i>
-                  </a>
-                  <a href="{% url 'remover_material' m.id %}"
-                    class="lem-mat-icon-btn lem-mat-icon-btn--danger"
-                    aria-label="Remover {{ m.nome }}"
-                    title="Remover"
-                    onclick="return confirm('Tem certeza que deseja excluir este material?');">
-                    <i class="bi bi-trash" aria-hidden="true"></i>
-                  </a>
+                  <button type="button"
+                          class="lem-mat-icon-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalVerMaterial{{ m.id }}"
+                          aria-label="Visualizar {{ m.nome }}"
+                          title="Visualizar">
+                      <i class="bi bi-eye" aria-hidden="true"></i>
+                  </button>
+
+                  <button type="button"
+                          class="lem-mat-icon-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalEditarMaterial{{ m.id }}"
+                          aria-label="Editar {{ m.nome }}"
+                          title="Editar">
+                      <i class="bi bi-pencil" aria-hidden="true"></i>
+                  </button>
+
+                  <button type="button"
+                          class="lem-mat-icon-btn lem-mat-icon-btn--danger"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalExcluirMaterial{{ m.id }}"
+                          aria-label="Excluir {{ m.nome }}"
+                          title="Excluir">
+                      <i class="bi bi-trash" aria-hidden="true"></i>
+                  </button>
                 </td>
               </tr>
+
+              <!-- Modal de Visualizar -->
+              <div class="modal fade" id="modalVerMaterial{{ m.id }}"
+                  tabindex="-1"
+                  aria-labelledby="tituloVerMaterial{{ m.id }}"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                      <div class="modal-content">
+
+                          <div class="modal-header">
+                              <h5 class="modal-title"
+                                  id="tituloVerMaterial{{ m.id }}">
+                                  Detalhes do material
+                              </h5>
+                              <button type="button" class="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Fechar"></button>
+                          </div>
+
+                          <div class="modal-body">
+
+                              <div class="row g-3">
+                                  <div class="col-md-8">
+                                      <strong>Nome:</strong>
+                                      <p>{{ m.nome|default:"Não informado" }}</p>
+                                  </div>
+
+                                  <div class="col-md-4">
+                                      <strong>Código:</strong>
+                                      <p>{{ m.codigo|default:"Não informado" }}</p>
+                                  </div>
+
+                                  <div class="col-12">
+                                      <strong>Descrição:</strong>
+                                      <p>{{ m.descricao|default:"Não informado"|linebreaksbr }}</p>
+                                  </div>
+
+                                  <div class="col-12">
+                                      <strong>Orientação de uso:</strong>
+                                      <p>{{ m.orientacao_uso|default:"Não informado"|linebreaksbr }}</p>
+                                  </div>
+
+                                  <div class="col-12">
+                                      <strong>Conceito matemático:</strong>
+                                      <p>{{ m.conceito_matematico|default:"Não informado"|linebreaksbr }}</p>
+                                  </div>
+
+                                  <div class="col-md-6">
+                                      <strong>Nível:</strong>
+                                      <p>{{ m.nivel|default:"Não informado" }}</p>
+                                  </div>
+
+                                  <div class="col-md-6">
+                                      <strong>Séries:</strong>
+                                      <p>{{ m.series|default:"Não informado" }}</p>
+                                  </div>
+
+                                  <div class="col-md-4">
+                                      <strong>Quantidade total:</strong>
+                                      <p>{{ m.quantidade }}</p>
+                                  </div>
+
+                                  <div class="col-md-4">
+                                      <strong>Disponíveis:</strong>
+                                      <p>{{ m.quantidade_disponivel }}</p>
+                                  </div>
+
+                                  <div class="col-md-4">
+                                      <strong>Localização:</strong>
+                                      <p>
+                                          {% if m.localizacao %}
+                                              {{ m.localizacao.nome }}
+                                          {% else %}
+                                              Não informada
+                                          {% endif %}
+                                      </p>
+                                  </div>
+
+                                  <div class="col-12">
+                                      <strong>Status:</strong>
+                                      <p>
+                                          {% if m.ativo %}
+                                              <span class="badge bg-success">Ativo</span>
+                                          {% else %}
+                                              <span class="badge bg-secondary">Inativo</span>
+                                          {% endif %}
+                                      </p>
+                                  </div>
+                              </div>
+
+                          </div>
+
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary"
+                                      data-bs-dismiss="modal">
+                                  Fechar
+                              </button>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+              <!-- Modal de edição -->
+              <div class="modal fade" id="modalEditarMaterial{{ m.id }}"
+                  tabindex="-1"
+                  aria-labelledby="tituloEditarMaterial{{ m.id }}"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                      <div class="modal-content">
+
+                          <div class="modal-header">
+                              <h5 class="modal-title"
+                                  id="tituloEditarMaterial{{ m.id }}">
+                                  Editar material: {{ m.nome }}
+                              </h5>
+                              <button type="button" class="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Fechar"></button>
+                          </div>
+
+                          <form method="post"
+                                action="{% url 'editar_material' m.id %}"
+                                enctype="multipart/form-data">
+
+                              {% csrf_token %}
+                              <div class="modal-body">
+                                  {% for field in m.form_edicao %}
+                                      <div class="mb-3">
+                                          <label for="{{ field.id_for_label }}" class="form-label">
+                                              {{ field.label }}
+                                          </label>
+
+                                          {{ field }}
+
+                                          {% if field.help_text %}
+                                              <div class="form-text">{{ field.help_text }}</div>
+                                          {% endif %}
+
+                                          {% for error in field.errors %}
+                                              <div class="text-danger">{{ error }}</div>
+                                          {% endfor %}
+                                      </div>
+                                  {% endfor %}
+
+                              </div>
+
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary"
+                                          data-bs-dismiss="modal">
+                                      Cancelar
+                                  </button>
+                                  <button type="submit" class="btn btn-primary">
+                                      Salvar alterações
+                                  </button>
+                              </div>
+                          </form>
+
+                      </div>
+                  </div>
+              </div>
+              <!-- Modal de exclusão -->
+              <div class="modal fade" id="modalExcluirMaterial{{ m.id }}"
+                  tabindex="-1"
+                  aria-labelledby="tituloExcluirMaterial{{ m.id }}"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+
+                          <div class="modal-header">
+                              <h5 class="modal-title"
+                                  id="tituloExcluirMaterial{{ m.id }}">
+                                  Excluir material
+                              </h5>
+                              <button type="button" class="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Fechar"></button>
+                          </div>
+
+                          <div class="modal-body">
+                              Tem certeza de que deseja excluir
+                              <strong>{{ m.nome }}</strong>?
+                              Esta ação não pode ser desfeita.
+                          </div>
+
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary"
+                                      data-bs-dismiss="modal">
+                                  Cancelar
+                              </button>
+
+                              <form method="post"
+                                    action="{% url 'remover_material' m.id %}">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn btn-danger">
+                                      Excluir material
+                                  </button>
+                              </form>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
             {% endfor %}
             <tr class="lem-mat-empty" data-mat-vazio hidden>
               <td colspan="7"></td>
@@ -283,18 +498,83 @@
         </table>
       </div>
 
-      <div class="lem-mat-footer">
-        <span data-mat-contagem>{{ materiais|length }} registro(s) — página 1 de 1</span>
-        <div class="lem-mat-pager">
-          <button type="button" class="lem-mat-page-btn" data-mat-anterior disabled>Anterior</button>
-          <button type="button" class="lem-mat-page-btn" data-mat-proxima disabled>Próxima</button>
-        </div>
-      </div>
+      <footer class="panel-footer">
+          <div class="pagination c-danger">
+              <span class="step-links">
+
+                  {% if materiais.has_previous %}
+                      <a href="{% url 'materiais' %}?pagina=1">
+                          &laquo; Início
+                      </a>
+
+                      <a href="{% url 'materiais' %}?pagina={{ materiais.previous_page_number }}">
+                          Anterior
+                      </a>
+                  {% endif %}
+
+                  <span class="current">
+                      Página {{ materiais.number }}
+                      de {{ materiais.paginator.num_pages }}.
+                  </span>
+
+                  {% if materiais.has_next %}
+                      <a href="{% url 'materiais' %}?pagina={{ materiais.next_page_number }}">
+                          Próxima
+                      </a>
+
+                      <a href="{% url 'materiais' %}?pagina={{ materiais.paginator.num_pages }}">
+                          Última &raquo;
+                      </a>
+                  {% endif %}
+
+              </span>
+          </div>
+      </footer>
 
     </div>
   </div>
 </div>
 
+<!-- Modal de Novo Material -->
+<div class="modal fade" id="modalNovoMaterial"
+     tabindex="-1" aria-labelledby="tituloNovoMaterial"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+
+              <div class="modal-header">
+                Cadastro de Materias 
+              </div>
+
+              <form method="post"
+                    action="{% url 'novo_material' %}"
+                    enctype="multipart/form-data">
+
+                  {% csrf_token %}
+
+                  <div class="modal-body overflow-auto" style="max-height: 60vh;">
+                      {{ form_novo.as_p }}
+                  </div>
+
+                  <div class="modal-footer">
+                      <button type="button"
+                              class="btn btn-secondary"
+                              data-bs-dismiss="modal">
+                          Cancelar
+                      </button>
+
+                      <button type="submit" class="btn btn-primary">
+                          Salvar material
+                      </button>
+                  </div>
+
+              </form>
+
+          </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 (function () {
     "use strict";
@@ -388,4 +668,5 @@
     });
 })();
 </script>
+
 {% endblock %}

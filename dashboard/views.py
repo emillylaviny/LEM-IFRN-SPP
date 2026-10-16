@@ -85,30 +85,29 @@ def faq_excluir(request, id):
 
 
 
+@login_required
 def materiais(request):
-    lista_materiais = Materiais.objects.select_related(
-        "localizacao"
-    ).all()
+    materiais = Materiais.objects.all().order_by("nome")
+    form = MaterialForm()
+    
+    paginator = Paginator(materiais, 5)
+    numero_da_pagina = request.GET.get("pagina", 1)
+    materiais = paginator.get_page(numero_da_pagina)
+    
+    return render(
+        request,
+        "dashboard/materiais.html",
+        {
+            "materiais": materiais,
+            "form_novo": form,
+        }
+    )
 
-    context = {
-        "materiais": lista_materiais,
-        "niveis": lista_materiais
-            .exclude(nivel="")
-            .values_list("nivel", flat=True)
-            .distinct(),
-        "localizacoes": LocalizacaoLab.objects.all(),
-    }
-
-    return render(request, "dashboard/materiais.html", context)
 
 @login_required
-# @permission_required("LEM.add_cadastromateriais")
 def novo_material(request):
     if request.method == "POST":
-        form = MaterialForm(
-            request.POST,
-            request.FILES
-        )
+        form = MaterialForm(request.POST, request.FILES)
 
         if form.is_valid():
             form.save()
@@ -116,21 +115,16 @@ def novo_material(request):
                 request,
                 "Material cadastrado com sucesso!"
             )
-            return redirect("materiais")
-    else:
-        form = MaterialForm()
+        else:
+            messages.error(
+                request,
+                "Não foi possível cadastrar. Verifique os campos."
+            )
 
-    return render(
-        request,
-        "dashboard/form_material.html",
-        {
-            "form": form,
-            "titulo": "Cadastrar material",
-        }
-    )
+    return redirect("materiais")
+
 
 @login_required
-# @permission_required("LEM.change_cadastromateriais")
 def editar_material(request, material_id):
     material = get_object_or_404(
         Materiais,
@@ -150,22 +144,16 @@ def editar_material(request, material_id):
                 request,
                 "Material atualizado com sucesso!"
             )
-            return redirect("materiais")
-    else:
-        form = MaterialForm(instance=material)
+        else:
+            messages.error(
+                request,
+                "Não foi possível atualizar. Verifique os campos."
+            )
 
-    return render(
-        request,
-        "dashboard/form_material.html",
-        {
-            "form": form,
-            "material": material,
-            "titulo": "Editar material",
-        }
-    )
+    return redirect("materiais")
+
 
 @login_required
-# @permission_required("LEM.change_cadastromateriais")
 def remover_material(request, material_id):
     material = get_object_or_404(
         Materiais,
@@ -176,15 +164,10 @@ def remover_material(request, material_id):
         material.delete()
         messages.success(
             request,
-            "Material removido com sucesso!"
+            "Material excluído com sucesso!"
         )
-        return redirect("materiais")
 
-    return render(
-        request,
-        "dashboard/confirmar_remocao.html",
-        {"material": material}
-    )
+    return redirect("materiais")
 
 def etiquetas(request):
     return render(request, "dashboard/etiquetas.html")
