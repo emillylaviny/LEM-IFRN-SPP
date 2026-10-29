@@ -108,6 +108,12 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "home"
 
+from django.contrib.messages import constants as messages_constants
+MESSAGE_TAGS = {
+    messages_constants.DEBUG: 'secondary',
+    messages_constants.ERROR: 'danger',
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
