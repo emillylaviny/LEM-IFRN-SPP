@@ -67,6 +67,7 @@ class LoginLEMView(LoginView):
 
 class LogoutLEMView(LogoutView):
     def post(self, request, *args, **kwargs):
+        print(">>> LOGOUT LEM RODOU")
         response = super().post(request, *args, **kwargs)
         messages.info(request, 'Você saiu da sua conta. Até logo!')
         return response

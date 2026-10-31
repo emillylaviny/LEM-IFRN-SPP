@@ -2230,3 +2230,13 @@ body {
     max-width: 100%;
   }
 }
+
+/* Mensagens do Django na base.html: ficam logo abaixo do navbar fixo (z-index 1000) */
+.lem-messages.container {
+  position: fixed;
+  top: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  margin-top: 0 !important;
+}
