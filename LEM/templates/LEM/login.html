@@ -14,6 +14,42 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var campo = document.querySelector('input[name="username"]');
+
+    if (!campo) {
+      console.error('Máscara de CPF: campo de login não encontrado');
+      return;
+    }
+    console.log('Máscara de CPF carregada');
+
+    function formatar(valor) {
+      var digitos = valor.replace(/\D/g, '');
+
+      // Tem letra ou @: é e-mail. Tira a pontuação que a máscara pôs na parte numérica inicial.
+      if (/[^\d.\-\s]/.test(valor)) {
+        return valor.replace(/^[\d.\-\s]+/, function (parte) {
+          return parte.replace(/\D/g, '');
+        });
+      }
+
+      // Mais de 11 dígitos: não é CPF, deixa só os números.
+      if (digitos.length > 11) { return digitos; }
+
+      if (digitos.length > 9) return digitos.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+      if (digitos.length > 6) return digitos.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+      if (digitos.length > 3) return digitos.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+      return digitos;
+    }
+
+    campo.addEventListener('input', function () {
+      var novo = formatar(campo.value);
+      if (novo !== campo.value) { campo.value = novo; }
+    });
+  });
+</script>
+
 <body>
     <div class="row g-0">
         
@@ -32,8 +68,10 @@
                 <form method="POST" action="{% url 'login' %}">
                     {% csrf_token %}
                     <div class="mb-4">
-                        <label for="usuario" class="form-label form-label-custom">Usuário:</label>
-                        <input type="text" class="form-control input-underline" id="usuario" name="username" required> 
+                        <label for="usuario" class="form-label form-label-custom">CPF ou e-mail:</label>
+                        <input type="text" class="form-control input-underline" id="usuario" name="username"
+                        oninput="if (/^\d+$/.test(this.value)) this.value = this.value.slice(0, 11)"
+                        required autocomplete="username" placeholder="000.000.000-00 ou nome@email.com">
                     </div>
 
                     <div class="mb-3">

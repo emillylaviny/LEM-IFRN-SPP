@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
-from .forms import CardMaterialForm, CadastroForm, MaterialForm
+from .forms import CardMaterialForm, CadastroForm, MaterialForm, LoginForm
 from .models import Card, CadastroUsuario, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, HistoricoAlteracao, FAQ
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
@@ -26,8 +26,7 @@ def cadastro(request):
             try:
                 form.save()
             except IntegrityError:
-                # Paliativo: o username é gerado a partir do primeiro nome (ver CadastroForm.save).
-                messages.error(request, 'Não foi possível concluir o cadastro: já existe um usuário com esse primeiro nome. Procure a equipe do LEM.')
+                messages.error(request, 'Não foi possível concluir o cadastro. Verifique se o CPF e o e-mail já não foram cadastrados.')
             else:
                 messages.success(request, 'Cadastro realizado com sucesso! Faça login para continuar.')
                 return redirect('login')
@@ -36,7 +35,7 @@ def cadastro(request):
             for erros in form.errors.values():
                 for erro in erros:
                     messages.error(request, erro)
-    
+
     else:
         form = CadastroForm()
 
@@ -48,9 +47,9 @@ def dashboard(request):
 
 class LoginLEMView(LoginView):
     template_name = 'LEM/login.html'
+    authentication_form = LoginForm
 
     def get(self, request, *args, **kwargs):
-        # Chegou aqui redirecionado por @login_required (?next=/dashboard/)
         if request.GET.get(self.redirect_field_name) and not request.user.is_authenticated:
             messages.warning(request, 'Faça login para acessar essa página.')
         return super().get(request, *args, **kwargs)
@@ -61,16 +60,15 @@ class LoginLEMView(LoginView):
         return response
 
     def form_invalid(self, form):
-        messages.error(self.request, 'Usuário ou senha incorretos. Verifique os dados e tente novamente.')
+        messages.error(self.request, 'CPF/e-mail ou senha incorretos. Verifique os dados e tente novamente.')
         return super().form_invalid(form)
-
 
 class LogoutLEMView(LogoutView):
     def post(self, request, *args, **kwargs):
-        print(">>> LOGOUT LEM RODOU")
         response = super().post(request, *args, **kwargs)
         messages.info(request, 'Você saiu da sua conta. Até logo!')
         return response
+
 
 
 

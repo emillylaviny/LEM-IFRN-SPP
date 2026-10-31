@@ -1,12 +1,14 @@
+import re
+import uuid
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Materiais, User, FAQ
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
 
-
 class CadastroForm(UserCreationForm):
     username = forms.CharField(required=False, widget=forms.HiddenInput())
+    email = forms.EmailField(label='E-mail') 
 
     class Meta:
         model = User
@@ -18,15 +20,52 @@ class CadastroForm(UserCreationForm):
             'vinculo_profissional',
         ]
 
+    def clean_cpf(self):
+        cpf = re.sub(r'\D', '', self.cleaned_data['cpf']) 
+
+        if len(cpf) != 11:
+            raise forms.ValidationError('Informe um CPF com 11 dígitos.')
+
+        if User.objects.filter(cpf=cpf).exists():
+            raise forms.ValidationError('Já existe um usuário cadastrado com este CPF.')
+
+        return cpf
+
+    def clean_email(self):
+        email = self.cleaned_data['email'].strip().lower()
+
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError('Já existe um usuário cadastrado com este e-mail.')
+
+        return email
+
     def save(self, commit=True):
         user = super().save(commit=False)
 
-        user.username = self.cleaned_data['email']
+        user.username = uuid.uuid4().hex 
 
         if commit:
             user.save()
 
         return user
+
+class LoginForm(AuthenticationForm):
+    """Login por CPF ou e-mail"""
+
+    def clean(self):
+        identificador = (self.cleaned_data.get('username') or '').strip()
+
+        if identificador:
+            if '@' in identificador:
+                usuarios = User.objects.filter(email__iexact=identificador)
+            else:
+                cpf = re.sub(r'\D', '', identificador)   # aceita com ou sem pontos
+                usuarios = User.objects.filter(cpf=cpf) if cpf else User.objects.none()
+
+            if usuarios.count() == 1:
+                self.cleaned_data['username'] = usuarios.first().username
+
+        return super().clean()
 
 class CardMaterialForm(forms.ModelForm):
     class Meta:
