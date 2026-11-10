@@ -19,7 +19,7 @@
 <body>
 
 <!-- Barra de navegação -->
-<nav class="navbar navbar-expand-lg bg-white border-bottom py-2 px-4">
+<nav class="navbar navbar-expand-lg bg-white border-bottom py-2 px-4 ">
     <div class="container-fluid">
 
         <!-- Logo à esquerda -->
@@ -38,22 +38,22 @@
             <!-- Links centralizados -->
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-4 text-center fw-semibold">
                 <li class="nav-item">
-                    <a class="nav-link"  href="#home">HOME</a>
+                    <a class="nav-link"  href="#home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#laboratorio">LABORATÓRIO</a>
+                    <a class="nav-link" href="#laboratorio">Laboratório</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#materiais">MATERIAIS</a>
+                    <a class="nav-link" href="#materiais">Materiais</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#funcionamento">FUNCIONAMENTO</a>
+                    <a class="nav-link" href="#funcionamento">Funcionamento</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#duvidas">DÚVIDAS</a>
+                    <a class="nav-link" href="#duvidas">Dúvidas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#conatos">CONTATOS</a>
+                    <a class="nav-link" href="#conatos">Contatos</a>
                 </li>
             </ul>
 
@@ -69,7 +69,7 @@
                     {% csrf_token %}
                     <button type="submit"
                             class="btn btn-entrar d-flex align-items-center justify-content-center gap-1">
-                        <i class="bi bi-box-arrow-right"></i> SAIR
+                        <i class="bi bi-box-arrow-right"></i> Sair
                     </button>
                 </form>
 
@@ -77,7 +77,7 @@
 
                 <a href="{% url 'login' %}"
                   class="btn btn-entrar d-flex align-items-center justify-content-center gap-1">
-                    <i class="bi bi-box-arrow-in-right"></i> ENTRAR
+                    <i class="bi bi-box-arrow-in-right"></i> Entrar
                 </a>
 
             {% endif %}
@@ -122,6 +122,8 @@
           <li><a href="#home">Home</a></li>
           <li><a href="#laboratorio">Laboratório</a></li>
           <li><a href="#materiais">Materiais</a></li>
+          <li><a href="#funcionamento">Funcionamento</a></li>
+          <li><a href="#duvidas">Dúvidas</a></li>
           <li><a href="#">Contato</a></li>
         </ul>
       </div>
