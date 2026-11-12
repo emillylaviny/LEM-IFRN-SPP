@@ -10,8 +10,23 @@ class Card(models.Model):
     def __str__(self):
         return self.titulo
 
+class Instituicao(models.Model):
+    nome = models.CharField(max_length=150, unique=True)
+    ativa = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["nome"]
+        verbose_name = "Instituição"
+        verbose_name_plural = "Instituições"
+
+    def __str__(self):
+        return self.nome
+
 class User(AbstractUser):
-    vinculo_profissional = models.CharField(max_length=300)
+    vinculo_profissional = models.CharField(max_length=300, blank=True)  # antigo, só na transição
+    vinculos_profissionais = models.ManyToManyField(
+        Instituicao, blank=True, related_name="profissionais"
+    )
     cpf = models.CharField(max_length=14, unique=True)
 
 #Cadastros 
@@ -37,10 +52,10 @@ class CadastroUsuario(models.Model):
         ordering = ["nome_completo"]
 
     def __str__(self):
-        return self.nome
+        return self.nome_completo
 
 class Escola(models.Model):
-    usario = models.ForeignKey(CadastroUsuario, on_delete=models.SET_NULL, null=True, blank=True, related_name="escolas")
+    usuario = models.ForeignKey(CadastroUsuario, on_delete=models.SET_NULL, null=True, blank=True, related_name="escolas")
     nome = models.CharField(max_length=100, blank=True)
     cidade = models.CharField(max_length=100, blank=True)
     declaracao = models.CharField(max_length=100, blank=True)
@@ -198,3 +213,4 @@ class HistoricoAlteracao(models.Model):
 
     def __str__(self):
         return f"{self.acao} - {self.modulo} - {self.data_hora:%d/%m/%Y %H:%M}"
+

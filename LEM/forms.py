@@ -6,9 +6,24 @@ from .models import Materiais, User, FAQ
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
 
+def cpf_valido(cpf):
+    # Rejeita sequências como 111.111.111-11
+    if len(cpf) != 11 or cpf == cpf[0] * 11:
+        return False
+    for i in (9, 10):
+        soma = sum(int(cpf[n]) * (i + 1 - n) for n in range(i))
+        digito = (soma * 10 % 11) % 10
+        if digito != int(cpf[i]):
+            return False
+    return True
+
 class CadastroForm(UserCreationForm):
     username = forms.CharField(required=False, widget=forms.HiddenInput())
-    email = forms.EmailField(label='E-mail') 
+    cpf = forms.CharField(label='CPF', max_length=14)
+    email = forms.EmailField(label='E-mail', error_messages={
+        'invalid': 'Digite um e-mail válido, por exemplo: nome@exemplo.com',
+        'required': 'Informe seu e-mail.',
+    })
 
     class Meta:
         model = User
@@ -23,8 +38,8 @@ class CadastroForm(UserCreationForm):
     def clean_cpf(self):
         cpf = re.sub(r'\D', '', self.cleaned_data['cpf']) 
 
-        if len(cpf) != 11:
-            raise forms.ValidationError('Informe um CPF com 11 dígitos.')
+        if not cpf_valido(cpf):
+            raise forms.ValidationError('CPF inválido.')
 
         if User.objects.filter(cpf=cpf).exists():
             raise forms.ValidationError('Já existe um usuário cadastrado com este CPF.')
