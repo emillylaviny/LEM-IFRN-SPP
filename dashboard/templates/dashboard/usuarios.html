@@ -190,8 +190,11 @@
         <p class="lem-usr-subtitle">Consulte, cadastre e mantenha os perfis dos usuários da plataforma.</p>
       </div>
       <div class="lem-usr-actions">
-        <button type="button" class="lem-usr-btn lem-usr-btn--primary" data-acao="novo-usuario">
-          <i class="bi bi-person-plus" aria-hidden="true"></i> Novo usuário
+        <button type="button"
+                class="lem-usr-btn lem-usr-btn--primary"
+                data-acao="novo-usuario">
+            <i class="bi bi-person-plus" aria-hidden="true"></i>
+            Novo usuário
         </button>
       </div>
     </div>
@@ -259,15 +262,29 @@
                           aria-label="Ver {{ u.nome_completo }}" title="Ver">
                     <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
-                  <button type="button" class="lem-usr-icon-btn" data-acao="editar" data-id="{{ u.id }}"
-                          aria-label="Editar {{ u.nome_completo }}" title="Editar">
-                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                  <button type="button"
+                          class="lem-usr-icon-btn"
+                          data-acao="editar"
+                          data-id="{{ u.id }}"
+                          title="Editar"
+                          aria-label="Editar {{ u.nome_completo }}">
+                      <i class="bi bi-pencil"></i>
                   </button>
-                  <button type="button" class="lem-usr-icon-btn lem-usr-icon-btn--danger" data-acao="remover" data-id="{{ u.id }}"
-                          aria-label="Remover {{ u.nome_completo }}" title="Remover">
-                    <i class="bi bi-trash" aria-hidden="true"></i>
-                  </button>
-                </td>
+                  <form method="POST"
+                        action="{% url 'usuario_excluir' u.id %}"
+                        style="display: inline;"
+                        onsubmit="return confirm('Tem certeza que deseja excluir este usuário?');">
+
+                      {% csrf_token %}
+
+                      <button type="submit"
+                              class="lem-usr-icon-btn lem-usr-icon-btn--danger"
+                              title="Excluir"
+                              aria-label="Excluir {{ u.nome_completo }}">
+                          <i class="bi bi-trash" aria-hidden="true"></i>
+                      </button>
+
+                  </form>
               </tr>
             {% endfor %}
             <tr class="lem-usr-empty" data-usr-vazio hidden>

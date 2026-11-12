@@ -370,7 +370,7 @@ try {
               id="navigation"
             >
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-page="dashboard">
                   <i class="nav-icon bi bi-speedometer"></i>
                   <p>
                     Dashboard
@@ -1441,7 +1441,7 @@ try {
                   <div class="card-footer p-0">
                     <ul class="nav nav-pills flex-column">
                       <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-page="dashboard">
                           United States of America
                           <span class="float-end text-danger">
                             <i class="bi bi-arrow-down fs-7"></i>
@@ -1450,7 +1450,7 @@ try {
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-page="dashboard">
                           India
                           <span class="float-end text-success">
                             <i class="bi bi-arrow-up fs-7"></i> 4%
@@ -1458,7 +1458,7 @@ try {
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" data-page="dashboard">
                           China
                           <span class="float-end text-info">
                             <i class="bi bi-arrow-left fs-7"></i> 0%
@@ -1716,6 +1716,7 @@ try {
       // - MONTHLY SALES CHART -
       //-----------------------
 
+
       const sales_chart_options = {
         series: [
           {
@@ -1857,298 +1858,271 @@ try {
       // - END PIE CHART -
       //-----------------
     </script>
-      <script>
+    <script>
+
 
 const conteudoPrincipal = document.getElementById("conteudoPrincipal");
 
 const menus = document.querySelectorAll(".nav-link[data-page]");
 
-
-menus.forEach(menu => {
-
-    menu.addEventListener("click", function(event) {
-
-        event.preventDefault();
-
-        // Remove o estado ativo de todos
-        menus.forEach(item => {
-            item.classList.remove("active");
-        });
-
-        // Ativa o botão clicado
-        this.classList.add("active");
-
-
-                // Descobre qual página foi clicada
-        const pagina = this.dataset.page;
-
-        // Troca o conteúdo
-        carregarPagina(pagina);
-    });
-});
-
-
-
-const paginaInicial = new URLSearchParams(window.location.search).get("pagina");
-if (paginaInicial) {
-    carregarPagina(paginaInicial);
-    const link = document.querySelector(`.nav-link[data-page="${paginaInicial}"]`);
-    if (link) link.classList.add("active");
-}
-
-
+// Insere o HTML e executa os scripts das páginas carregadas
 function injetarHTML(html) {
     conteudoPrincipal.innerHTML = html;
+
     conteudoPrincipal.querySelectorAll("script").forEach(scriptAntigo => {
         const scriptNovo = document.createElement("script");
-        Array.from(scriptAntigo.attributes).forEach(a => scriptNovo.setAttribute(a.name, a.value));
+
+        Array.from(scriptAntigo.attributes).forEach(atributo => {
+            scriptNovo.setAttribute(atributo.name, atributo.value);
+        });
+
         scriptNovo.textContent = scriptAntigo.textContent;
         scriptAntigo.replaceWith(scriptNovo);
     });
 }
 
-document.addEventListener("click", function (e) {
-    const botao = e.target.closest("[data-acao]");
-    if (!botao) return;
+// Carrega uma página dentro do Dashboard
+function carregarConteudo(url) {
+    fetch(url, {
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erro HTTP: " + response.status);
+        }
 
-    const rotas = {
-        "novo-usuario": "/usuarios/novo/",
-        "voltar-usuarios": "/usuarios/"
-    };
-    const url = rotas[botao.dataset.acao];
-    if (!url) return;
+        return response.text();
+    })
+    .then(html => {
+        injetarHTML(html);
+    })
+    .catch(error => {
+        console.error("Erro ao carregar página:", error);
+    });
+}
 
-    fetch(url)
-        .then(response => response.text())
-        .then(injetarHTML)
-        .catch(error => console.error("Erro ao carregar tela:", error));
+// Navegação do menu lateral
+menus.forEach(menu => {
+    menu.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        menus.forEach(item => item.classList.remove("active"));
+        this.classList.add("active");
+
+        carregarPagina(this.dataset.page);
+    });
 });
 
+// Abre uma página solicitada pela URL
+const paginaInicial = new URLSearchParams(window.location.search).get("pagina");
 
+if (paginaInicial) {
+    carregarPagina(paginaInicial);
+
+    const link = document.querySelector(
+        `.nav-link[data-page="${paginaInicial}"]`
+    );
+
+    if (link) {
+        link.classList.add("active");
+    }
+}
+
+// Cadastro, edição e retorno à lista de usuários
+document.addEventListener("click", function(e) {
+    const botao = e.target.closest("[data-acao]");
+
+    if (!botao) return;
+
+    e.preventDefault();
+
+    const acao = botao.dataset.acao;
+    let url = "";
+
+    if (acao === "novo-usuario") {
+        url = "/usuarios/formulario/";
+    } else if (acao === "editar") {
+        const id = botao.dataset.id;
+        url = `/usuarios/editar/${id}/`;
+    } else if (acao === "voltar-usuarios") {
+        url = "/usuarios/";
+    }
+
+    if (url) {
+        carregarConteudo(url);
+    }
+});
+
+// Envio do formulário de usuário
+document.addEventListener("submit", async function(e) {
+    const form = e.target.closest("form[data-form-usuario]");
+
+    if (!form) return;
+
+    e.preventDefault();
+
+    const botao = form.querySelector('button[type="submit"]');
+
+    if (botao) {
+        botao.disabled = true;
+    }
+
+    try {
+        const response = await fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        });
+
+        const html = await response.text();
+
+        if (!response.ok) {
+            console.error("Resposta do servidor:", html);
+            throw new Error("Erro HTTP: " + response.status);
+        }
+
+        injetarHTML(html);
+
+    } catch (error) {
+        console.error("Erro ao cadastrar ou editar usuário:", error);
+
+        if (botao) {
+            botao.disabled = false;
+        }
+    }
+});
+
+// Navegação das páginas
 function carregarPagina(pagina) {
-    
+
     switch (pagina) {
 
         case "dashboard":
+            window.location.href = "{% url 'dashboard' %}";
+            break;
 
-            window.location.href = "{% url 'dashboard' %}"
-        
         case "usuarios":
-
-            fetch("/usuarios/")
-                .then(response => response.text())
-                .then(html => {
-                    conteudoPrincipal.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar perguntas:", error);
-                });
-
+            carregarConteudo("/usuarios/");
             break;
 
         case "etiquetas":
-          fetch("/etiquetas/")
-        .then(response => {
-            if (!response.ok) throw new Error("Erro ao carregar etiquetas.");
-            return response.text();
-        })
-        .then(html => {
-            conteudoPrincipal.innerHTML = html;
-
-            // innerHTML não executa <script>, então recriamos cada um
-            conteudoPrincipal.querySelectorAll("script").forEach(scriptAntigo => {
-                const scriptNovo = document.createElement("script");
-                Array.from(scriptAntigo.attributes).forEach(a => scriptNovo.setAttribute(a.name, a.value));
-                scriptNovo.textContent = scriptAntigo.textContent;
-                scriptAntigo.replaceWith(scriptNovo);
-            });
-        })
-        .catch(error => console.error("Erro ao carregar etiquetas:", error));
-    break;
-            break;
-
-        case "localizacao":
-
-            conteudoPrincipal.innerHTML = `
-
-                <div class="app-content">
-
-                    <div class="container-fluid">
-
-                        <h1>Localização</h1>
-
-                        <p>
-                            Conteúdo da página de localização.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            break;
-
-
-        case "emprestimos":
-
-            conteudoPrincipal.innerHTML = `
-
-                <div class="app-content">
-
-                    <div class="container-fluid">
-
-                        <h1>Empréstimos</h1>
-
-                        <p>
-                            Conteúdo da página de empréstimos.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            break;
-
-
-        case "solicitacoes":
-
-            conteudoPrincipal.innerHTML = `
-
-                <div class="app-content">
-
-                    <div class="container-fluid">
-
-                        <h1>Solicitações</h1>
-
-                        <p>
-                            Conteúdo da página de solicitações.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            break;
-
-
-        case "visitas":
-
-            conteudoPrincipal.innerHTML = `
-
-                <div class="app-content">
-
-                    <div class="container-fluid">
-
-                        <h1>Visitas</h1>
-
-                        <p>
-                            Conteúdo da página de visitas.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            break;
-
-
-        case "perguntas":
-
-            fetch("/perguntasfaq/")
-                .then(response => response.text())
-                .then(html => {
-                    conteudoPrincipal.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar perguntas:", error);
-                });
-
+            carregarConteudo("/etiquetas/");
             break;
 
         case "materiais":
-            fetch("/materiais/")
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Erro ao carregar materiais.");
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    conteudoPrincipal.innerHTML = html;
-
-                    const scripts = conteudoPrincipal.querySelectorAll("script");
-
-                    scripts.forEach(scriptAntigo => {
-                        const scriptNovo = document.createElement("script");
-
-                        Array.from(scriptAntigo.attributes).forEach(atributo => {
-                            scriptNovo.setAttribute(atributo.name, atributo.value);
-                        });
-
-                        scriptNovo.textContent = scriptAntigo.textContent;
-                        scriptAntigo.replaceWith(scriptNovo);
-                    });
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar materiais:", error);
-                });
+            carregarConteudo("/materiais/");
             break;
-        
-        case "Informações do Laboratório":
 
+        case "perguntas":
+            carregarConteudo("/perguntasfaq/");
+            break;
+
+        case "localizacao":
             conteudoPrincipal.innerHTML = `
-
                 <div class="app-content">
-
                     <div class="container-fluid">
-
-                        <h1>Informações do Laboratório</h1>
-
-                        <p>
-                            Conteúdo da página de localização.
-                        </p>
-
+                        <h1>Localização</h1>
+                        <p>Conteúdo da página de localização.</p>
                     </div>
-
                 </div>
-
             `;
+            break;
 
+        case "emprestimos":
+            conteudoPrincipal.innerHTML = `
+                <div class="app-content">
+                    <div class="container-fluid">
+                        <h1>Empréstimos</h1>
+                        <p>Conteúdo da página de empréstimos.</p>
+                    </div>
+                </div>
+            `;
+            break;
+
+        case "solicitacoes":
+            conteudoPrincipal.innerHTML = `
+                <div class="app-content">
+                    <div class="container-fluid">
+                        <h1>Solicitações</h1>
+                        <p>Conteúdo da página de solicitações.</p>
+                    </div>
+                </div>
+            `;
+            break;
+
+        case "visitas":
+            conteudoPrincipal.innerHTML = `
+                <div class="app-content">
+                    <div class="container-fluid">
+                        <h1>Visitas</h1>
+                        <p>Conteúdo da página de visitas.</p>
+                    </div>
+                </div>
+            `;
+            break;
+
+        case "Informações do Laboratório":
+            conteudoPrincipal.innerHTML = `
+                <div class="app-content">
+                    <div class="container-fluid">
+                        <h1>Informações do Laboratório</h1>
+                        <p>Conteúdo das informações do laboratório.</p>
+                    </div>
+                </div>
+            `;
             break;
 
         case "Horários de funcionamento":
-
             conteudoPrincipal.innerHTML = `
-
                 <div class="app-content">
-
                     <div class="container-fluid">
-
                         <h1>Horários de Funcionamento</h1>
-
-                        <p>
-                            Conteúdo da página de localização.
-                        </p>
-
+                        <p>Conteúdo dos horários de funcionamento.</p>
                     </div>
-
                 </div>
-
             `;
-
             break;
-
-        
     }
-
 }
+
+document.addEventListener("submit", function(e) {
+    const form = e.target.closest("form[data-form-usuario]");
+
+    if (!form) return;
+
+    e.preventDefault();
+
+    const botao = form.querySelector('button[type="submit"]');
+    if (botao) botao.disabled = true;
+
+    fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    })
+    .then(async response => {
+        const html = await response.text();
+
+        if (!response.ok) {
+            throw new Error("Erro HTTP " + response.status + ": " + html);
+        }
+
+        return html;
+    })
+    .then(html => {
+        injetarHTML(html);
+    })
+    .catch(error => {
+        console.error("Erro ao cadastrar usuário:", error);
+        if (botao) botao.disabled = false;
+    });
+});
 
 </script>
     <!--end::Script-->
