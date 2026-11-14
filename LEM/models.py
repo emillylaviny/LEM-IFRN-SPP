@@ -12,10 +12,6 @@ class Card(models.Model):
 
 class User(AbstractUser):
     vinculo_profissional = models.CharField(max_length=300)
-    cpf = models.CharField(max_length=14, unique=True)
-
-#Cadastros 
-class CadastroUsuario(models.Model):
     nome_completo = models.CharField(max_length=300)
     apelido = models.CharField(max_length=300, blank=True)
     cpf = models.CharField(max_length=14, unique=True)
@@ -37,10 +33,18 @@ class CadastroUsuario(models.Model):
         ordering = ["nome_completo"]
 
     def __str__(self):
-        return self.nome
+        return self.nome_completo
+    
+    @property
+    def iniciais(self):
+        nomes = self.nome_completo.split()
+        return "".join(nome[0] for nome in nomes[:2]).upper()
+
+
+#Cadastros 
 
 class Escola(models.Model):
-    usario = models.ForeignKey(CadastroUsuario, on_delete=models.SET_NULL, null=True, blank=True, related_name="escolas")
+    usario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="escolas")
     nome = models.CharField(max_length=100, blank=True)
     cidade = models.CharField(max_length=100, blank=True)
     declaracao = models.CharField(max_length=100, blank=True)
@@ -100,7 +104,7 @@ class Emprestimo(models.Model):
         ("ATRASADO", "Atrasado"),
         ("CANCELADO", "Cancelado"),
     ]
-    professor = models.ForeignKey(CadastroUsuario, on_delete=models.PROTECT, related_name="emprestimos")
+    professor = models.ForeignKey(User, on_delete=models.PROTECT, related_name="emprestimos")
     material = models.ForeignKey(Materiais, on_delete=models.PROTECT, related_name="emprestimos")
     quantidade = models.PositiveIntegerField(default=1)
     data_solicitacao = models.DateTimeField(auto_now_add=True)
@@ -127,7 +131,7 @@ class Visita(models.Model):
         ("REALIZADA", "Realizada"),
         ("CANCELADA", "Cancelada"),
     ]
-    professor = models.ForeignKey(CadastroUsuario, on_delete=models.PROTECT, related_name="visitas")
+    professor = models.ForeignKey(User, on_delete=models.PROTECT, related_name="visitas")
     data = models.DateField()
     horario = models.TimeField()
     quantidade_visitantes = models.PositiveIntegerField(default=1)
@@ -150,7 +154,7 @@ class Duvida(models.Model):
         ("RESPONDIDA", "Respondida"),
         ("FAQ", "Pergunta frequente"),
     ]
-    usuario = models.ForeignKey(CadastroUsuario, on_delete=models.CASCADE, related_name="duvidas")
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="duvidas")
     pergunta = models.TextField()
     resposta = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS, default="PENDENTE")
@@ -163,7 +167,7 @@ class Duvida(models.Model):
         verbose_name_plural = "Dúvidas"
 
     def __str__(self):
-        return f"Dúvida de {self.usuario.nome}"
+        return f"Dúvida de {self.usuario.nome_completo}"
 
 # Iniciando CRUD de perguntas fequentes
 
@@ -184,7 +188,7 @@ class FAQ(models.Model):
         return self.pergunta
 
 class HistoricoAlteracao(models.Model):
-    administrador = models.ForeignKey(CadastroUsuario, on_delete=models.SET_NULL, null=True, blank=True, related_name="alteracoes")
+    administrador = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="alteracoes")
     acao = models.CharField(max_length=20)
     modulo = models.CharField(max_length=100)
     objeto_id = models.PositiveIntegerField(null=True, blank=True)

@@ -2,14 +2,113 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from LEM.forms import MaterialForm, FAQForm
-from LEM.models import Materiais, LocalizacaoLab, FAQ
+from LEM.forms import MaterialForm, FAQForm, UsuarioAdminForm
+from LEM.models import Materiais, LocalizacaoLab, FAQ, User
 
+
+@login_required
 def usuarios(request):
-    return render(request, "dashboard/usuarios.html")
+    lista_usuarios = User.objects.all().order_by("nome_completo")
 
+    return render(
+        request,
+        "dashboard/usuarios.html",
+        {"usuarios": lista_usuarios}
+    )
+
+
+@login_required
 def form_usuario(request):
-    return render(request, "dashboard/form_usuario.html")
+    form = UsuarioAdminForm()
+
+    return render(
+        request,
+        "dashboard/form_usuario.html",
+        {"form": form}
+    )
+
+
+@login_required
+def usuario_cadastrar(request):
+    if request.method == "POST":
+        form = UsuarioAdminForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                "Usuário cadastrado com sucesso!"
+            )
+            return redirect("usuarios")
+
+        messages.error(
+            request,
+            "Não foi possível cadastrar. Verifique os campos."
+        )
+
+    else:
+        form = UsuarioAdminForm()
+
+    return render(
+        request,
+        "dashboard/form_usuario.html",
+        {"form": form}
+    )
+
+
+@login_required
+def usuario_editar(request, id):
+    usuario = get_object_or_404(User, id=id)
+
+    if request.method == "POST":
+        form = UsuarioAdminForm(
+            request.POST,
+            request.FILES,
+            instance=usuario
+        )
+
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                "Usuário atualizado com sucesso!"
+            )
+            return redirect("usuarios")
+
+        messages.error(
+            request,
+            "Não foi possível atualizar. Verifique os campos."
+        )
+
+    else:
+        form = UsuarioAdminForm(instance=usuario)
+
+    return render(
+        request,
+        "dashboard/form_usuario.html",
+        {
+            "form": form,
+            "usuario": usuario
+        }
+    )
+
+
+@login_required
+def usuario_excluir(request, id):
+    usuario = get_object_or_404(User, id=id)
+
+    if request.method == "POST":
+        usuario.delete()
+        messages.success(
+            request,
+            "Usuário excluído com sucesso!"
+        )
+
+    return redirect("usuarios")
+
 
 @login_required
 def dashboard(request):

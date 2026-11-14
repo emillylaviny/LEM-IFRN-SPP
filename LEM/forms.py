@@ -49,6 +49,116 @@ class CadastroForm(UserCreationForm):
 
         return user
 
+
+class UsuarioAdminForm(forms.ModelForm):
+
+    senha = forms.CharField(
+        label="Senha",
+        widget=forms.PasswordInput,
+        min_length=8,
+        required=False
+    )
+
+    confirmacao_senha = forms.CharField(
+        label="Confirmação de senha",
+        widget=forms.PasswordInput,
+        required=False
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            "nome_completo",
+            "apelido",
+            "cpf",
+            "data_nascimento",
+            "foto",
+            "cidade_residencia",
+            "escola",
+            "cidade_escola",
+            "declaracao_escola",
+            "email",
+            "telefone",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.instance and self.instance.pk:
+            self.fields["senha"].required = False
+            self.fields["confirmacao_senha"].required = False
+
+    def clean_cpf(self):
+        cpf = re.sub(r"\D", "", self.cleaned_data["cpf"])
+
+        if len(cpf) != 11:
+            raise forms.ValidationError(
+                "Informe um CPF com 11 dígitos."
+            )
+
+        usuarios = User.objects.filter(cpf=cpf)
+
+        if self.instance and self.instance.pk:
+            usuarios = usuarios.exclude(pk=self.instance.pk)
+
+        if usuarios.exists():
+            raise forms.ValidationError(
+                "Já existe um usuário com este CPF."
+            )
+
+        return cpf
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+
+        usuarios = User.objects.filter(email__iexact=email)
+
+        if self.instance and self.instance.pk:
+            usuarios = usuarios.exclude(pk=self.instance.pk)
+
+        if usuarios.exists():
+            raise forms.ValidationError(
+                "Já existe um usuário com este e-mail."
+            )
+
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        senha = cleaned_data.get("senha")
+        confirmacao = cleaned_data.get("confirmacao_senha")
+
+        if not self.instance.pk and not senha:
+            self.add_error("senha", "Informe uma senha.")
+
+        if senha and senha != confirmacao:
+            self.add_error(
+                "confirmacao_senha",
+                "As senhas não coincidem."
+            )
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        usuario = super().save(commit=False)
+
+        if not usuario.pk:
+            usuario.username = uuid.uuid4().hex
+
+        senha = self.cleaned_data.get("senha")
+
+        if senha:
+            usuario.set_password(senha)
+
+        if not usuario.vinculo_profissional:
+            usuario.vinculo_profissional = "Não informado"
+
+        if commit:
+            usuario.save()
+
+        return usuario
+
 class LoginForm(AuthenticationForm):
     """Login por CPF ou e-mail"""
 
