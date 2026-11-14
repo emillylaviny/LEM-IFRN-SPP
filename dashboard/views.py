@@ -58,6 +58,15 @@ def usuario_cadastrar(request):
         {"form": form}
     )
 
+@login_required
+def usuario_visualizar(request, id):
+    usuario = get_object_or_404(User, id=id)
+
+    return render(
+        request,
+        "dashboard/visualizar_usuario.html",
+        {"usuario": usuario}
+    )
 
 @login_required
 def usuario_editar(request, id):
@@ -78,9 +87,12 @@ def usuario_editar(request, id):
             )
             return redirect("usuarios")
 
+        print("ERROS DO FORMULÁRIO:", form.errors)
+        print("ERROS GERAIS:", form.non_field_errors())
+
         messages.error(
             request,
-            "Não foi possível atualizar. Verifique os campos."
+            f"Erros encontrados: {form.errors}"
         )
 
     else:

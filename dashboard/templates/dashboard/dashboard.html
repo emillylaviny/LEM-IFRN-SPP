@@ -1930,6 +1930,46 @@ if (paginaInicial) {
     }
 }
 
+// Visualizar informações do usuário
+document.addEventListener("click", async function(e) {
+    const botao = e.target.closest('[data-acao="ver"]');
+
+    if (!botao) return;
+
+    e.preventDefault();
+
+    const id = botao.dataset.id;
+
+    try {
+        const response = await fetch(`/usuarios/visualizar/${id}/`);
+
+        if (!response.ok) {
+            throw new Error("Erro ao carregar usuário");
+        }
+
+        const html = await response.text();
+
+        // Remove modal anterior, caso exista
+        document.getElementById("modalVisualizarUsuario")?.remove();
+
+        // Adiciona o modal ao documento
+        document.body.insertAdjacentHTML("beforeend", html);
+
+        const modalElemento = document.getElementById("modalVisualizarUsuario");
+        const modal = new bootstrap.Modal(modalElemento);
+
+        modalElemento.addEventListener("hidden.bs.modal", function() {
+            modalElemento.remove();
+        }, { once: true });
+
+        modal.show();
+
+    } catch (error) {
+        console.error("Erro ao visualizar usuário:", error);
+        alert("Não foi possível carregar as informações do usuário.");
+    }
+});
+
 // Cadastro, edição e retorno à lista de usuários
 document.addEventListener("click", function(e) {
     const botao = e.target.closest("[data-acao]");
@@ -2088,6 +2128,35 @@ function carregarPagina(pagina) {
             break;
     }
 }
+
+// Excluir usuário sem sair do Dashboard
+document.addEventListener("submit", async function(e) {
+    const form = e.target.closest('form[action*="/usuarios/excluir/"]');
+
+    if (!form) return;
+
+    e.preventDefault();
+
+    try {
+        const response = await fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro ao excluir usuário");
+        }
+
+        const html = await response.text();
+        injetarHTML(html);
+
+    } catch (error) {
+        console.error("Erro ao excluir usuário:", error);
+    }
+});
 
 document.addEventListener("submit", function(e) {
     const form = e.target.closest("form[data-form-usuario]");
