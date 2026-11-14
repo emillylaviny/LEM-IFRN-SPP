@@ -198,10 +198,10 @@
         <div class="lem-frm-card-body">
           <div class="lem-frm-field">
             <label class="lem-frm-label" for="usr-escola">Escola(s) em que atua <span class="lem-frm-req">*</span></label>
-            <input type="text" id="usr-escola" name="escola"
+            <input type="text" id="usr-vinculo_profissional" name="vinculo_profissional"
                 class="lem-frm-input"
-                value="{{ form.escola.value|default_if_none:'' }}"
-                placeholder="Nome da escola" maxlength="150" required>
+                value="{{ form.vinculo_profissional.value|default_if_none:'' }}"
+                placeholder="Nome da escola" maxlength="300" required>
           </div>
           <div class="lem-frm-field">
             <label class="lem-frm-label" for="usr-cidade-escola">Cidade da escola <span class="lem-frm-req">*</span></label>

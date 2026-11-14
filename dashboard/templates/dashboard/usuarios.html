@@ -13,6 +13,14 @@
     color: var(--lu-ink);
   }
 
+  .lem-usr-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
   /* Cabeçalho */
   .lem-usr-header {
     display: flex;
@@ -234,12 +242,20 @@
           <tbody>
             {% for u in usuarios %}
               <tr data-usr-linha
-                  data-busca="{{ u.nome_completo }} {{ u.cpf }} {{ u.email }} {{ u.escola }}"
+                  data-busca="{{ u.nome_completo }} {{ u.cpf }} {{ u.email }} {{ u.vinculo_profissional }}"
                   data-cpf="{{ u.cpf }}"
                   data-situacao="{% if u.ativo %}ativo{% else %}inativo{% endif %}">
                 <td>
                   <div class="lem-usr-user">
-                    <span class="lem-usr-avatar" aria-hidden="true">{{ u.iniciais }}</span>
+                    <div class="lem-usr-avatar">
+                        {% if u.foto %}
+                            <img src="{{ u.foto.url }}"
+                                alt="Foto de {{ u.nome_completo }}"
+                                class="lem-usr-avatar-img">
+                        {% else %}
+                            {{ u.iniciais }}
+                        {% endif %}
+                    </div>
                     <div>
                       <span class="lem-usr-user-name">{{ u.nome_completo }}</span>
                       <span class="lem-usr-sub">{% if u.is_admin %}Administrador{% else %}Professor{% endif %}</span>
@@ -248,7 +264,7 @@
                 </td>
                 <td class="lem-usr-nowrap">{{ u.cpf }}</td>
                 <td>{{ u.email }}</td>
-                <td>{{ u.escola|default:"—" }}</td>
+                <td>{{ u.vinculo_profissional|default:"—" }}</td>
                 <td>{{ u.cidade_escola|default:"—" }}</td>
                 <td>
                   {% if u.ativo %}

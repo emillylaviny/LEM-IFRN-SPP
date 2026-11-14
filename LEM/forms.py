@@ -42,7 +42,12 @@ class CadastroForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
 
-        user.username = uuid.uuid4().hex 
+        user.username = uuid.uuid4().hex
+
+        primeiro_nome = self.cleaned_data.get('first_name', '').strip()
+        ultimo_nome = self.cleaned_data.get('last_name', '').strip()
+
+        user.nome_completo = f"{primeiro_nome} {ultimo_nome}".strip()
 
         if commit:
             user.save()
@@ -74,7 +79,7 @@ class UsuarioAdminForm(forms.ModelForm):
             "data_nascimento",
             "foto",
             "cidade_residencia",
-            "escola",
+            "vinculo_profissional",
             "cidade_escola",
             "declaracao_escola",
             "email",
