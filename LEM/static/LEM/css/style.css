@@ -122,6 +122,23 @@ body.login-page {
     font-weight: 400;
 }
 
+.login-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Caixa com borda fininha ao redor de todo o conteúdo do login */
+.form-wrapper.login-form-box {
+    border: 1px solid #d0d0d0;
+    border-radius: 32px;
+    padding: 4rem 3.5rem;
+    max-width: 552px;
+    width: calc(100% - 2rem);
+    margin: 2rem 1rem;
+}
+
 .input-underline {
     border: none;
     border-bottom: 1px solid #1b3a63;
@@ -133,6 +150,38 @@ body.login-page {
 .input-underline:focus {
     box-shadow: none;
     border-bottom: 2px solid #1b3a63;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper .input-underline {
+    padding-right: 2.5rem; /* evita o texto ficar embaixo do ícone */
+}
+
+.toggle-senha {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    color: #1b3a63;
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.toggle-senha:hover {
+    color: #00D1B4;
+}
+
+.toggle-senha:focus-visible {
+    outline: 2px solid #1b3a63;
+    outline-offset: 2px;
+    border-radius: 4px;
 }
 
 .btn-access {
@@ -181,11 +230,13 @@ a.link-custom:hover {
 }
 
 @media (max-width: 991.98px) {
-    body.login-page .left-panel {
-        height: 40vh;
-    }
-    body.login-page .right-panel {
-        height: 60vh;
+    /* Sem o painel esquerdo, o formulário ocupa a tela toda.
+       min-height em vez de height fixa: se o conteúdo for maior que a tela
+       (celular deitado, teclado aberto), a página rola em vez de cortar. */
+    .right-panel {
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
     }
 }
 

@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="pt-BR">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
@@ -12,17 +11,9 @@
     <link rel="stylesheet" href="{% static 'LEM/css/style.css' %}">
 </head>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var campo = document.querySelector('input[name="username"]');
-
-    if (!campo) {
-      console.error('Máscara de CPF: campo de login não encontrado');
-      return;
-    }
-    console.log('Máscara de CPF carregada');
 
     function formatar(valor) {
       var digitos = valor.replace(/\D/g, '');
@@ -50,17 +41,36 @@
   });
 </script>
 
-<body>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var campoSenha = document.getElementById('senha');
+    var botao = document.getElementById('toggleSenha');
+    var icone = document.getElementById('iconeSenha');
+
+    if (!campoSenha || !botao || !icone) { return; }
+
+    botao.addEventListener('click', function () {
+      var estaOculta = campoSenha.type === 'password';
+
+      campoSenha.type = estaOculta ? 'text' : 'password';
+      icone.className = estaOculta ? 'bi bi-eye-slash' : 'bi bi-eye';
+      botao.setAttribute('aria-label', estaOculta ? 'Ocultar senha' : 'Mostrar senha');
+      botao.setAttribute('aria-pressed', estaOculta ? 'true' : 'false');
+    });
+  });
+</script>
+
+<body class="login-page"> 
     <div class="row g-0">
         
         <!-- Lado esquerdo: imagem/ilustração -->
-        <div class="col-lg-6 left-panel order-1 p-0">
-            <img src="{% static 'LEM/assets/img/imgLogin.png' %}" alt="Login" class="w-100 h-100" style="object-fit: cover;">
+        <div class="d-none d-lg-block col-lg-6 left-panel order-1 p-0">
+            <img src="{% static 'LEM/assets/img/imgLogin.png' %}" alt="Login" class="w-100 h-100";>
         </div>
 
         <!-- Lado direito: formulário de login -->
         <div class="col-lg-6 right-panel order-2 d-flex align-items-center justify-content-center bg-white">
-            <div class="form-wrapper py-5 px-4">
+            <div class="form-wrapper login-form-box">
                 <h1 class="login-title mb-5">Login</h1>
 
                 {% include 'LEM/mensagens.html' %}
@@ -68,15 +78,22 @@
                 <form method="POST" action="{% url 'login' %}">
                     {% csrf_token %}
                     <div class="mb-4">
-                        <label for="usuario" class="form-label form-label-custom">CPF ou e-mail:</label>
+                        <label for="usuario" class="form-label form-label-custom">Usuário:</label>
                         <input type="text" class="form-control input-underline" id="usuario" name="username"
-                        oninput="if (/^\d+$/.test(this.value)) this.value = this.value.slice(0, 11)"
                         required autocomplete="username" placeholder="000.000.000-00 ou nome@email.com">
                     </div>
 
+
                     <div class="mb-3">
                         <label for="senha" class="form-label form-label-custom">Senha:</label>
-                        <input type="password" class="form-control input-underline" id="senha" name="password" required>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-control input-underline" id="senha" name="password"
+                                    required autocomplete="current-password">
+                            <button type="button" class="toggle-senha" id="toggleSenha"
+                                     aria-label="Mostrar senha" aria-pressed="false">
+                                <i class="bi bi-eye" id="iconeSenha"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="mb-4">
@@ -111,6 +128,7 @@
         </div>
     </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
