@@ -2307,3 +2307,46 @@ body {
   z-index: 1100;
   margin-top: 0 !important;
 }
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 48px; /* espaço para o botão não cobrir o texto */
+}
+
+.toggle-senha {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #6c757d;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.toggle-senha:hover {
+  color: #343a40;
+}
+
+/* o risco só aparece quando a senha está visível */
+.toggle-senha .slash {
+  display: none;
+}
+
+.toggle-senha.ativo .slash {
+  display: block;
+}
+
+/* esconde o olhinho nativo do Edge, para não aparecer dois */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
