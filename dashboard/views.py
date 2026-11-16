@@ -28,26 +28,16 @@ def form_usuario(request):
     )
 
 
+
 @login_required
 def usuario_cadastrar(request):
     if request.method == "POST":
-        form = UsuarioAdminForm(
-            request.POST,
-            request.FILES
-        )
+        form = UsuarioAdminForm(request.POST, request.FILES)
 
         if form.is_valid():
             form.save()
-            messages.success(
-                request,
-                "Usuário cadastrado com sucesso!"
-            )
+            messages.success(request, "Usuário cadastrado com sucesso!")
             return redirect("usuarios")
-
-        messages.error(
-            request,
-            "Não foi possível cadastrar. Verifique os campos."
-        )
 
     else:
         form = UsuarioAdminForm()
@@ -57,6 +47,7 @@ def usuario_cadastrar(request):
         "dashboard/form_usuario.html",
         {"form": form}
     )
+
 
 @login_required
 def usuario_visualizar(request, id):
@@ -90,20 +81,14 @@ def usuario_editar(request, id):
         print("ERROS DO FORMULÁRIO:", form.errors)
         print("ERROS GERAIS:", form.non_field_errors())
 
-        messages.error(
-            request,
-            f"Erros encontrados: {form.errors}"
-        )
-
     else:
         form = UsuarioAdminForm(instance=usuario)
 
     return render(
         request,
-        "dashboard/form_usuario.html",
+        "dashboard/usuarios.html",
         {
-            "form": form,
-            "usuario": usuario
+            "usuarios": User.objects.all().order_by("nome_completo")
         }
     )
 

@@ -95,7 +95,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='escola',
-            name='usario',
+            name='usuario',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='escolas', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(

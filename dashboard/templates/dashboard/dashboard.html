@@ -1865,6 +1865,14 @@ const conteudoPrincipal = document.getElementById("conteudoPrincipal");
 
 const menus = document.querySelectorAll(".nav-link[data-page]");
 
+document.addEventListener("click", function(e) {
+    const botao = e.target.closest(".lem-frm-btn--primary");
+
+    if (botao) {
+        console.log("O BOTÃO RECEBEU O CLIQUE!");
+    }
+});
+
 // Insere o HTML e executa os scripts das páginas carregadas
 function injetarHTML(html) {
     conteudoPrincipal.innerHTML = html;
@@ -1996,6 +2004,26 @@ document.addEventListener("click", function(e) {
 });
 
 // Envio do formulário de usuário
+document.addEventListener("click", function(e) {
+    const botao = e.target.closest(".lem-frm-btn--primary");
+
+    if (!botao) return;
+
+    const form = botao.closest("form") ||
+        document.querySelector("form[data-form-usuario]");
+
+    if (!form) {
+        console.error("Formulário de usuário não encontrado.");
+        return;
+    }
+
+    e.preventDefault();
+
+    if (!form.reportValidity()) return;
+
+    form.requestSubmit();
+});
+
 document.addEventListener("submit", async function(e) {
     const form = e.target.closest("form[data-form-usuario]");
 
@@ -2003,11 +2031,9 @@ document.addEventListener("submit", async function(e) {
 
     e.preventDefault();
 
-    const botao = form.querySelector('button[type="submit"]');
+    const botao = form.querySelector(".lem-frm-btn--primary");
 
-    if (botao) {
-        botao.disabled = true;
-    }
+    if (botao) botao.disabled = true;
 
     try {
         const response = await fetch(form.action, {
@@ -2025,14 +2051,17 @@ document.addEventListener("submit", async function(e) {
             throw new Error("Erro HTTP: " + response.status);
         }
 
+        if (response.redirected) {
+            window.location.href = response.url;
+            return;
+        }
+
         injetarHTML(html);
 
     } catch (error) {
-        console.error("Erro ao cadastrar ou editar usuário:", error);
+        console.error("Erro ao salvar usuário:", error);
 
-        if (botao) {
-            botao.disabled = false;
-        }
+        if (botao) botao.disabled = false;
     }
 });
 
@@ -2131,9 +2160,11 @@ function carregarPagina(pagina) {
 
 // Excluir usuário sem sair do Dashboard
 document.addEventListener("submit", async function(e) {
+  console.log("EVENTO SUBMIT ACIONADO!");
     const form = e.target.closest('form[action*="/usuarios/excluir/"]');
 
     if (!form) return;
+    console.log("FORMULÁRIO ENCONTRADO:", form);
 
     e.preventDefault();
 

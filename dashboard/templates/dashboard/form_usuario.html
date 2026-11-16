@@ -1,3 +1,4 @@
+{% load static %}
 {% block content %}
 <style>
   .lem-frm {
@@ -130,6 +131,8 @@
           data-form-usuario>
         {% csrf_token %}
 
+        
+
       <!-- Dados pessoais -->
       <section class="lem-frm-card">
         <div class="lem-frm-card-head">
@@ -154,13 +157,22 @@
           </div>
 
           <div class="lem-frm-field">
-            <label class="lem-frm-label" for="usr-cpf">CPF <span class="lem-frm-req">*</span></label>
-            <input type="text" id="usr-cpf" name="cpf"
-                class="lem-frm-input" data-mascara="cpf"
-                value="{{ form.cpf.value|default_if_none:'' }}"
-                placeholder="000.000.000-00"
-                inputmode="numeric" maxlength="14" required>
+              <label class="lem-frm-label" for="usr-cpf">
+                  CPF <span class="lem-frm-req">*</span>
+              </label>
+
+              <input type="text" id="usr-cpf" name="cpf"
+                  class="lem-frm-input {% if form.cpf.errors %}is-invalid{% endif %}"
+                  data-mascara="cpf"
+                  value="{{ form.cpf.value|default_if_none:'' }}"
+                  placeholder="000.000.000-00"
+                  inputmode="numeric" maxlength="14" required>
+
+              {% for error in form.cpf.errors %}
+                  <small class="text-danger">{{ error }}</small>
+              {% endfor %}
           </div>
+
           <div class="lem-frm-field">
               <label for="usr-nascimento">Data de nascimento</label>
               <input
@@ -224,15 +236,23 @@
         <div class="lem-frm-card-head">
           <h2 class="lem-frm-card-title">Contato e acesso</h2>
         </div>
-        <div class="lem-frm-card-body">
+        
           <div class="lem-frm-field">
-            <label class="lem-frm-label" for="usr-email">E-mail <span class="lem-frm-req">*</span></label>
-            <input type="email" id="usr-email" name="email"
-                class="lem-frm-input"
-                value="{{ form.email.value|default_if_none:'' }}"
-                placeholder="usuario@exemplo.edu.br"
-                autocomplete="email" required>
+              <label class="lem-frm-label" for="usr-email">
+                  E-mail <span class="lem-frm-req">*</span>
+              </label>
+
+              <input type="email" id="usr-email" name="email"
+                  class="lem-frm-input {% if form.email.errors %}is-invalid{% endif %}"
+                  value="{{ form.email.value|default_if_none:'' }}"
+                  placeholder="usuario@exemplo.edu.br"
+                  autocomplete="email" required>
+
+              {% for error in form.email.errors %}
+                  <small class="text-danger">{{ error }}</small>
+              {% endfor %}
           </div>
+
           <div class="lem-frm-field">
             <label class="lem-frm-label" for="usr-telefone">Telefone <span class="lem-frm-req">*</span></label>
             <input type="tel" id="usr-telefone" name="telefone"
