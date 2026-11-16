@@ -23,7 +23,7 @@
     <div class="container-fluid">
 
         <!-- Logo à esquerda -->
-        <a class="navbar-brand" href="#home">
+        <a class="navbar-brand me-0" href="#home">
             <img src="{% static 'LEM/assets/img/LogoLEMnav.png' %}" alt="Logo LEM" height="50">
         </a>
 
@@ -51,9 +51,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#duvidas">Dúvidas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#conatos">Contatos</a>
                 </li>
             </ul>
 
@@ -91,98 +88,122 @@
         {% endblock %}
 
 <!-- Rodapé -->
-<footer class="lem-footer">
-  <div class="container">
-    <div class="row gy-4">
+<footer class="rp-footer" id="contato">
 
-      <!-- Logo + descrição + endereço -->
-      <div class="col-lg-3 col-md-6 col-12">
-        <div class="lem-brand-logo">
-          <div class="lem-logo-img">
-            <img src="{% static 'LEM/assets/img/Logo Principal - Fundo transparente.png' %}" alt="Logo LEM - Laboratório de Ensino de Matemática IFRN-SPP">
-          </div>
-          <p class="lem-logo-text">Laboratório de Ensino de Matemática IFRN-SPP</p>
-        </div>
+  <!-- formas decorativas (opacas, só nos cantos) -->
+  <div class="rp-shapes" aria-hidden="true">
+    <span class="rp-shape rp-circle-tl"></span>
+    <span class="rp-shape rp-circle-br"></span>
+    <span class="rp-shape rp-triangle"></span>
+    <span class="rp-shape rp-glyph rp-pi">π</span>
+    <span class="rp-shape rp-glyph rp-div">÷</span>
+  </div>
 
-        <p class="lem-brand-desc">LEM/SPP: Sistema Web para Gestão Acesso a Recursos Didáticos do Laboratório de Matemática do IFRN-SPP</p>
+  <div class="rp-wrap">
+    <div class="rp-grid">
 
-        <div class="lem-contact-item">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.5-4.2-7-7.9-7-11a7 7 0 0114 0c0 3.1-2.5 6.8-7 11z"/>
-            <circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          <p class="lem-contact-text">Av. Potengi, São Paulo do Potengi - RN, 59460-000</p>
+      <!-- Marca -->
+      <div class="rp-brand">
+        <a href="#" class="rp-logo-link" aria-label="LEM - Laboratório de Ensino de Matemática IFRN-SPP">
+          <img class="rp-logo" src="{% static 'LEM/assets/img/logo_lem_rodape.png' %}" alt="LEM - Laboratório de Ensino de Matemática IFRN-SPP">
+        </a>
+
+        <p class="rp-desc">Sistema web de gestão e acesso a recursos didáticos do Laboratório de Ensino de Matemática do IFRN – Campus São Paulo do Potengi.</p>
+
+        <a href="#" class="rp-ifrn" aria-label="Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte">
+          <img src="{% static 'LEM/assets/img/logo_ifrn_rodape.png' %}" alt="Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Norte">
+        </a>
+
+        <div class="rp-social">
+          <span class="rp-social-label">Siga o LEM</span>
+          <a href="#" class="rp-social-icon" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="rp-social-icon" aria-label="WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.4-4.2A8.5 8.5 0 1112 20.5a8.4 8.4 0 01-4.3-1.2L3 21z"/><path d="M9 9.5c0 3.5 2.5 6 6 6"/></svg>
+          </a>
+          <a href="#" class="rp-social-icon" aria-label="YouTube">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="6" width="19" height="12" rx="3"/><path fill="currentColor" d="M10.5 9.5l5 2.5-5 2.5v-5z"/></svg>
+          </a>
         </div>
       </div>
 
       <!-- Navegação -->
-      <div class="col-lg-3 col-md-6 col-6 lem-col-block">
-        <p class="lem-col-title">Navegação</p>
-        <ul class="lem-link-list">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#laboratorio">Laboratório</a></li>
-          <li><a href="#materiais">Materiais</a></li>
-          <li><a href="#funcionamento">Funcionamento</a></li>
-          <li><a href="#duvidas">Dúvidas</a></li>
-          <li><a href="#">Contato</a></li>
+      <nav class="rp-col" aria-label="Navegação do rodapé">
+        <p class="rp-title">Navegação</p>
+        <ul class="rp-links">
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>Início</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>Laboratório</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>Materiais</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>Horários</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>Dúvidas</a></li>
         </ul>
-      </div>
+      </nav>
 
-      <!-- Links uteis -->
-      <div class="col-lg-3 col-md-6 col-6 lem-col-block">
-        <p class="lem-col-title">Links Úteis</p>
-
-        <div class="lem-useful-item mb-3">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75l9.02 6.51a1.5 1.5 0 001.76 0l9.02-6.51M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/>
-          </svg>
-          <p class="lem-useful-text">labmatematica@gmail.com</p>
-        </div>
-
-        <div class="lem-useful-item">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a1.5 1.5 0 001.5-1.5v-2.379a1 1 0 00-.757-.97l-4.13-1.033a1 1 0 00-1.076.417l-.899 1.348a1 1 0 01-1.21.38 12.035 12.035 0 01-6.401-6.4 1 1 0 01.38-1.211l1.348-.9a1 1 0 00.417-1.075L6.6 3.257a1 1 0 00-.97-.757H3.75a1.5 1.5 0 00-1.5 1.5v2.75z"/>
-          </svg>
-          <p class="lem-useful-text">(84) 99988 0011</p>
-        </div>
-      </div>
-
-      <!-- Serviços -->
-      <div class="col-lg-3 col-md-6 col-6 lem-col-block">
-        <p class="lem-col-title">Serviços</p>
-        <ul class="lem-link-list mb-4">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#laboratorio">Laboratório</a></li>
-          <li><a href="#">Contato</a></li>
+      <!-- Acesso rápido -->
+      <nav class="rp-col" aria-label="Acesso rápido">
+        <p class="rp-title">Acesso rápido</p>
+        <ul class="rp-links rp-links-icons">
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>Entrar</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>Cadastrar-se</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>Solicitar empréstimo</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Agendar visita</a></li>
         </ul>
+      </nav>
 
-        <div class="lem-social-row">
-          <a href="#" class="lem-social-icon" aria-label="Instagram">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/>
-              <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-              <circle cx="17.2" cy="6.8" r="1" fill="currentColor"/>
-            </svg>
-          </a>
-          <a href="#" class="lem-social-icon" aria-label="WhatsApp">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 21l1.4-4.2A8.5 8.5 0 1112 20.5a8.4 8.4 0 01-4.3-1.2L3 21z"/>
-              <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 9.5c0 3.5 2.5 6 6 6"/>
-            </svg>
-          </a>
-          <a href="#" class="lem-social-icon" aria-label="YouTube">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <rect x="2.5" y="6" width="19" height="12" rx="3" stroke="currentColor" stroke-width="2"/>
-              <path fill="currentColor" d="M10.5 9.5l5 2.5-5 2.5v-5z"/>
-            </svg>
-          </a>
+      <!-- Contato -->
+      <div class="rp-col rp-contact">
+        <p class="rp-title">Contato</p>
+
+        <div class="rp-item">
+          <span class="rp-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4.5-4.2-7-7.9-7-11a7 7 0 0114 0c0 3.1-2.5 6.8-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+          <div>
+            <span class="rp-item-label">Endereço</span>
+            <span class="rp-item-text">RN-120, Km 2, Bairro Novo Juremal, São Paulo do Potengi - RN<br> CEP 59460-000 </span>
+            <a href="#" class="rp-item-link">Ver no mapa ↗</a>
+          </div>
         </div>
+
+        <div class="rp-item">
+          <span class="rp-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+          <div>
+            <span class="rp-item-label">E-mail</span>
+            <a href="#" class="rp-item-text">email@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="rp-item">
+          <span class="rp-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg></span>
+          <div>
+            <span class="rp-item-label">Telefone</span>
+            <a href="#" class="rp-item-text">(84) 99988 8899</a>
+          </div>
+        </div>
+
+        <div class="rp-item">
+          <span class="rp-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div>
+            <span class="rp-item-label">Atendimento</span>
+            <span class="rp-item-text">Segunda a sexta-feira</span>
+            <a href="#" class="rp-item-link">Ver horários ↗</a>
+          </div>
+        </div>
+
+        <a href="#" class="rp-whats">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.4-4.2A8.5 8.5 0 1112 20.5a8.4 8.4 0 01-4.3-1.2L3 21z"/><path d="M9 9.5c0 3.5 2.5 6 6 6"/></svg>
+          Falar no WhatsApp
+        </a>
       </div>
 
     </div>
 
-    <div class="lem-footer-bottom">
-      <p>&copy; 2026 LEM/SPP - Laboratório de Ensino de Matemática do IFRN-SPP. Todos os direitos reservados.</p>
+    <!-- Barra inferior -->
+    <div class="rp-bottom">
+      <p>&copy; {% now "Y" %} LEM/SPP – Laboratório de Ensino de Matemática do IFRN-SPP. Todos os direitos reservados.</p>
+      <a href="#" class="rp-top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        Voltar ao topo
+      </a>
     </div>
   </div>
 </footer>

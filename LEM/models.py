@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
+from django.core.exceptions import ValidationError
 
 # Template - área materiais do home
 class Card(models.Model):
@@ -150,7 +152,7 @@ class Duvida(models.Model):
         ("RESPONDIDA", "Respondida"),
         ("FAQ", "Pergunta frequente"),
     ]
-    usuario = models.ForeignKey(CadastroUsuario, on_delete=models.CASCADE, related_name="duvidas")
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="duvidas")
     pergunta = models.TextField()
     resposta = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS, default="PENDENTE")
@@ -163,7 +165,65 @@ class Duvida(models.Model):
         verbose_name_plural = "Dúvidas"
 
     def __str__(self):
-        return f"Dúvida de {self.usuario.nome}"
+        return f"Dúvida de {self.usuario.get_full_name() or self.usuario.email}"
+
+class HorarioFuncionamento(models.Model):
+    DIAS = [
+        (0, "Segunda-feira"),
+        (1, "Terça-feira"),
+        (2, "Quarta-feira"),
+        (3, "Quinta-feira"),
+        (4, "Sexta-feira"),
+    ]
+    dia_semana = models.PositiveSmallIntegerField(choices=DIAS, unique=True)
+    fechado = models.BooleanField(default=False, help_text="Marque se o laboratório não abre neste dia.")
+    abertura_1 = models.TimeField("1º período: abre", null=True, blank=True)
+    fechamento_1 = models.TimeField("1º período: fecha", null=True, blank=True)
+    abertura_2 = models.TimeField("2º período: abre", null=True, blank=True)
+    fechamento_2 = models.TimeField("2º período: fecha", null=True, blank=True)
+
+    class Meta:
+        ordering = ["dia_semana"]
+        verbose_name = "Horário de funcionamento"
+        verbose_name_plural = "Horários de funcionamento"
+
+    def __str__(self):
+        return f"{self.get_dia_semana_display()} - {self.texto_horario()}"
+
+    def periodos(self):
+        """Lista de (abre, fecha) em que o laboratório funciona neste dia."""
+        if self.fechado:
+            return []
+        pares = [
+            (self.abertura_1, self.fechamento_1),
+            (self.abertura_2, self.fechamento_2),
+        ]
+        return [(abre, fecha) for abre, fecha in pares if abre and fecha]
+
+    def texto_horario(self):
+        periodos = self.periodos()
+        if not periodos:
+            return "Fechado"
+        return " · ".join(f"{abre:%H:%M} – {fecha:%H:%M}" for abre, fecha in periodos)
+
+    def esta_aberto(self, hora):
+        """True se `hora` (datetime.time) está dentro de algum período."""
+        return any(abre <= hora < fecha for abre, fecha in self.periodos())
+
+    def clean(self):
+        if self.fechado:
+            return
+        if not (self.abertura_1 and self.fechamento_1):
+            raise ValidationError("Informe a abertura e o fechamento do 1º período, ou marque o dia como fechado.")
+        if self.fechamento_1 <= self.abertura_1:
+            raise ValidationError("No 1º período, o fechamento deve ser depois da abertura.")
+        if bool(self.abertura_2) != bool(self.fechamento_2):
+            raise ValidationError("Preencha abertura e fechamento do 2º período, ou deixe os dois vazios.")
+        if self.abertura_2:
+            if self.fechamento_2 <= self.abertura_2:
+                raise ValidationError("No 2º período, o fechamento deve ser depois da abertura.")
+            if self.abertura_2 < self.fechamento_1:
+                raise ValidationError("O 2º período deve começar depois do fim do 1º.")
 
 # Iniciando CRUD de perguntas fequentes
 

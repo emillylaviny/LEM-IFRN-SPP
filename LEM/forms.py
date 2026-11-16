@@ -2,7 +2,7 @@ import re
 import uuid
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Materiais, User, FAQ
+from .models import Materiais, User, FAQ, Duvida
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
 
@@ -151,3 +151,23 @@ class FAQForm(forms.ModelForm):
             "ordem"
         ]
 
+class DuvidaForm(forms.ModelForm):
+    class Meta:
+        model = Duvida
+        fields = ["pergunta"]
+        labels = {"pergunta": "Sua pergunta"}
+        widgets = {
+            "pergunta": forms.Textarea(attrs={
+                "rows": 5,
+                "class": "form-control dv-textarea",
+                "placeholder": "Escreva aqui a sua dúvida...",
+            }),
+        }
+
+    def clean_pergunta(self):
+        pergunta = self.cleaned_data["pergunta"].strip()
+        if len(pergunta) < 10:
+            raise forms.ValidationError("Escreva a sua dúvida com pelo menos 10 caracteres.")
+        if len(pergunta) > 1000:
+            raise forms.ValidationError("A pergunta pode ter no máximo 1000 caracteres.")
+        return pergunta
