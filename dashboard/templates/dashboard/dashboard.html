@@ -287,24 +287,25 @@ try {
             <!--Perfil do usuário na nav-->
             <li class="nav-item dropdown user-menu">
               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <img
-                  src="{% static 'LEM/assets/img/homem.jpg' %}"
-                  class="user-image rounded-circle shadow"
-                  alt="Juliany Schivanni"
-                />
-                <span class="d-none d-md-inline">Juliany Schivanni</span>
+                <img/>
+                  {% if request.user.foto %}
+                      <img src="{{ request.user.foto.url }}" alt="Foto do usuário">
+                  {% else %}
+                      <img src="{% static 'LEM/assets/img/user.jpe' %}" alt="{{ request.user.first_name }}">
+                  {% endif %}
+                <span class="d-none d-md-inline">{{ request.user.first_name }}</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                 <!--imagem do usuário-->
                 <li class="user-header text-bg-primary">
                   <img
-                    src="./assets/img/user2-160x160.jpg"
+                    src="./assets/img/user.jpeg"
                     class="rounded-circle shadow"
-                    alt="Juliany Schivanni"
+                    alt="{{ request.user.first_name }}"
                   />
                   <p>
-                    Juliany Schivanni - Teacher <br/>
-                    <small>Member since Nov. 2023</small>
+                    {{ request.user.first_name }} - Teacher <br/>
+                    <small>Member since {{ request.user.date_joined|date:"d/m/Y" }}</small>
                   </p>
                 </li>
                 
