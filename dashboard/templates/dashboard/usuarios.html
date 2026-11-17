@@ -193,19 +193,12 @@
   <div class="container-fluid">
 
     {% if messages %}
-        <div class="lem-usr-messages">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
-                    role="alert">
-                    {{ message }}
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert"
-                            aria-label="Fechar">
-                    </button>
-                </div>
-            {% endfor %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
         </div>
+      {% endfor %}
     {% endif %}
 
     <div class="lem-usr-header">
@@ -289,6 +282,7 @@
                     <span class="lem-usr-badge lem-usr-badge--inativo">Inativo</span>
                   {% endif %}
                 </td>
+                
                 <td>
                   <button type="button" class="lem-usr-icon-btn" data-acao="ver" data-id="{{ u.id }}"
                           aria-label="Ver {{ u.nome_completo }}" title="Ver">
@@ -296,8 +290,7 @@
                   </button>
                   <form method="POST"
                         action="{% url 'usuario_excluir' u.id %}"
-                        style="display: inline;"
-                        onsubmit="return confirm('Tem certeza que deseja excluir este usuário?');">
+                        style="display: inline;">
 
                       {% csrf_token %}
 
@@ -309,7 +302,9 @@
                       </button>
 
                   </form>
+                </td>
               </tr>
+
             {% endfor %}
             <tr class="lem-usr-empty" data-usr-vazio hidden>
               <td colspan="7"></td>
