@@ -192,6 +192,15 @@
 <div class="app-content lem-usr" data-lem-usuarios data-total="{{ usuarios|length }}">
   <div class="container-fluid">
 
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
     <div class="lem-usr-header">
       <div>
         <h1 class="lem-usr-title">Usuários</h1>
@@ -273,23 +282,25 @@
                     <span class="lem-usr-badge lem-usr-badge--inativo">Inativo</span>
                   {% endif %}
                 </td>
+                
                 <td>
                   <button type="button" class="lem-usr-icon-btn" data-acao="ver" data-id="{{ u.id }}"
                           aria-label="Ver {{ u.nome_completo }}" title="Ver">
                     <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
+
                   <button type="button"
                           class="lem-usr-icon-btn"
                           data-acao="editar"
                           data-id="{{ u.id }}"
                           title="Editar"
                           aria-label="Editar {{ u.nome_completo }}">
-                      <i class="bi bi-pencil"></i>
+                      <i class="bi bi-pencil" aria-hidden="true"></i>
                   </button>
+
                   <form method="POST"
                         action="{% url 'usuario_excluir' u.id %}"
-                        style="display: inline;"
-                        onsubmit="return confirm('Tem certeza que deseja excluir este usuário?');">
+                        style="display: inline;">
 
                       {% csrf_token %}
 
@@ -301,7 +312,9 @@
                       </button>
 
                   </form>
+                </td>
               </tr>
+
             {% endfor %}
             <tr class="lem-usr-empty" data-usr-vazio hidden>
               <td colspan="7"></td>
