@@ -17,4 +17,10 @@ urlpatterns = [
         views.cadastro,
         name='cadastro'
     ),
+
+        path(
+            'duvidas/nova/', 
+            views.duvida_enviar, 
+            name='duvida_enviar'
+            ),
 ]

@@ -1,0 +1,54 @@
+{% extends "LEM/base.html" %}
+{% load static %}
+
+{% block title %}Fazer nova pergunta | LEM{% endblock %}
+
+{% block content %}
+<section class="dv-pagina">
+  <div class="container">
+
+    <div class="dv-card">
+      <h1 class="dv-titulo">Fazer nova pergunta</h1>
+      <p class="dv-texto">Escreva sua dúvida e nossa equipe responderá em breve.</p>
+
+      <form method="POST" novalidate>
+        {% csrf_token %}
+        <label for="{{ form.pergunta.id_for_label }}" class="dv-label">{{ form.pergunta.label }}</label>
+        {{ form.pergunta }}
+        {% for erro in form.pergunta.errors %}
+          <p class="dv-erro">{{ erro }}</p>
+        {% endfor %}
+
+        <div class="dv-acoes">
+          <a href="{% url 'home' %}#duvidas" class="dv-voltar">Voltar</a>
+          <button type="submit" class="dv-enviar">Enviar pergunta</button>
+        </div>
+      </form>
+    </div>
+
+    {% if minhas_duvidas %}
+    <div class="dv-lista">
+      <h2 class="dv-subtitulo">Minhas perguntas</h2>
+      {% for d in minhas_duvidas %}
+        <article class="dv-item">
+          <div class="dv-item-topo">
+            <span class="dv-status dv-status-{{ d.status|lower }}">{{ d.get_status_display }}</span>
+            <time>{{ d.enviada_em|date:"d/m/Y H:i" }}</time>
+          </div>
+          <p class="dv-pergunta">{{ d.pergunta|linebreaksbr }}</p>
+          {% if d.resposta %}
+            <div class="dv-resposta">
+              <strong>Resposta da equipe</strong>
+              <p>{{ d.resposta|linebreaksbr }}</p>
+            </div>
+          {% else %}
+            <p class="dv-aguardando">Aguardando resposta da equipe.</p>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

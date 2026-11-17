@@ -1,20 +1,37 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
 from django.contrib import messages
-from .forms import CardMaterialForm, CadastroForm, MaterialForm, LoginForm
-from .models import Card, User, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, HistoricoAlteracao, FAQ
+from .forms import CardMaterialForm, CadastroForm, MaterialForm, LoginForm, DuvidaForm
+from .models import Card, User, HorarioFuncionamento, CadastroUsuario, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, HistoricoAlteracao, FAQ
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db import IntegrityError
 
-
-#template - home
 def home(request):
+    agora = timezone.localtime()   # usa o TIME_ZONE do settings
+    hoje = agora.weekday()         # 0 = segunda ... 6 = domingo
+
+    cadastrados = {h.dia_semana: h for h in HorarioFuncionamento.objects.all()}
+
+    horarios = []
+    aberto_agora = False
+    for dia, _nome in HorarioFuncionamento.DIAS:   # só segunda a sexta
+        # sem cadastro, o dia aparece do mesmo jeito, só que sem horários
+        h = cadastrados.get(dia) or HorarioFuncionamento(dia_semana=dia)
+        h.eh_hoje = (dia == hoje)                  # sábado e domingo: nenhum destaque
+        if h.eh_hoje and h.esta_aberto(agora.time()):
+            aberto_agora = True
+        horarios.append(h)
+
     context = {
         "card": Card.objects.all(),
         "faqs": FAQ.objects.filter(ativa=True).order_by("ordem", "id"),
+        "horarios": horarios,
+        "aberto_agora": aberto_agora,
+        "tem_horarios": bool(cadastrados),
     }
     return render(request, "LEM/home.html", context)
 
@@ -66,6 +83,25 @@ def cadastro(request):
 
     return render(request, 'LEM/cadastro.html', {'form': form})
 
+
+@login_required
+def duvida_enviar(request):
+    if request.method == "POST":
+        form = DuvidaForm(request.POST)
+        if form.is_valid():
+            duvida = form.save(commit=False)
+            duvida.usuario = request.user
+            duvida.save()
+            messages.success(request, "Pergunta enviada! Nossa equipe vai responder em breve.")
+            return redirect("duvida_enviar")
+    else:
+        form = DuvidaForm()
+
+    context = {
+        "form": form,
+        "minhas_duvidas": Duvida.objects.filter(usuario=request.user),
+    }
+    return render(request, "LEM/duvida_enviar.html", context)
 
 @login_required
 def dashboard(request):
