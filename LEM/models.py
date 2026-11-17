@@ -40,6 +40,16 @@ class User(AbstractUser):
         nomes = self.nome_completo.split()
         return "".join(nome[0] for nome in nomes[:2]).upper()
 
+    @property
+    def nome_exibicao(self):
+        """Nome usado em saudações: apelido, ou o primeiro nome."""
+        apelido = (self.apelido or "").strip()
+        if apelido:
+            return apelido
+
+        partes = (self.nome_completo or "").split()
+        return partes[0] if partes else ""
+
 
 #Cadastros 
 

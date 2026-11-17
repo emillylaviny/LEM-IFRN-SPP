@@ -56,7 +56,11 @@ class LoginLEMView(LoginView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, f'Bem-vindo(a), {form.get_user().first_name}!')
+
+        nome = form.get_user().nome_exibicao
+        saudacao = f'Bem-vindo(a), {nome}!' if nome else 'Bem-vindo(a)!'
+        messages.success(self.request, saudacao)
+
         return response
 
     def form_invalid(self, form):

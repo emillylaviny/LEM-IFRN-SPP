@@ -56,6 +56,7 @@ def usuario_cadastrar(request):
 
     else:
         form = UsuarioAdminForm()
+        messages.success(self.request, f'Bem-vindo(a), {form.get_user().nome_exibicao}!')
 
     return render(
         request,

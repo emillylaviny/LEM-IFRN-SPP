@@ -469,7 +469,7 @@ try {
               {% if user.is_authenticated %}
 
                 <span class="me-2 c-white">
-                    Olá, {{ user.first_name }}!
+                    Olá, {{ user.nome_exibicao }}!
                 </span>
 
                 <form method="POST" action="{% url 'logout' %}" class="d-inline">
