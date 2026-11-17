@@ -18,6 +18,7 @@ def home(request):
     }
     return render(request, "LEM/home.html", context)
 
+
 def cadastro(request):
     if request.method == 'POST':
         form = CadastroForm(request.POST)
@@ -25,13 +26,37 @@ def cadastro(request):
         if form.is_valid():
             try:
                 form.save()
-            except IntegrityError:
-                messages.error(request, 'Não foi possível concluir o cadastro. Verifique se o CPF e o e-mail já não foram cadastrados.')
+
+            except IntegrityError as erro:
+                import traceback
+                traceback.print_exc()
+                print("DETALHE DO ERRO:", repr(erro))
+
+                messages.error(
+                    request,
+                    f'Erro de integridade: {erro}'
+                )
+
+            except Exception as erro:
+                print("ERRO AO CADASTRAR USUÁRIO:", erro)
+                messages.error(
+                    request,
+                    'Ocorreu um erro inesperado ao realizar o cadastro.'
+                )
+
             else:
-                messages.success(request, 'Cadastro realizado com sucesso! Faça login para continuar.')
+                messages.success(
+                    request,
+                    'Cadastro realizado com sucesso! Faça login para continuar.'
+                )
                 return redirect('login')
+
         else:
-            messages.error(request, 'Não foi possível concluir o cadastro. Corrija os itens a seguir:')
+            messages.error(
+                request,
+                'Não foi possível concluir o cadastro. Corrija os itens a seguir:'
+            )
+
             for erros in form.errors.values():
                 for erro in erros:
                     messages.error(request, erro)
@@ -40,6 +65,7 @@ def cadastro(request):
         form = CadastroForm()
 
     return render(request, 'LEM/cadastro.html', {'form': form})
+
 
 @login_required
 def dashboard(request):
@@ -72,6 +98,7 @@ class LogoutLEMView(LogoutView):
         response = super().post(request, *args, **kwargs)
         messages.info(request, 'Você saiu da sua conta. Até logo!')
         return response
+
 
 
 

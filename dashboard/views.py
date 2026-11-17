@@ -33,26 +33,16 @@ def form_usuario(request):
     )
 
 
+
 @login_required
 def usuario_cadastrar(request):
     if request.method == "POST":
-        form = UsuarioAdminForm(
-            request.POST,
-            request.FILES
-        )
+        form = UsuarioAdminForm(request.POST, request.FILES)
 
         if form.is_valid():
             form.save()
-            messages.success(
-                request,
-                "Usuário cadastrado com sucesso!"
-            )
+            messages.success(request, "Usuário cadastrado com sucesso!")
             return redirect("usuarios")
-
-        messages.error(
-            request,
-            "Não foi possível cadastrar. Verifique os campos."
-        )
 
     else:
         form = UsuarioAdminForm()
@@ -63,6 +53,7 @@ def usuario_cadastrar(request):
         "dashboard/form_usuario.html",
         {"form": form}
     )
+
 
 @login_required
 def usuario_visualizar(request, id):
@@ -75,45 +66,6 @@ def usuario_visualizar(request, id):
     )
 
 @login_required
-def usuario_editar(request, id):
-    usuario = get_object_or_404(User, id=id)
-
-    if request.method == "POST":
-        form = UsuarioAdminForm(
-            request.POST,
-            request.FILES,
-            instance=usuario
-        )
-
-        if form.is_valid():
-            form.save()
-            messages.success(
-                request,
-                "Usuário atualizado com sucesso!"
-            )
-            return redirect("usuarios")
-
-        print("ERROS DO FORMULÁRIO:", form.errors)
-        print("ERROS GERAIS:", form.non_field_errors())
-
-        messages.error(
-            request,
-            f"Erros encontrados: {form.errors}"
-        )
-
-    else:
-        form = UsuarioAdminForm(instance=usuario)
-
-    return render(
-        request,
-        "dashboard/form_usuario.html",
-        {
-            "form": form,
-            "usuario": usuario
-        }
-    )
-
-@require_POST
 def usuario_excluir(request, id):
     if not request.user.is_authenticated:
         return JsonResponse(

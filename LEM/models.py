@@ -10,20 +10,36 @@ class Card(models.Model):
     def __str__(self):
         return self.titulo
 
+class Instituicao(models.Model):
+    nome = models.CharField(max_length=150, unique=True)
+    ativa = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["nome"]
+        verbose_name = "Instituição"
+        verbose_name_plural = "Instituições"
+
+    def __str__(self):
+        return self.nome
+
+
 class User(AbstractUser):
-    vinculo_profissional = models.CharField(max_length=300)
+    vinculo_profissional = models.CharField(max_length=300, blank=True)
+
+    vinculos_profissionais = models.ManyToManyField(
+        Instituicao, blank=True, related_name="profissionais"
+    )
+
+    cpf = models.CharField(max_length=14, unique=True)
     nome_completo = models.CharField(max_length=300)
     apelido = models.CharField(max_length=300, blank=True)
-    cpf = models.CharField(max_length=14, unique=True)
-    data_nascimento = models.DateField()
+    data_nascimento = models.DateField(null=True, blank=True)
     foto = models.ImageField(upload_to="usuarios/", blank=True, null=True)
-    escola = models.CharField(max_length=150)
     declaracao_escola = models.FileField(upload_to="declaracoes/", blank=True, null=True)
     cidade_escola = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
     telefone = models.CharField(max_length=150)
     cidade_residencia = models.CharField(max_length=150)
-    is_admin = models.BooleanField(default=False)
     ativo = models.BooleanField(default=True)
     data_cadastro = models.DateTimeField(auto_now_add=True)
 
@@ -34,11 +50,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.nome_completo
-    
-    @property
-    def iniciais(self):
-        nomes = self.nome_completo.split()
-        return "".join(nome[0] for nome in nomes[:2]).upper()
+   
 
     @property
     def nome_exibicao(self):
@@ -51,21 +63,7 @@ class User(AbstractUser):
         return partes[0] if partes else ""
 
 
-#Cadastros 
-
-class Escola(models.Model):
-    usario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="escolas")
-    nome = models.CharField(max_length=100, blank=True)
-    cidade = models.CharField(max_length=100, blank=True)
-    declaracao = models.CharField(max_length=100, blank=True)
-
-    class Meta:
-        ordering = ["nome"]
-        verbose_name = "Escola"
-        verbose_name_plural = "Escolas"
-
-    def __str__(self):
-        return self.nome       
+#Cadastros  
 
 class LocalizacaoLab(models.Model):
     nome = models.CharField(max_length=120, unique=True)
@@ -212,3 +210,4 @@ class HistoricoAlteracao(models.Model):
 
     def __str__(self):
         return f"{self.acao} - {self.modulo} - {self.data_hora:%d/%m/%Y %H:%M}"
+

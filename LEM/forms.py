@@ -2,13 +2,40 @@ import re
 import uuid
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Materiais, User, FAQ
+from .models import Materiais, User, FAQ, Instituicao
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
 
+
+def cpf_valido(cpf):
+    # Rejeita sequências como 111.111.111-11
+    if len(cpf) != 11 or cpf == cpf[0] * 11:
+        return False
+    for i in (9, 10):
+        soma = sum(int(cpf[n]) * (i + 1 - n) for n in range(i))
+        digito = (soma * 10 % 11) % 10
+        if digito != int(cpf[i]):
+            return False
+    return True
+
 class CadastroForm(UserCreationForm):
     username = forms.CharField(required=False, widget=forms.HiddenInput())
-    email = forms.EmailField(label='E-mail') 
+    cpf = forms.CharField(label='CPF', max_length=14)
+    email = forms.EmailField(label='E-mail', error_messages={
+        'invalid': 'Digite um e-mail válido, por exemplo: nome@exemplo.com',
+        'required': 'Informe seu e-mail.',
+    })
+
+    
+    vinculos_profissionais = forms.ModelMultipleChoiceField(
+        label='Vínculo profissional',
+        queryset=Instituicao.objects.filter(ativa=True),
+        widget=forms.CheckboxSelectMultiple,
+        error_messages={
+            'required': 'Selecione pelo menos uma instituição.',
+            'invalid_choice': 'Instituição inválida.',
+        },
+    )
 
     class Meta:
         model = User
@@ -17,25 +44,40 @@ class CadastroForm(UserCreationForm):
             'last_name',
             'email',
             'cpf',
-            'vinculo_profissional',
+            'vinculos_profissionais',
         ]
 
     def clean_cpf(self):
-        cpf = re.sub(r'\D', '', self.cleaned_data['cpf']) 
+        cpf = re.sub(r'\D', '', self.cleaned_data['cpf'])
 
-        if len(cpf) != 11:
-            raise forms.ValidationError('Informe um CPF com 11 dígitos.')
+        if not cpf_valido(cpf):
+            raise forms.ValidationError('CPF inválido.')
 
-        if User.objects.filter(cpf=cpf).exists():
-            raise forms.ValidationError('Já existe um usuário cadastrado com este CPF.')
+        usuarios = User.objects.filter(cpf=cpf)
+
+        if self.instance and self.instance.pk:
+            usuarios = usuarios.exclude(pk=self.instance.pk)
+
+        if usuarios.exists():
+            raise forms.ValidationError(
+                'Já existe um usuário cadastrado com este CPF.'
+            )
 
         return cpf
+
 
     def clean_email(self):
         email = self.cleaned_data['email'].strip().lower()
 
-        if User.objects.filter(email__iexact=email).exists():
-            raise forms.ValidationError('Já existe um usuário cadastrado com este e-mail.')
+        usuarios = User.objects.filter(email__iexact=email)
+
+        if self.instance and self.instance.pk:
+            usuarios = usuarios.exclude(pk=self.instance.pk)
+
+        if usuarios.exists():
+            raise forms.ValidationError(
+                'Já existe um usuário cadastrado com este e-mail.'
+            )
 
         return email
 
@@ -51,8 +93,15 @@ class CadastroForm(UserCreationForm):
 
         if commit:
             user.save()
+            self.save_m2m()
 
         return user
+
+    def clean_vinculo_profissional(self):
+        # transforma a lista marcada em texto: "UFRN, IFRN"
+        return ', '.join(self.cleaned_data['vinculo_profissional'])
+
+
 
 
 class UsuarioAdminForm(forms.ModelForm):
@@ -68,6 +117,25 @@ class UsuarioAdminForm(forms.ModelForm):
         label="Confirmação de senha",
         widget=forms.PasswordInput,
         required=False
+    )
+
+    cpf = forms.CharField(
+        label="CPF",
+        max_length=14,
+        widget=forms.TextInput(attrs={
+            "class": "form-control cpf-mascara",
+            "placeholder": "000.000.000-00",
+            "maxlength": "14",
+            "inputmode": "numeric",
+        })
+    )
+
+    email = forms.EmailField(
+        label="E-mail",
+        error_messages={
+            "invalid": "Digite um e-mail válido, por exemplo: nome@exemplo.com",
+            "required": "Informe seu e-mail.",
+        }
     )
 
     class Meta:
@@ -93,13 +161,17 @@ class UsuarioAdminForm(forms.ModelForm):
             self.fields["senha"].required = False
             self.fields["confirmacao_senha"].required = False
 
+            cpf = re.sub(r"\D", "", self.instance.cpf or "")
+            if len(cpf) == 11:
+                self.initial["cpf"] = (
+                    f"{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}"
+                )
+
     def clean_cpf(self):
         cpf = re.sub(r"\D", "", self.cleaned_data["cpf"])
 
-        if len(cpf) != 11:
-            raise forms.ValidationError(
-                "Informe um CPF com 11 dígitos."
-            )
+        if not cpf_valido(cpf):
+            raise forms.ValidationError("CPF inválido.")
 
         usuarios = User.objects.filter(cpf=cpf)
 
@@ -108,7 +180,7 @@ class UsuarioAdminForm(forms.ModelForm):
 
         if usuarios.exists():
             raise forms.ValidationError(
-                "Já existe um usuário com este CPF."
+                "Já existe um usuário cadastrado com este CPF."
             )
 
         return cpf
@@ -123,7 +195,7 @@ class UsuarioAdminForm(forms.ModelForm):
 
         if usuarios.exists():
             raise forms.ValidationError(
-                "Já existe um usuário com este e-mail."
+                "Já existe um usuário cadastrado com este e-mail."
             )
 
         return email
@@ -163,6 +235,7 @@ class UsuarioAdminForm(forms.ModelForm):
             usuario.save()
 
         return usuario
+
 
 class LoginForm(AuthenticationForm):
     """Login por CPF ou e-mail"""

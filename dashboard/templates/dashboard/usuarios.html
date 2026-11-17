@@ -288,16 +288,6 @@
                           aria-label="Ver {{ u.nome_completo }}" title="Ver">
                     <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
-
-                  <button type="button"
-                          class="lem-usr-icon-btn"
-                          data-acao="editar"
-                          data-id="{{ u.id }}"
-                          title="Editar"
-                          aria-label="Editar {{ u.nome_completo }}">
-                      <i class="bi bi-pencil" aria-hidden="true"></i>
-                  </button>
-
                   <form method="POST"
                         action="{% url 'usuario_excluir' u.id %}"
                         style="display: inline;">
