@@ -1,77 +1,415 @@
-<div class="modal fade" id="modalVisualizarUsuario" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
 
-            <div class="modal-header">
-                <h5 class="modal-title">Informações do usuário</h5>
-                <button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Fechar"></button>
-            </div>
+{% load static %}
 
-            <div class="modal-body">
+<style>
+    .lem-view-user {
+        color: #263a33;
+        font-family: inherit;
+    }
 
-                <div class="text-center mb-4">
-                    {% if usuario.foto %}
-                        <img src="{{ usuario.foto.url }}"
-                             alt="Foto de {{ usuario.nome_completo }}"
-                             class="rounded-circle"
-                             style="width: 110px; height: 110px; object-fit: cover;">
-                    {% else %}
-                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto"
-                             style="width: 110px; height: 110px; font-size: 30px;">
-                            {{ usuario.iniciais }}
-                        </div>
-                    {% endif %}
+    .lem-view-user .lem-view-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 22px;
+    }
 
-                    <h5 class="mt-2">{{ usuario.nome_completo }}</h5>
-                    <p class="text-muted">{{ usuario.email }}</p>
+    .lem-view-user .lem-view-header h3 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #18382f;
+        margin: 0 0 5px;
+    }
+
+    .lem-view-user .lem-view-header p {
+        color: #718078;
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .lem-view-user .lem-btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border: 1px solid #dce5e0;
+        border-radius: 9px;
+        background: #fff;
+        color: #53645c;
+        text-decoration: none;
+        font-size: 14px;
+        transition: .2s;
+    }
+
+    .lem-view-user .lem-btn-back:hover {
+        background: #f0f6f3;
+        color: #087354;
+    }
+
+    .lem-view-user .lem-view-card {
+        background: #fff;
+        border: 1px solid #dce7e1;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,.03);
+    }
+
+    .lem-view-user .lem-profile {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #e8eeeb;
+        margin-bottom: 24px;
+    }
+
+    .lem-view-user .lem-profile-photo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #e0eee8;
+        flex-shrink: 0;
+    }
+
+    .lem-view-user .lem-profile-initials {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: #dff0e9;
+        color: #087354;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+
+    .lem-view-user .lem-profile h4 {
+        color: #18382f;
+        font-size: 21px;
+        font-weight: 600;
+        margin: 0 0 5px;
+    }
+
+    .lem-view-user .lem-profile p {
+        color: #718078;
+        font-size: 14px;
+        margin: 0 0 10px;
+    }
+
+    .lem-view-user .lem-status {
+        display: inline-block;
+        padding: 5px 13px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .lem-view-user .lem-status.active {
+        background: #e5f5ec;
+        color: #15945a;
+        border: 1px solid #b9e5cb;
+    }
+
+    .lem-view-user .lem-status.inactive {
+        background: #fceaea;
+        color: #c03939;
+        border: 1px solid #f2caca;
+    }
+
+    .lem-view-user .lem-section {
+        margin-bottom: 28px;
+    }
+
+    .lem-view-user .lem-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .lem-view-user .lem-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #087354;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .lem-view-user .lem-section-title i {
+        font-size: 18px;
+    }
+
+    .lem-view-user .lem-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px 30px;
+    }
+
+    .lem-view-user .lem-info-item label {
+        display: block;
+        color: #84928b;
+        font-size: 12px;
+        font-weight: 500;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+    }
+
+    .lem-view-user .lem-info-item span {
+        display: block;
+        color: #263a33;
+        font-size: 14px;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+    }
+
+    .lem-view-user .lem-view-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 22px;
+        flex-wrap: wrap;
+    }
+
+    .lem-view-user .lem-btn-edit {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #087354;
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 14px;
+        border: 1px solid #087354;
+        transition: .2s;
+    }
+
+    .lem-view-user .lem-btn-edit:hover {
+        background: #065b43;
+        color: #fff;
+    }
+
+    .lem-view-user .lem-btn-back-bottom {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        color: #53645c;
+        padding: 10px 18px;
+        border: 1px solid #dce5e0;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    @media(max-width: 600px) {
+        .lem-view-user .lem-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .lem-view-user .lem-view-card {
+            padding: 18px;
+        }
+
+        .lem-view-user .lem-profile-photo,
+        .lem-view-user .lem-profile-initials {
+            width: 75px;
+            height: 75px;
+        }
+
+        .lem-view-user .lem-profile h4 {
+            font-size: 17px;
+        }
+    }
+</style>
+
+<div class="lem-view-user">
+
+   
+    <!-- Cartão principal -->
+    <div class="lem-view-card">
+
+        <!-- Perfil -->
+        <div class="lem-profile">
+
+            {% if usuario.foto %}
+                <img src="{{ usuario.foto.url }}"
+                     alt="Foto de {{ usuario.nome_completo }}"
+                     class="lem-view-photo lem-profile-photo">
+            {% else %}
+                <div class="lem-profile-initials">
+                    {{ usuario.iniciais }}
                 </div>
+            {% endif %}
 
-                <h6 class="text-primary">Dados pessoais</h6>
-                <hr>
+            <div>
+                <h4>{{ usuario.nome_completo }}</h4>
 
-                <p><strong>Nome completo:</strong> {{ usuario.nome_completo }}</p>
-                <p><strong>Apelido:</strong> {{ usuario.apelido|default:"Não informado" }}</p>
-                <p><strong>CPF:</strong> {{ usuario.cpf }}</p>
-                <p><strong>Data de nascimento:</strong> {{ usuario.data_nascimento|date:"d/m/Y" }}</p>
-                <p><strong>Telefone:</strong> {{ usuario.telefone }}</p>
-                <p><strong>Cidade de residência:</strong> {{ usuario.cidade_residencia }}</p>
+                <p>{{ usuario.vinculo_profissional|default:"Vínculo não informado" }}</p>
 
-                <h6 class="text-primary mt-4">Dados profissionais e escolares</h6>
-                <hr>
-
-                <p><strong>Vínculo profissional:</strong> {{ usuario.vinculo_profissional }}</p>
-                <p><strong>Cidade da escola:</strong> {{ usuario.cidade_escola }}</p>
-
-                <p>
-                    <strong>Declaração escolar:</strong>
-                    {% if usuario.declaracao_escola %}
-                        <a href="{{ usuario.declaracao_escola.url }}" target="_blank">
-                            Visualizar declaração
-                        </a>
-                    {% else %}
-                        Não enviada
-                    {% endif %}
-                </p>
-
-                <h6 class="text-primary mt-4">Dados da conta</h6>
-                <hr>
-
-                <p><strong>Nome de usuário:</strong> {{ usuario.username }}</p>
-                <p><strong>E-mail:</strong> {{ usuario.email }}</p>
-                <p><strong>Administrador:</strong> {{ usuario.is_admin|yesno:"Sim,Não" }}</p>
-                <p><strong>Ativo:</strong> {{ usuario.ativo|yesno:"Sim,Não" }}</p>
-                <p><strong>Data de cadastro:</strong> {{ usuario.data_cadastro|date:"d/m/Y H:i" }}</p>
-
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">
-                    Fechar
-                </button>
+                {% if usuario.ativo %}
+                    <span class="lem-status active">Ativo</span>
+                {% else %}
+                    <span class="lem-status inactive">Inativo</span>
+                {% endif %}
             </div>
 
         </div>
+
+        <!-- Informações pessoais -->
+        <div class="lem-section">
+
+            <h5 class="lem-section-title">
+                <i class="bi bi-person"></i>
+                Informações pessoais
+            </h5>
+
+            <div class="lem-info-grid">
+
+                <div class="lem-info-item">
+                    <label>Nome completo</label>
+                    <span>{{ usuario.nome_completo|default:"Não informado" }}</span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>Apelido</label>
+                    <span>{{ usuario.apelido|default:"Não informado" }}</span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>CPF</label>
+                    <span>{{ usuario.cpf|default:"Não informado" }}</span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>Data de nascimento</label>
+                    <span>{{ usuario.data_nascimento|date:"d/m/Y"|default:"Não informado" }}</span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>E-mail</label>
+                    <span>{{ usuario.email|default:"Não informado" }}</span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>Telefone</label>
+                    <span>{{ usuario.telefone|default:"Não informado" }}</span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>Cidade de residência</label>
+                    <span>{{ usuario.cidade_residencia|default:"Não informado" }}</span>
+                </div>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Informações profissionais -->
+        <div class="lem-section">
+
+            <h5 class="lem-section-title">
+                <i class="bi bi-mortarboard"></i>
+                Informações profissionais
+            </h5>
+
+            <div class="lem-info-grid">
+
+                <div class="lem-info-item">
+                    <label>Vínculo profissional</label>
+                    <span>{{ usuario.vinculo_profissional|default:"Não informado" }}</span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>Cidade da escola</label>
+                    <span>{{ usuario.cidade_escola|default:"Não informado" }}</span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>Declaração da escola</label>
+
+                    {% if usuario.declaracao_escola %}
+                        <span>
+                            <a href="{{ usuario.declaracao_escola.url }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                <i class="bi bi-file-earmark-pdf"></i>
+                                Visualizar documento
+                            </a>
+                        </span>
+                    {% else %}
+                        <span>Não anexada</span>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Informações da conta -->
+        <div class="lem-section">
+
+            <h5 class="lem-section-title">
+                <i class="bi bi-shield-check"></i>
+                Informações da conta
+            </h5>
+
+            <div class="lem-info-grid">
+
+                <div class="lem-info-item">
+                    <label>Nome de usuário</label>
+                    <span>{{ usuario.username|default:"Não informado" }}</span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>Data de cadastro</label>
+                    <span>{{ usuario.data_cadastro|date:"d/m/Y H:i"|default:"Não informada" }}</span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>Tipo de acesso</label>
+                    <span>
+                        {% if usuario.is_admin %}
+                            Administrador
+                        {% else %}
+                            Usuário
+                        {% endif %}
+                    </span>
+                </div>
+
+                <div class="lem-info-item">
+                    <label>Situação</label>
+                    <span>
+                        {% if usuario.ativo %}
+                            Ativo
+                        {% else %}
+                            Inativo
+                        {% endif %}
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Botões -->
+        <div class="lem-view-actions">
+
+            <a href="{% url 'usuarios' %}"
+               class="lem-btn-back-bottom"
+               data-lem-voltar>
+                <i class="bi bi-arrow-left"></i>
+                Voltar
+            </a>
+        </div>
+
     </div>
+
 </div>

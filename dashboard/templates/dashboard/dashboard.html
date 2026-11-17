@@ -1875,6 +1875,8 @@ document.addEventListener("click", function(e) {
     }
 });
 
+
+
 // Insere o HTML e executa os scripts das páginas carregadas
 function injetarHTML(html) {
     conteudoPrincipal.innerHTML = html;
@@ -1939,6 +1941,33 @@ if (paginaInicial) {
         link.classList.add("active");
     }
 }
+
+document.addEventListener('click', function(event) {
+
+    const link = event.target.closest('[data-lem-navegar], [data-lem-voltar]');
+
+    if (!link) return;
+
+    event.preventDefault();
+
+    const url = link.getAttribute('href');
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao carregar a página.');
+            }
+
+            return response.text();
+        })
+        .then(html => {
+            injetarHTML(html);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+});
 
 // Visualizar informações do usuário
 document.addEventListener("click", async function(e) {
@@ -2068,7 +2097,7 @@ document.addEventListener("submit", async function(e) {
 });
 
 // Navegação das páginas
-function carregarPagina(pagina) {
+function carregarPagina(pagina, id = null) {
 
     switch (pagina) {
 
@@ -2145,6 +2174,10 @@ function carregarPagina(pagina) {
                     </div>
                 </div>
             `;
+            break;
+
+        case 'visualizar':
+            carregarConteudo(`/usuarios/visualizar/${id}/`);
             break;
 
         case "Horários de funcionamento":

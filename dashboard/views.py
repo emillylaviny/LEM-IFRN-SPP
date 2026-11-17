@@ -46,23 +46,22 @@ def usuario_cadastrar(request):
 
     else:
         form = UsuarioAdminForm()
-        messages.success(self.request, f'Bem-vindo(a), {form.get_user().nome_exibicao}!')
 
     return render(
         request,
         "dashboard/form_usuario.html",
         {"form": form}
     )
-
-
+    
+    
 @login_required
 def usuario_visualizar(request, id):
     usuario = get_object_or_404(User, id=id)
 
     return render(
         request,
-        "dashboard/visualizar_usuario.html",
-        {"usuario": usuario}
+        'dashboard/visualizar_usuario.html',
+        {'usuario': usuario}
     )
 
 @login_required

@@ -74,10 +74,9 @@ urlpatterns = [
     ),
     
     path(
-        "usuarios/visualizar/<int:id>/",
-        views.usuario_visualizar,
-        name="usuario_visualizar"
-    ),
+        'usuarios/visualizar/<int:id>/', 
+        views.usuario_visualizar, 
+        name='usuario_visualizar'),
     
     
     path(

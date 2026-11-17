@@ -233,10 +233,12 @@
 
       <!-- Contato e acesso -->
       <section class="lem-frm-card">
+
         <div class="lem-frm-card-head">
           <h2 class="lem-frm-card-title">Contato e acesso</h2>
         </div>
-        
+
+        <div class="lem-frm-card-body">
           <div class="lem-frm-field">
               <label class="lem-frm-label" for="usr-email">
                   E-mail <span class="lem-frm-req">*</span>
@@ -261,6 +263,7 @@
                 placeholder="(00) 00000-0000"
                 inputmode="tel" maxlength="15" required>
           </div>
+
           <div class="lem-frm-field">
             <label class="lem-frm-label" for="usr-senha">Senha <span class="lem-frm-req">*</span></label>
             <input type="password" id="usr-senha" name="senha"
@@ -269,6 +272,7 @@
                 {% if not usuario %}required{% endif %}>
             <p class="lem-frm-hint">Mínimo de 8 caracteres.</p>
           </div>
+
           <div class="lem-frm-field">
             <label class="lem-frm-label" for="usr-senha2">Confirmação de senha <span class="lem-frm-req">*</span></label>
             <input type="password" id="usr-senha2" name="confirmacao_senha"
@@ -276,6 +280,7 @@
               autocomplete="new-password"
               {% if not usuario %}required{% endif %}>
           </div>
+
         </div>
       </section>
 
