@@ -79,11 +79,6 @@ urlpatterns = [
         name="usuario_visualizar"
     ),
     
-    path(
-        "usuarios/editar/<int:id>/", 
-        views.usuario_editar, 
-        name="usuario_editar"
-    ),
     
     path(
         "usuarios/excluir/<int:id>/", 

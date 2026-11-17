@@ -115,7 +115,7 @@
     <div class="lem-frm-header">
       <div>
         <h1 class="lem-frm-title">
-            {% if usuario %}Editar Usuário{% else %}Cadastro de Usuário{% endif %}
+            Cadastro de Usuário
         </h1>
         <p class="lem-frm-subtitle">Campos marcados com <span aria-hidden="true">*</span> são obrigatórios.</p>
       </div>
@@ -126,7 +126,7 @@
 
     {# Defina o action quando a view de gravação existir, ex.: action="{% url 'novo_usuario' %}" #}
     <form method="post"
-          action="{% if usuario %}{% url 'usuario_editar' usuario.id %}{% else %}{% url 'usuario_cadastrar' %}{% endif %}"
+          action="{% url 'usuario_cadastrar' %}"
           enctype="multipart/form-data"
           data-form-usuario>
         {% csrf_token %}
@@ -286,7 +286,7 @@
             Cancelar
         </button>
         <button type="submit" class="lem-frm-btn lem-frm-btn--primary">
-            {% if usuario %}Salvar alterações{% else %}Cadastrar usuário{% endif %}
+            Cadastrar usuário
         </button>
       </div>
     </form>

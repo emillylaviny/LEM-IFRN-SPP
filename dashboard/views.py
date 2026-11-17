@@ -60,40 +60,6 @@ def usuario_visualizar(request, id):
     )
 
 @login_required
-def usuario_editar(request, id):
-    usuario = get_object_or_404(User, id=id)
-
-    if request.method == "POST":
-        form = UsuarioAdminForm(
-            request.POST,
-            request.FILES,
-            instance=usuario
-        )
-
-        if form.is_valid():
-            form.save()
-            messages.success(
-                request,
-                "Usuário atualizado com sucesso!"
-            )
-            return redirect("usuarios")
-
-        print("ERROS DO FORMULÁRIO:", form.errors)
-        print("ERROS GERAIS:", form.non_field_errors())
-
-    else:
-        form = UsuarioAdminForm(instance=usuario)
-
-    return render(
-        request,
-        "dashboard/usuarios.html",
-        {
-            "usuarios": User.objects.all().order_by("nome_completo")
-        }
-    )
-
-
-@login_required
 def usuario_excluir(request, id):
     usuario = get_object_or_404(User, id=id)
 
