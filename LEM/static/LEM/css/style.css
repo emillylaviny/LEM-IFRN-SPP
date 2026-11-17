@@ -2350,3 +2350,128 @@ input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
   display: none;
 }
+
+/* =========================================================
+   Campo suspenso de vínculo profissional (cadastro)
+   ========================================================= */
+
+.multiselect {
+  position: relative;
+}
+
+.multiselect__btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  border: 1.5px solid var(--cor-primaria);
+  border-radius: 999px;
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--cor-texto);
+  text-align: left;
+  cursor: pointer;
+}
+
+.multiselect__btn:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(23, 184, 166, 0.15);
+}
+
+.multiselect__texto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.multiselect__seta {
+  flex: 0 0 auto;
+  transition: transform 0.15s ease;
+}
+
+.multiselect.aberto .multiselect__seta {
+  transform: rotate(180deg);
+}
+
+.multiselect__painel {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 8px;
+  background: #ffffff;
+  border: 1px solid var(--cor-borda);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.multiselect__painel[hidden] {
+  display: none;
+}
+
+.field .multiselect__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.field .multiselect__item:hover {
+  background: #f1f3f5;
+}
+
+.field .multiselect__item input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.multiselect__caixa {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #adb5bd;
+  border-radius: 6px;
+  background: #ffffff;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.multiselect__caixa::after {
+  content: "";
+  width: 6px;
+  height: 11px;
+  margin-top: -2px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.15s ease;
+}
+
+.multiselect__item input:checked + .multiselect__caixa {
+  background: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+}
+
+.multiselect__item input:checked + .multiselect__caixa::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.multiselect__item input:focus-visible + .multiselect__caixa {
+  box-shadow: 0 0 0 3px rgba(23, 184, 166, 0.15);
+}

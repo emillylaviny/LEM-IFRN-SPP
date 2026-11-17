@@ -2,9 +2,10 @@ import re
 import uuid
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Materiais, User, FAQ
+from .models import Materiais, User, FAQ, Instituicao
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
+
 
 def cpf_valido(cpf):
     # Rejeita sequências como 111.111.111-11
@@ -25,6 +26,17 @@ class CadastroForm(UserCreationForm):
         'required': 'Informe seu e-mail.',
     })
 
+    
+    vinculos_profissionais = forms.ModelMultipleChoiceField(
+        label='Vínculo profissional',
+        queryset=Instituicao.objects.filter(ativa=True),
+        widget=forms.CheckboxSelectMultiple,
+        error_messages={
+            'required': 'Selecione pelo menos uma instituição.',
+            'invalid_choice': 'Instituição inválida.',
+        },
+    )
+
     class Meta:
         model = User
         fields = [
@@ -32,7 +44,7 @@ class CadastroForm(UserCreationForm):
             'last_name',
             'email',
             'cpf',
-            'vinculo_profissional',
+            'vinculos_profissionais',
         ]
 
     def clean_cpf(self):
@@ -81,8 +93,14 @@ class CadastroForm(UserCreationForm):
 
         if commit:
             user.save()
+            self.save_m2m()
 
         return user
+
+    def clean_vinculo_profissional(self):
+        # transforma a lista marcada em texto: "UFRN, IFRN"
+        return ', '.join(self.cleaned_data['vinculo_profissional'])
+
 
 
 
