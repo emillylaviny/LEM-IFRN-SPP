@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib import messages
 from .forms import CardMaterialForm, CadastroForm, MaterialForm, LoginForm, DuvidaForm
-from .models import Card, HorarioFuncionamento, CadastroUsuario, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, HistoricoAlteracao, FAQ
+from .models import Card, User, HorarioFuncionamento, CadastroUsuario, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, HistoricoAlteracao, FAQ
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -35,6 +35,7 @@ def home(request):
     }
     return render(request, "LEM/home.html", context)
 
+
 def cadastro(request):
     if request.method == 'POST':
         form = CadastroForm(request.POST)
@@ -42,13 +43,37 @@ def cadastro(request):
         if form.is_valid():
             try:
                 form.save()
-            except IntegrityError:
-                messages.error(request, 'Não foi possível concluir o cadastro. Verifique se o CPF e o e-mail já não foram cadastrados.')
+
+            except IntegrityError as erro:
+                import traceback
+                traceback.print_exc()
+                print("DETALHE DO ERRO:", repr(erro))
+
+                messages.error(
+                    request,
+                    f'Erro de integridade: {erro}'
+                )
+
+            except Exception as erro:
+                print("ERRO AO CADASTRAR USUÁRIO:", erro)
+                messages.error(
+                    request,
+                    'Ocorreu um erro inesperado ao realizar o cadastro.'
+                )
+
             else:
-                messages.success(request, 'Cadastro realizado com sucesso! Faça login para continuar.')
+                messages.success(
+                    request,
+                    'Cadastro realizado com sucesso! Faça login para continuar.'
+                )
                 return redirect('login')
+
         else:
-            messages.error(request, 'Não foi possível concluir o cadastro. Corrija os itens a seguir:')
+            messages.error(
+                request,
+                'Não foi possível concluir o cadastro. Corrija os itens a seguir:'
+            )
+
             for erros in form.errors.values():
                 for erro in erros:
                     messages.error(request, erro)
@@ -57,6 +82,7 @@ def cadastro(request):
         form = CadastroForm()
 
     return render(request, 'LEM/cadastro.html', {'form': form})
+
 
 @login_required
 def duvida_enviar(request):
@@ -92,7 +118,11 @@ class LoginLEMView(LoginView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, f'Bem-vindo(a), {form.get_user().first_name}!')
+
+        nome = form.get_user().nome_exibicao
+        saudacao = f'Bem-vindo(a), {nome}!' if nome else 'Bem-vindo(a)!'
+        messages.success(self.request, saudacao)
+
         return response
 
     def form_invalid(self, form):

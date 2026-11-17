@@ -1,4 +1,5 @@
 from django.contrib import admin
+from .models import Instituicao
 from .models import (
     Card, CadastroUsuario, User, LocalizacaoLab, Materiais, Emprestimo,
     Visita, Duvida, FAQ, HistoricoAlteracao,HorarioFuncionamento,

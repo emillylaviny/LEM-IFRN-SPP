@@ -56,15 +56,36 @@ urlpatterns = [
     ),
     
     path(
-        'usuarios/', 
+        "usuarios/", 
         views.usuarios, 
-        name='usuarios'
+        name="usuarios"
     ),
-
-    path('usuarios/novo/', 
-         views.form_usuario, 
-         name='form_usuario'),
-
+    
+    path(
+        "usuarios/formulario/",
+        views.form_usuario,
+        name="form_usuario"
+    ),
+    
+    path(
+        "usuarios/novo/", 
+        views.usuario_cadastrar, 
+        name="usuario_cadastrar"
+    ),
+    
+    path(
+        "usuarios/visualizar/<int:id>/",
+        views.usuario_visualizar,
+        name="usuario_visualizar"
+    ),
+    
+    
+    path(
+        "usuarios/excluir/<int:id>/", 
+        views.usuario_excluir, 
+        name="usuario_excluir"
+    ),
+    
     path('etiquetas/', 
          views.etiquetas, 
          name='etiquetas'),

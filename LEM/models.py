@@ -12,24 +12,36 @@ class Card(models.Model):
     def __str__(self):
         return self.titulo
 
-class User(AbstractUser):
-    vinculo_profissional = models.CharField(max_length=300)
-    cpf = models.CharField(max_length=14, unique=True)
+class Instituicao(models.Model):
+    nome = models.CharField(max_length=150, unique=True)
+    ativa = models.BooleanField(default=True)
 
-#Cadastros 
-class CadastroUsuario(models.Model):
+    class Meta:
+        ordering = ["nome"]
+        verbose_name = "Instituição"
+        verbose_name_plural = "Instituições"
+
+    def __str__(self):
+        return self.nome
+
+
+class User(AbstractUser):
+    vinculo_profissional = models.CharField(max_length=300, blank=True)
+
+    vinculos_profissionais = models.ManyToManyField(
+        Instituicao, blank=True, related_name="profissionais"
+    )
+
+    cpf = models.CharField(max_length=14, unique=True)
     nome_completo = models.CharField(max_length=300)
     apelido = models.CharField(max_length=300, blank=True)
-    cpf = models.CharField(max_length=14, unique=True)
-    data_nascimento = models.DateField()
+    data_nascimento = models.DateField(null=True, blank=True)
     foto = models.ImageField(upload_to="usuarios/", blank=True, null=True)
-    escola = models.CharField(max_length=150)
     declaracao_escola = models.FileField(upload_to="declaracoes/", blank=True, null=True)
     cidade_escola = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
     telefone = models.CharField(max_length=150)
     cidade_residencia = models.CharField(max_length=150)
-    is_admin = models.BooleanField(default=False)
     ativo = models.BooleanField(default=True)
     data_cadastro = models.DateTimeField(auto_now_add=True)
 
@@ -39,21 +51,21 @@ class CadastroUsuario(models.Model):
         ordering = ["nome_completo"]
 
     def __str__(self):
-        return self.nome
+        return self.nome_completo
+   
 
-class Escola(models.Model):
-    usario = models.ForeignKey(CadastroUsuario, on_delete=models.SET_NULL, null=True, blank=True, related_name="escolas")
-    nome = models.CharField(max_length=100, blank=True)
-    cidade = models.CharField(max_length=100, blank=True)
-    declaracao = models.CharField(max_length=100, blank=True)
+    @property
+    def nome_exibicao(self):
+        """Nome usado em saudações: apelido, ou o primeiro nome."""
+        apelido = (self.apelido or "").strip()
+        if apelido:
+            return apelido
 
-    class Meta:
-        ordering = ["nome"]
-        verbose_name = "Escola"
-        verbose_name_plural = "Escolas"
+        partes = (self.nome_completo or "").split()
+        return partes[0] if partes else ""
 
-    def __str__(self):
-        return self.nome       
+
+#Cadastros  
 
 class LocalizacaoLab(models.Model):
     nome = models.CharField(max_length=120, unique=True)
@@ -102,7 +114,7 @@ class Emprestimo(models.Model):
         ("ATRASADO", "Atrasado"),
         ("CANCELADO", "Cancelado"),
     ]
-    professor = models.ForeignKey(CadastroUsuario, on_delete=models.PROTECT, related_name="emprestimos")
+    professor = models.ForeignKey(User, on_delete=models.PROTECT, related_name="emprestimos")
     material = models.ForeignKey(Materiais, on_delete=models.PROTECT, related_name="emprestimos")
     quantidade = models.PositiveIntegerField(default=1)
     data_solicitacao = models.DateTimeField(auto_now_add=True)
@@ -129,7 +141,7 @@ class Visita(models.Model):
         ("REALIZADA", "Realizada"),
         ("CANCELADA", "Cancelada"),
     ]
-    professor = models.ForeignKey(CadastroUsuario, on_delete=models.PROTECT, related_name="visitas")
+    professor = models.ForeignKey(User, on_delete=models.PROTECT, related_name="visitas")
     data = models.DateField()
     horario = models.TimeField()
     quantidade_visitantes = models.PositiveIntegerField(default=1)
@@ -244,7 +256,7 @@ class FAQ(models.Model):
         return self.pergunta
 
 class HistoricoAlteracao(models.Model):
-    administrador = models.ForeignKey(CadastroUsuario, on_delete=models.SET_NULL, null=True, blank=True, related_name="alteracoes")
+    administrador = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="alteracoes")
     acao = models.CharField(max_length=20)
     modulo = models.CharField(max_length=100)
     objeto_id = models.PositiveIntegerField(null=True, blank=True)
@@ -258,3 +270,4 @@ class HistoricoAlteracao(models.Model):
 
     def __str__(self):
         return f"{self.acao} - {self.modulo} - {self.data_hora:%d/%m/%Y %H:%M}"
+

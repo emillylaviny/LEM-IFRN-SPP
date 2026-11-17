@@ -1,0 +1,77 @@
+<div class="modal fade" id="modalVisualizarUsuario" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Informações do usuário</h5>
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="text-center mb-4">
+                    {% if usuario.foto %}
+                        <img src="{{ usuario.foto.url }}"
+                             alt="Foto de {{ usuario.nome_completo }}"
+                             class="rounded-circle"
+                             style="width: 110px; height: 110px; object-fit: cover;">
+                    {% else %}
+                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto"
+                             style="width: 110px; height: 110px; font-size: 30px;">
+                            {{ usuario.iniciais }}
+                        </div>
+                    {% endif %}
+
+                    <h5 class="mt-2">{{ usuario.nome_completo }}</h5>
+                    <p class="text-muted">{{ usuario.email }}</p>
+                </div>
+
+                <h6 class="text-primary">Dados pessoais</h6>
+                <hr>
+
+                <p><strong>Nome completo:</strong> {{ usuario.nome_completo }}</p>
+                <p><strong>Apelido:</strong> {{ usuario.apelido|default:"Não informado" }}</p>
+                <p><strong>CPF:</strong> {{ usuario.cpf }}</p>
+                <p><strong>Data de nascimento:</strong> {{ usuario.data_nascimento|date:"d/m/Y" }}</p>
+                <p><strong>Telefone:</strong> {{ usuario.telefone }}</p>
+                <p><strong>Cidade de residência:</strong> {{ usuario.cidade_residencia }}</p>
+
+                <h6 class="text-primary mt-4">Dados profissionais e escolares</h6>
+                <hr>
+
+                <p><strong>Vínculo profissional:</strong> {{ usuario.vinculo_profissional }}</p>
+                <p><strong>Cidade da escola:</strong> {{ usuario.cidade_escola }}</p>
+
+                <p>
+                    <strong>Declaração escolar:</strong>
+                    {% if usuario.declaracao_escola %}
+                        <a href="{{ usuario.declaracao_escola.url }}" target="_blank">
+                            Visualizar declaração
+                        </a>
+                    {% else %}
+                        Não enviada
+                    {% endif %}
+                </p>
+
+                <h6 class="text-primary mt-4">Dados da conta</h6>
+                <hr>
+
+                <p><strong>Nome de usuário:</strong> {{ usuario.username }}</p>
+                <p><strong>E-mail:</strong> {{ usuario.email }}</p>
+                <p><strong>Administrador:</strong> {{ usuario.is_admin|yesno:"Sim,Não" }}</p>
+                <p><strong>Ativo:</strong> {{ usuario.ativo|yesno:"Sim,Não" }}</p>
+                <p><strong>Data de cadastro:</strong> {{ usuario.data_cadastro|date:"d/m/Y H:i" }}</p>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Fechar
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

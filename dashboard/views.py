@@ -2,14 +2,94 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from LEM.forms import MaterialForm, FAQForm
-from LEM.models import Materiais, LocalizacaoLab, FAQ
+from LEM.forms import MaterialForm, FAQForm, UsuarioAdminForm
+from LEM.models import Materiais, LocalizacaoLab, FAQ, User
+from django.db.models.deletion import ProtectedError
+from django.http import JsonResponse
+from django.db.models import ProtectedError
+from django.views.decorators.http import require_POST
 
+
+
+@login_required
 def usuarios(request):
-    return render(request, "dashboard/usuarios.html")
+    lista_usuarios = User.objects.all().order_by("nome_completo")
 
+    return render(
+        request,
+        "dashboard/usuarios.html",
+        {"usuarios": lista_usuarios}
+    )
+
+
+@login_required
 def form_usuario(request):
-    return render(request, "dashboard/form_usuario.html")
+    form = UsuarioAdminForm()
+
+    return render(
+        request,
+        "dashboard/form_usuario.html",
+        {"form": form}
+    )
+
+
+
+@login_required
+def usuario_cadastrar(request):
+    if request.method == "POST":
+        form = UsuarioAdminForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Usuário cadastrado com sucesso!")
+            return redirect("usuarios")
+
+    else:
+        form = UsuarioAdminForm()
+        messages.success(self.request, f'Bem-vindo(a), {form.get_user().nome_exibicao}!')
+
+    return render(
+        request,
+        "dashboard/form_usuario.html",
+        {"form": form}
+    )
+
+
+@login_required
+def usuario_visualizar(request, id):
+    usuario = get_object_or_404(User, id=id)
+
+    return render(
+        request,
+        "dashboard/visualizar_usuario.html",
+        {"usuario": usuario}
+    )
+
+@login_required
+def usuario_excluir(request, id):
+    if not request.user.is_authenticated:
+        return JsonResponse(
+            {"ok": False, "mensagem": "Sua sessão expirou. Faça login novamente."},
+            status=401,
+        )
+
+    usuario = get_object_or_404(User, id=id)
+
+    if usuario == request.user:
+        return JsonResponse(
+            {"ok": False, "mensagem": "Você não pode excluir o próprio usuário."},
+            status=403,
+        )
+
+    try:
+        usuario.delete()
+    except ProtectedError:
+        return JsonResponse(
+            {"ok": False, "mensagem": "Este usuário possui empréstimos ou visitas e não pode ser excluído. Desative-o em vez de excluir."},
+            status=409,
+        )
+
+    return JsonResponse({"ok": True, "mensagem": "Usuário excluído com sucesso!"})
 
 @login_required
 def dashboard(request):

@@ -13,6 +13,14 @@
     color: var(--lu-ink);
   }
 
+  .lem-usr-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
   /* Cabeçalho */
   .lem-usr-header {
     display: flex;
@@ -184,14 +192,26 @@
 <div class="app-content lem-usr" data-lem-usuarios data-total="{{ usuarios|length }}">
   <div class="container-fluid">
 
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
     <div class="lem-usr-header">
       <div>
         <h1 class="lem-usr-title">Usuários</h1>
         <p class="lem-usr-subtitle">Consulte, cadastre e mantenha os perfis dos usuários da plataforma.</p>
       </div>
       <div class="lem-usr-actions">
-        <button type="button" class="lem-usr-btn lem-usr-btn--primary" data-acao="novo-usuario">
-          <i class="bi bi-person-plus" aria-hidden="true"></i> Novo usuário
+        <button type="button"
+                class="lem-usr-btn lem-usr-btn--primary"
+                data-acao="novo-usuario">
+            <i class="bi bi-person-plus" aria-hidden="true"></i>
+            Novo usuário
         </button>
       </div>
     </div>
@@ -231,12 +251,20 @@
           <tbody>
             {% for u in usuarios %}
               <tr data-usr-linha
-                  data-busca="{{ u.nome_completo }} {{ u.cpf }} {{ u.email }} {{ u.escola }}"
+                  data-busca="{{ u.nome_completo }} {{ u.cpf }} {{ u.email }} {{ u.vinculo_profissional }}"
                   data-cpf="{{ u.cpf }}"
                   data-situacao="{% if u.ativo %}ativo{% else %}inativo{% endif %}">
                 <td>
                   <div class="lem-usr-user">
-                    <span class="lem-usr-avatar" aria-hidden="true">{{ u.iniciais }}</span>
+                    <div class="lem-usr-avatar">
+                        {% if u.foto %}
+                            <img src="{{ u.foto.url }}"
+                                alt="Foto de {{ u.nome_completo }}"
+                                class="lem-usr-avatar-img">
+                        {% else %}
+                            {{ u.iniciais }}
+                        {% endif %}
+                    </div>
                     <div>
                       <span class="lem-usr-user-name">{{ u.nome_completo }}</span>
                       <span class="lem-usr-sub">{% if u.is_admin %}Administrador{% else %}Professor{% endif %}</span>
@@ -245,7 +273,7 @@
                 </td>
                 <td class="lem-usr-nowrap">{{ u.cpf }}</td>
                 <td>{{ u.email }}</td>
-                <td>{{ u.escola|default:"—" }}</td>
+                <td>{{ u.vinculo_profissional|default:"—" }}</td>
                 <td>{{ u.cidade_escola|default:"—" }}</td>
                 <td>
                   {% if u.ativo %}
@@ -254,21 +282,29 @@
                     <span class="lem-usr-badge lem-usr-badge--inativo">Inativo</span>
                   {% endif %}
                 </td>
+                
                 <td>
                   <button type="button" class="lem-usr-icon-btn" data-acao="ver" data-id="{{ u.id }}"
                           aria-label="Ver {{ u.nome_completo }}" title="Ver">
                     <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
-                  <button type="button" class="lem-usr-icon-btn" data-acao="editar" data-id="{{ u.id }}"
-                          aria-label="Editar {{ u.nome_completo }}" title="Editar">
-                    <i class="bi bi-pencil" aria-hidden="true"></i>
-                  </button>
-                  <button type="button" class="lem-usr-icon-btn lem-usr-icon-btn--danger" data-acao="remover" data-id="{{ u.id }}"
-                          aria-label="Remover {{ u.nome_completo }}" title="Remover">
-                    <i class="bi bi-trash" aria-hidden="true"></i>
-                  </button>
+                  <form method="POST"
+                        action="{% url 'usuario_excluir' u.id %}"
+                        style="display: inline;">
+
+                      {% csrf_token %}
+
+                      <button type="submit"
+                              class="lem-usr-icon-btn lem-usr-icon-btn--danger"
+                              title="Excluir"
+                              aria-label="Excluir {{ u.nome_completo }}">
+                          <i class="bi bi-trash" aria-hidden="true"></i>
+                      </button>
+
+                  </form>
                 </td>
               </tr>
+
             {% endfor %}
             <tr class="lem-usr-empty" data-usr-vazio hidden>
               <td colspan="7"></td>
