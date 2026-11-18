@@ -251,3 +251,6 @@ def remover_material(request, material_id):
 def etiquetas(request):
     return render(request, "dashboard/etiquetas.html")
 
+def escolas(request):
+    return render(request, "dashboard/escolas.html")
+

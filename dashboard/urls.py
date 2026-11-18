@@ -88,5 +88,9 @@ urlpatterns = [
     path('etiquetas/', 
          views.etiquetas, 
          name='etiquetas'),
+    
+    path('escolas/', 
+         views.escolas, 
+         name='escolas'),
 
 ]

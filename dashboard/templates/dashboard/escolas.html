@@ -1,0 +1,278 @@
+<style>
+#lem-esc{--g:#0f6b4f;--g-d:#0a5440;--mint:#e3f3ec;--tint:#f3f8f6;--ink:#16313a;--mut:#667a7e;--line:#e1e9e8;--red:#d6455d;font-family:"Inter","Segoe UI",system-ui,sans-serif;color:var(--ink)}
+#lem-esc *{box-sizing:border-box; padding: 10px;}
+#lem-esc svg.i{width:18px;height:18px;flex-shrink:0}
+#lem-esc .e-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;}
+#lem-esc h2{margin:0;font-size:24px;font-weight:700;letter-spacing:-.2px}
+#lem-esc .e-sub{margin:4px 0 0;font-size:14px;color:var(--mut)}
+#lem-esc .e-demo{display:inline-block;margin-top:8px;padding:2px 10px;border-radius:999px;background:#fff4d6;color:#7a5200;font-size:12px;font-weight:600}
+#lem-esc .btn{display:inline-flex;align-items:center;gap:8px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 16px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer}
+#lem-esc .btn:hover:not(:disabled){background:var(--tint)}
+#lem-esc .btn:disabled{color:#a7b4b6;cursor:default}
+#lem-esc .btn-p{background:var(--g);border-color:var(--g);color:#fff}
+#lem-esc .btn-p:hover:not(:disabled){background:var(--g-d)}
+#lem-esc .btn-d{background:var(--red);border-color:var(--red);color:#fff}
+#lem-esc .btn-d:hover:not(:disabled){background:#bb3249}
+#lem-esc button:focus-visible,#lem-esc input:focus-visible,#lem-esc select:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+#lem-esc .e-card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 8px rgba(20,50,50,.05);padding:16px}
+#lem-esc .e-bar{display:flex;gap:12px;margin-bottom:16px}
+#lem-esc .e-search{flex:1;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:0 12px;color:var(--mut)}
+#lem-esc .e-search input{flex:1;border:0;outline:0;padding:11px 0;font-size:14px;font-family:inherit;background:transparent;color:var(--ink);min-width:0}
+#lem-esc select,#lem-esc .fld input{font-family:inherit}
+#lem-esc #e-sit{width:230px;border:1px solid var(--line);border-radius:8px;padding:0 12px;font-size:14px;background:#fff;color:var(--ink)}
+#lem-esc .e-table{border:1px solid var(--line);border-radius:12px;overflow:auto}
+#lem-esc table{width:100%;border-collapse:collapse;font-size:14px;min-width:820px}
+#lem-esc th{background:var(--tint);text-align:left;padding:12px 14px;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--ink);font-weight:700;border-bottom:1px solid var(--line)}
+#lem-esc td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+#lem-esc tbody tr:last-child td{border-bottom:0}
+#lem-esc .r{text-align:right}
+#lem-esc .who{display:flex;align-items:center;gap:12px}
+#lem-esc .av{width:32px;height:32px;border-radius:50%;background:var(--mint);color:var(--g);display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0}
+#lem-esc .who b{display:block;font-size:13px}#lem-esc .who small{color:var(--mut);font-size:12px}
+#lem-esc .pill{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;border:1px solid}
+#lem-esc .pill.on{background:#e3f5ec;border-color:#9fd6bd;color:#1b7a55}
+#lem-esc .pill.off{background:#f1f3f3;border-color:#d3dada;color:#5a6b6e}
+#lem-esc .ib{display:inline-grid;place-items:center;width:32px;height:32px;margin-left:4px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer}
+#lem-esc .ib:hover{background:var(--tint);border-color:var(--line)}
+#lem-esc .ib.del{color:var(--red)}
+#lem-esc .e-empty td{text-align:center;color:var(--mut);padding:36px 14px}
+#lem-esc .e-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--mut)}
+#lem-esc .e-foot .btn{padding:7px 14px;font-size:13px;font-weight:500}
+#lem-esc dialog{border:0;border-radius:16px;padding:0;width:min(660px,94vw);color:var(--ink);box-shadow:0 20px 60px rgba(10,40,40,.3)}
+#lem-esc dialog::backdrop{background:rgba(12,32,28,.45)}
+#lem-esc .m-h{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line)}
+#lem-esc .m-h h3{margin:0;font-size:18px;font-weight:700}
+#lem-esc .m-b{padding:20px 22px;max-height:68vh;overflow:auto}
+#lem-esc .m-f{display:flex;justify-content:flex-end;gap:10px;padding:14px 22px;background:var(--tint);border-top:1px solid var(--line)}
+#lem-esc .fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+#lem-esc .full{grid-column:1/-1}
+#lem-esc .fld label{display:block;font-size:13px;font-weight:600;margin-bottom:5px}
+#lem-esc .fld label i{color:var(--red);font-style:normal}
+#lem-esc .fld input,#lem-esc .fld select{width:100%;border:1px solid #cfdad9;border-radius:8px;padding:10px 12px;font-size:14px;background:#fff;color:var(--ink)}
+#lem-esc dl{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin:0}
+#lem-esc dt{font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);font-weight:700;margin-bottom:3px}
+#lem-esc dd{margin:0;font-size:14px;word-break:break-word}
+#lem-esc .m-b p{margin:0;font-size:14px;line-height:1.55}
+#lem-esc #e-toast{position:fixed;right:24px;bottom:24px;background:var(--ink);color:#fff;padding:11px 18px;border-radius:8px;font-size:14px;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none;z-index:2000}
+#lem-esc #e-toast.show{opacity:1;transform:none}
+@media(max-width:640px){ #lem-esc .e-bar{flex-direction:column}#lem-esc #e-sit{width:100%;padding:10px 12px}#lem-esc .fg,#lem-esc dl{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){ #lem-esc #e-toast{transition:none}}
+</style>
+
+<div id="lem-esc" data-api-listar="" data-api-criar="" data-api-editar="" data-api-excluir="">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <symbol id="lem-e-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+    <symbol id="lem-e-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="lem-e-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="lem-e-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></symbol>
+    <symbol id="lem-e-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+    <symbol id="lem-e-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  </defs></svg>
+
+  <div class="e-head">
+    <div>
+      <h2>Escolas</h2>
+      <p class="e-sub">Consulte, cadastre e mantenha as escolas atendidas pelo laboratório.</p>
+    </div>
+    <button type="button" class="btn btn-p" id="e-novo"><svg class="i"><use href="#lem-e-plus"/></svg>Nova escola</button>
+  </div>
+
+  <div class="e-card">
+    <div class="e-bar">
+      <label class="e-search"><svg class="i"><use href="#lem-e-search"/></svg><input id="e-q" type="search" placeholder="Pesquisar por nome, INEP, cidade ou e-mail" aria-label="Pesquisar escolas"></label>
+      <select id="e-sit" aria-label="Filtrar por situação">
+        <option value="">Todas as situações</option><option value="Ativa">Ativas</option><option value="Inativa">Inativas</option>
+      </select>
+    </div>
+    <div class="e-table">
+      <table>
+        <thead><tr><th>Escola</th><th>INEP</th><th>E-mail</th><th>Cidade</th><th>Telefone</th><th>Situação</th><th class="r">Ações</th></tr></thead>
+        <tbody id="e-body"></tbody>
+      </table>
+    </div>
+    <div class="e-foot">
+      <span id="e-info"></span>
+      <div><button type="button" class="btn" id="e-prev">Anterior</button> <button type="button" class="btn" id="e-next">Próxima</button></div>
+    </div>
+  </div>
+
+  <dialog id="e-dlg-form" aria-labelledby="e-form-t">
+    <form id="e-form" autocomplete="off">
+      <div class="m-h"><h3 id="e-form-t">Nova escola</h3><button type="button" class="ib" data-fechar aria-label="Fechar"><svg class="i"><use href="#lem-e-x"/></svg></button></div>
+      <div class="m-b">
+        <input type="hidden" name="id">
+        <div class="fg">
+          <div class="fld full"><label for="f-nome">Nome da escola <i>*</i></label><input id="f-nome" name="nome" required maxlength="120"></div>
+          <div class="fld"><label for="f-inep">Código INEP</label><input id="f-inep" name="inep" inputmode="numeric" pattern="[0-9]{8}" maxlength="8" title="O código INEP tem 8 números"></div>
+          <div class="fld"><label for="f-rede">Rede de ensino</label><select id="f-rede" name="rede"><option>Municipal</option><option>Estadual</option><option>Federal</option><option>Privada</option></select></div>
+          <div class="fld"><label for="f-cidade">Cidade <i>*</i></label><input id="f-cidade" name="cidade" required maxlength="80"></div>
+          <div class="fld"><label for="f-sit">Situação</label><select id="f-sit" name="situacao"><option>Ativa</option><option>Inativa</option></select></div>
+          <div class="fld full"><label for="f-end">Endereço</label><input id="f-end" name="endereco" maxlength="160"></div>
+          <div class="fld"><label for="f-mail">E-mail</label><input id="f-mail" name="email" type="email" maxlength="120"></div>
+          <div class="fld"><label for="f-tel">Telefone</label><input id="f-tel" name="telefone" type="tel" maxlength="20"></div>
+          <div class="fld full"><label for="f-resp">Responsável (direção ou coordenação)</label><input id="f-resp" name="responsavel" maxlength="100"></div>
+        </div>
+      </div>
+      <div class="m-f"><button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn btn-p" id="e-salvar">Salvar escola</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="e-dlg-ver" aria-labelledby="e-ver-t">
+    <div class="m-h"><h3 id="e-ver-t">Dados da escola</h3><button type="button" class="ib" data-fechar aria-label="Fechar"><svg class="i"><use href="#lem-e-x"/></svg></button></div>
+    <div class="m-b"><dl id="e-ver-dl"></dl></div>
+    <div class="m-f"><button type="button" class="btn" data-fechar>Fechar</button><button type="button" class="btn btn-p" id="e-ver-edit"><svg class="i"><use href="#lem-e-edit"/></svg>Editar</button></div>
+  </dialog>
+
+  <dialog id="e-dlg-del" aria-labelledby="e-del-t">
+    <div class="m-h"><h3 id="e-del-t">Excluir escola</h3><button type="button" class="ib" data-fechar aria-label="Fechar"><svg class="i"><use href="#lem-e-x"/></svg></button></div>
+    <div class="m-b"><p id="e-del-p"></p></div>
+    <div class="m-f"><button type="button" class="btn" data-fechar>Cancelar</button><button type="button" class="btn btn-d" id="e-del-ok">Excluir</button></div>
+  </dialog>
+
+  <div id="e-toast" role="status" aria-live="polite"></div>
+</div>
+
+<script>
+(function () {
+  var TAM = 5;
+
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function norm(s) { return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
+  function ini(n) {
+    var p = String(n || "?").split(/\s+/).filter(function (w) { return w.length > 2 && !/^(do|da|de|dos|das)$/i.test(w); });
+    return ((p[0] || "?")[0] + ((p[1] || "")[0] || "")).toUpperCase();
+  }
+
+  function init() {
+    var root = document.getElementById("lem-esc");
+    if (!root || root.dataset.ready) return;
+    root.dataset.ready = "1";
+    function $(id) { return root.querySelector("#" + id); }
+
+    var cfg = { listar: root.dataset.apiListar, criar: root.dataset.apiCriar, editar: root.dataset.apiEditar, excluir: root.dataset.apiExcluir };
+    var demo = !cfg.listar;
+    var lista = [], pagina = 1, alvoId = null;
+    var corpo = $("e-body"), form = $("e-form");
+    if (demo) $("e-demo").hidden = false;
+
+    function req(url, metodo, dados) {
+      var m = document.cookie.match(/csrftoken=([^;]+)/);
+      return fetch(url, {
+        method: metodo, credentials: "same-origin",
+        headers: { "Content-Type": "application/json", "X-CSRFToken": m ? decodeURIComponent(m[1]) : "" },
+        body: dados ? JSON.stringify(dados) : undefined
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (!r.ok) throw new Error(j.erro || "Não foi possível concluir a ação.");
+          return j;
+        });
+      });
+    }
+    var toastT;
+    function aviso(msg) {
+      var t = $("e-toast"); t.textContent = msg; t.classList.add("show");
+      clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove("show"); }, 3200);
+    }
+    function achar(id) { return lista.filter(function (s) { return String(s.id) === String(id); })[0]; }
+
+    function filtrar() {
+      var q = norm($("e-q").value), sit = $("e-sit").value;
+      return lista.filter(function (s) {
+        if (sit && s.situacao !== sit) return false;
+        return !q || norm([s.nome, s.inep, s.cidade, s.email].join(" ")).indexOf(q) > -1;
+      }).sort(function (a, b) { return a.nome.localeCompare(b.nome, "pt"); });
+    }
+    function render() {
+      var dados = filtrar(), total = Math.max(1, Math.ceil(dados.length / TAM));
+      if (pagina > total) pagina = total;
+      var fatia = dados.slice((pagina - 1) * TAM, pagina * TAM);
+      corpo.innerHTML = fatia.length ? fatia.map(function (s) {
+        var nm = esc(s.nome);
+        return '<tr><td><div class="who"><span class="av">' + esc(ini(s.nome)) + '</span><div><b>' + nm + '</b><small>Rede ' + esc((s.rede || "").toLowerCase()) + '</small></div></div></td>' +
+          '<td>' + esc(s.inep || "—") + '</td><td>' + esc(s.email || "—") + '</td><td>' + esc(s.cidade || "—") + '</td><td>' + esc(s.telefone || "—") + '</td>' +
+          '<td><span class="pill ' + (s.situacao === "Ativa" ? "on" : "off") + '">' + esc(s.situacao) + '</span></td>' +
+          '<td class="r"><button type="button" class="ib" data-a="ver" data-id="' + esc(s.id) + '" aria-label="Visualizar ' + nm + '"><svg class="i"><use href="#lem-e-eye"/></svg></button>' +
+          '<button type="button" class="ib" data-a="edit" data-id="' + esc(s.id) + '" aria-label="Editar ' + nm + '"><svg class="i"><use href="#lem-e-edit"/></svg></button>' +
+          '<button type="button" class="ib del" data-a="del" data-id="' + esc(s.id) + '" aria-label="Excluir ' + nm + '"><svg class="i"><use href="#lem-e-trash"/></svg></button></td></tr>';
+      }).join("") : '<tr class="e-empty"><td colspan="7">Nenhuma escola encontrada. Ajuste a busca ou cadastre uma nova escola.</td></tr>';
+      $("e-info").textContent = dados.length + " registro(s) — página " + pagina + " de " + total;
+      $("e-prev").disabled = pagina <= 1;
+      $("e-next").disabled = pagina >= total;
+    }
+
+    function abrirForm(s) {
+      form.reset();
+      $("e-form-t").textContent = s ? "Editar escola" : "Nova escola";
+      if (s) Object.keys(s).forEach(function (k) { if (form.elements[k]) form.elements[k].value = s[k] == null ? "" : s[k]; });
+      $("e-dlg-form").showModal();
+      form.elements.nome.focus();
+    }
+    function abrirVer(s) {
+      alvoId = s.id;
+      var c = [["Escola", s.nome], ["Código INEP", s.inep], ["Rede de ensino", s.rede], ["Situação", s.situacao], ["Cidade", s.cidade], ["Endereço", s.endereco], ["E-mail", s.email], ["Telefone", s.telefone], ["Responsável", s.responsavel]];
+      $("e-ver-dl").innerHTML = c.map(function (x) { return "<div><dt>" + x[0] + "</dt><dd>" + esc(x[1] || "—") + "</dd></div>"; }).join("");
+      $("e-dlg-ver").showModal();
+    }
+    function abrirDel(s) {
+      alvoId = s.id;
+      $("e-del-p").innerHTML = "Tem certeza de que deseja excluir a escola <b>" + esc(s.nome) + "</b>? Esta ação não pode ser desfeita.";
+      $("e-dlg-del").showModal();
+    }
+
+    root.addEventListener("click", function (ev) {
+      var b = ev.target.closest("button");
+      if (!b) return;
+      if (b.hasAttribute("data-fechar")) { b.closest("dialog").close(); return; }
+      var a = b.dataset.a, s = a ? achar(b.dataset.id) : null;
+      if (s && a === "ver") abrirVer(s);
+      if (s && a === "edit") abrirForm(s);
+      if (s && a === "del") abrirDel(s);
+    });
+    root.querySelectorAll("dialog").forEach(function (d) {
+      d.addEventListener("mousedown", function (ev) { if (ev.target === d) d.close(); });
+    });
+    $("e-novo").onclick = function () { abrirForm(null); };
+    $("e-ver-edit").onclick = function () { $("e-dlg-ver").close(); abrirForm(achar(alvoId)); };
+    $("e-q").oninput = function () { pagina = 1; render(); };
+    $("e-sit").onchange = function () { pagina = 1; render(); };
+    $("e-prev").onclick = function () { pagina--; render(); };
+    $("e-next").onclick = function () { pagina++; render(); };
+
+    form.onsubmit = function (ev) {
+      ev.preventDefault();
+      if (!form.reportValidity()) return;
+      var d = {}; new FormData(form).forEach(function (v, k) { d[k] = String(v).trim(); });
+      var id = d.id; delete d.id;
+      var btn = $("e-salvar"); btn.disabled = true;
+      var p = demo ? Promise.resolve(Object.assign({ id: id || "d" + Date.now() }, d))
+        : req(id ? cfg.editar.replace("{id}", id) : cfg.criar, id ? "PUT" : "POST", d);
+      p.then(function (salva) {
+        lista = id ? lista.map(function (s) { return String(s.id) === String(id) ? salva : s; }) : lista.concat([salva]);
+        $("e-dlg-form").close(); render();
+        aviso(id ? "Escola atualizada." : "Escola cadastrada.");
+      }).catch(function (e) { aviso(e.message); }).then(function () { btn.disabled = false; });
+    };
+    $("e-del-ok").onclick = function () {
+      var id = alvoId, btn = $("e-del-ok"); btn.disabled = true;
+      var p = demo ? Promise.resolve() : req(cfg.excluir.replace("{id}", id), "DELETE");
+      p.then(function () {
+        lista = lista.filter(function (s) { return String(s.id) !== String(id); });
+        $("e-dlg-del").close(); render(); aviso("Escola excluída.");
+      }).catch(function (e) { aviso(e.message); }).then(function () { btn.disabled = false; });
+    };
+
+    if (demo) { lista = []; render(); }
+    else {
+      corpo.innerHTML = '<tr class="e-empty"><td colspan="7">Carregando escolas...</td></tr>';
+      req(cfg.listar, "GET").then(function (j) { lista = j.resultados || []; render(); })
+        .catch(function (e) { corpo.innerHTML = '<tr class="e-empty"><td colspan="7">' + esc(e.message) + "</td></tr>"; });
+    }
+  }
+  window.initEscolas = init;
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+})();
+</script>

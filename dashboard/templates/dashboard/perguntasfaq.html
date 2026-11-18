@@ -36,7 +36,7 @@ body {
   border-left: 2px solid #0f3d2c;
 }
 
-.page { padding: 2.25rem 1.625rem; }
+.page { padding: 10px; }
 
 /* Cabeçalho */
 .page-title { font-size: 1.5rem; font-weight: 700; letter-spacing: -.01em; margin: 0; }
@@ -52,27 +52,16 @@ body {
   --bs-btn-active-bg: var(--lem-primary-dark);
   --bs-btn-active-border-color: var(--lem-primary-dark);
   --bs-btn-focus-shadow-rgb: 11, 122, 85;
+  margin: 1.25rem 0 1.5rem;
+  padding: .5rem .75rem;
   font-size: .9375rem;
   font-weight: 500;
-  padding: .7rem 1.5rem;
   border-radius: .6rem;
   display: inline-flex;
   align-items: center;
   gap: .85rem;
 }
 .btn-lem .bi { font-size: 1.1rem; }
-
-/* Aviso de dados simulados */
-.notice {
-  margin: 1.25rem 0 1.5rem;
-  padding: .5rem .75rem;
-  font-size: .75rem;
-  color: var(--lem-muted);
-  background: #f0f5f2;
-  border: 1px dashed #cdd9d3;
-  border-radius: .6rem;
-}
-.notice strong { color: var(--lem-ink); font-weight: 600; }
 
 /* Cartão principal */
 .panel {
@@ -210,10 +199,6 @@ body {
   
     </header>
 
-    <div class="notice">
-      Os registros exibidos são <strong>dados simulados</strong> para demonstração da interface.
-      A estrutura está preparada para integração com Django (MTV) e banco de dados MySQL.
-    </div>
 
     <!-- Painel -->
     <section class="panel">
