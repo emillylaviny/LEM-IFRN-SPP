@@ -15,6 +15,8 @@ class Card(models.Model):
 class Instituicao(models.Model):
     nome = models.CharField(max_length=150, unique=True)
     ativa = models.BooleanField(default=True)
+    cidade_escola = models.CharField(max_length=150)
+
 
     class Meta:
         ordering = ["nome"]

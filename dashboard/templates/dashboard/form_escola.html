@@ -1,0 +1,233 @@
+
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        {% if escola %}Editar Escola{% else %}Cadastro de Escola{% endif %} | LEM/SPP
+    </title>
+
+    {% include "LEM/favicon.html" %}
+
+    <style>
+        .lem-frm {
+            color: #14261e;
+        }
+
+        .lem-frm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .lem-frm-header h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .lem-frm-header p {
+            margin: 6px 0 0;
+            color: #5b6b64;
+        }
+
+        .lem-frm-card {
+            background: #fff;
+            border: 1px solid #dfe7e3;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .lem-frm-card-head {
+            padding: 18px 22px;
+            border-bottom: 1px solid #dfe7e3;
+        }
+
+        .lem-frm-card-head h3 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .lem-frm-card-body {
+            padding: 22px;
+        }
+
+        .lem-frm-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .lem-frm-field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .lem-frm-field label {
+            font-weight: 600;
+        }
+
+        .lem-frm-field input {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #dfe7e3;
+            border-radius: 7px;
+            box-sizing: border-box;
+        }
+
+        .lem-frm-field input:focus {
+            outline: none;
+            border-color: #0b6b4d;
+        }
+
+        .lem-frm-check {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-top: 24px;
+        }
+
+        .lem-frm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .lem-frm-btn {
+            padding: 11px 18px;
+            border-radius: 7px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .lem-frm-btn-primary {
+            background: #0b6b4d;
+            color: #fff;
+        }
+
+        .lem-frm-btn-secondary {
+            background: #eef2ef;
+            color: #14261e;
+        }
+
+        .lem-frm-error {
+            color: #c8293c;
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+            .lem-frm-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lem-frm-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="lem-frm">
+
+    <div class="lem-frm-header">
+        <div>
+            <h2>
+                {% if escola %}Editar Escola{% else %}Cadastro de Escola{% endif %}
+            </h2>
+
+            <p>
+                {% if escola %}
+                    Atualize as informações da instituição.
+                {% else %}
+                    Preencha os dados para cadastrar uma nova escola.
+                {% endif %}
+            </p>
+        </div>
+
+        <a href="{% url 'escolas' %}" class="lem-frm-btn lem-frm-btn-secondary">
+            Voltar
+        </a>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="lem-frm-card">
+            <div class="lem-frm-card-head">
+                <h3>Informações da escola</h3>
+            </div>
+
+            <div class="lem-frm-card-body">
+
+                <div class="lem-frm-grid">
+
+                    <div class="lem-frm-field">
+                        <label for="{{ form.nome.id_for_label }}">
+                            Nome da escola
+                        </label>
+
+                        {{ form.nome }}
+
+                        {% for erro in form.nome.errors %}
+                            <span class="lem-frm-error">{{ erro }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="lem-frm-field">
+                        <label for="{{ form.cidade_escola.id_for_label }}">
+                            Cidade
+                        </label>
+
+                        {{ form.cidade_escola }}
+
+                        {% for erro in form.cidade_escola.errors %}
+                            <span class="lem-frm-error">{{ erro }}</span>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <div class="lem-frm-check">
+                    {{ form.ativa }}
+                    <label for="{{ form.ativa.id_for_label }}">
+                        Escola ativa
+                    </label>
+                </div>
+
+                {% for erro in form.ativa.errors %}
+                    <span class="lem-frm-error">{{ erro }}</span>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <div class="lem-frm-actions">
+            <a href="{% url 'escolas' %}"
+               class="lem-frm-btn lem-frm-btn-secondary">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                    class="lem-frm-btn lem-frm-btn-primary">
+                {% if escola %}Salvar alterações{% else %}Cadastrar escola{% endif %}
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

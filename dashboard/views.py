@@ -2,8 +2,8 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from LEM.forms import MaterialForm, FAQForm, UsuarioAdminForm
-from LEM.models import Materiais, LocalizacaoLab, FAQ, User
+from LEM.forms import MaterialForm, FAQForm, UsuarioAdminForm, InstituicaoForm
+from LEM.models import Materiais, LocalizacaoLab, FAQ, User, Instituicao
 from django.db.models.deletion import ProtectedError
 from django.http import JsonResponse
 from django.db.models import ProtectedError
@@ -254,3 +254,78 @@ def etiquetas(request):
 def escolas(request):
     return render(request, "dashboard/escolas.html")
 
+
+@login_required
+def escolas(request):
+    lista_escolas = Instituicao.objects.all().order_by("nome")
+
+    return render(
+        request,
+        "dashboard/escolas.html",
+        {"escolas": lista_escolas}
+    )
+
+
+@login_required
+def escola_cadastrar(request):
+    if request.method == "POST":
+        form = InstituicaoForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                "Instituição cadastrada com sucesso!"
+            )
+        else:
+            messages.error(
+                request,
+                "Não foi possível cadastrar a instituição. Verifique os campos."
+            )
+
+    return redirect("escolas")
+
+
+@login_required
+def escola_editar(request, id):
+    escola = get_object_or_404(Instituicao, id=id)
+
+    if request.method == "POST":
+        form = InstituicaoForm(request.POST, instance=escola)
+
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request,
+                "Instituição atualizada com sucesso!"
+            )
+        else:
+            messages.error(
+                request,
+                "Não foi possível atualizar a instituição. Verifique os campos."
+            )
+
+    return redirect("escolas")
+
+
+@login_required
+def escola_excluir(request, id):
+    if request.method != "POST":
+        return JsonResponse(
+            {"ok": False, "mensagem": "Método não permitido."},
+            status=405
+        )
+
+    escola = get_object_or_404(Instituicao, id=id)
+
+    try:
+        escola.delete()
+        messages.success(request, "Instituição excluída com sucesso!")
+
+    except ProtectedError:
+        messages.error(
+            request,
+            "Esta instituição possui usuários vinculados e não pode ser excluída. Desative-a em vez de excluir."
+        )
+
+    return redirect("escolas")

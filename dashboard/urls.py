@@ -92,5 +92,17 @@ urlpatterns = [
     path('escolas/', 
          views.escolas, 
          name='escolas'),
+    
+    path('escolas/novo/', 
+         views.escola_cadastrar, 
+         name='escola_cadastrar'),
+    
+    path('escolas/editar/<int:id>/', 
+         views.escola_editar, 
+         name='escola_editar'),
+    
+    path('escolas/excluir/<int:id>/', 
+         views.escola_excluir, 
+         name='escola_excluir'),
 
 ]

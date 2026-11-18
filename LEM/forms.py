@@ -359,3 +359,31 @@ class DuvidaForm(forms.ModelForm):
         if len(pergunta) > 1000:
             raise forms.ValidationError("A pergunta pode ter no máximo 1000 caracteres.")
         return pergunta
+    
+    
+class InstituicaoForm(forms.ModelForm):
+    class Meta:
+        model = Instituicao
+        fields = [
+            "nome",
+            "cidade_escola",
+            "ativa",
+        ]
+
+        widgets = {
+            "nome": forms.TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "Nome da escola",
+            }),
+
+            "cidade_escola": forms.TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "Cidade da escola",
+            }),
+        }
+
+        labels = {
+            "nome": "Nome da escola",
+            "cidade_escola": "Cidade",
+            "ativa": "Instituição ativa",
+        }
