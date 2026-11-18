@@ -52,7 +52,7 @@
 <!-- Funcionar botão menu lateral -->
 <style>
 #lem-dash{--teal:#0b6e6a;--teal-d:#0a4f55;--blue:#14394f;--mint:#e8f0ef;--tint:#f6f8f8;--ink:#1c2b30;--mut:#5f6f73;--line:#dde4e5;--coral:#a8322d;font-family:"Inter","Segoe UI",system-ui,sans-serif;color:var(--ink)}
-#lem-dash *{box-sizing:border-box; padding: 10px;}
+#lem-dash *{box-sizing:border-box;}
 #lem-dash .d-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 #lem-dash h2{margin:0;font-size:24px;font-weight:600;letter-spacing:-.2px}
 #lem-dash .d-sub{margin:2px 0 0;color:var(--mut);font-size:14px}
@@ -480,7 +480,7 @@ try {
       <!--begin::App Main-->
       <main class="app-main" id="conteudoPrincipal">
         <!--begin::App Content Header-->
-          <div id="lem-dash">
+          <div id="lem-dash" class="p-3">
     
             <svg width="0" height="0" style="position:absolute" aria-hidden="true">
               <defs>
@@ -605,43 +605,44 @@ try {
             </div>
 
             <script id="lem-dash-grafico" type="application/json">{"meses": ["Jun", "Jul", "Ago", "Set", "Out", "Nov"], "emprestimos": [28, 35, 31, 44, 39, 42], "devolucoes": [25, 31, 30, 40, 36, 35]}</script>
+            <script>
+              // Gráfico do Dashboard. Pode ser chamado de novo: window.initDashboardHome()
+              (function () {
+                function lerDados() {
+                  var padrao = { meses: ["Jan","Fev","Mar","Abr","Mai","Jun"], emprestimos: [0,0,0,0,0,0], devolucoes: [0,0,0,0,0,0] };
+                  var el = document.getElementById("lem-dash-grafico");
+                  if (!el) return padrao;
+                  try { var d = JSON.parse(el.textContent); return d && d.meses ? d : padrao; } catch (e) { return padrao; }
+                }
+                function initDashboardHome() {
+                  var alvo = document.querySelector("#lem-chart-emprestimos");
+                  if (!alvo || typeof ApexCharts === "undefined") return;
+                  alvo.innerHTML = "";
+                  var d = lerDados();
+                  new ApexCharts(alvo, {
+                    series: [{ name: "Empréstimos", data: d.emprestimos }, { name: "Devoluções", data: d.devolucoes }],
+                    chart: { height: 260, type: "area", toolbar: { show: false }, fontFamily: "inherit" },
+                    colors: ["#0b6e6a", "#14394f"],
+                    dataLabels: { enabled: false },
+                    stroke: { curve: "smooth", width: 2 },
+                    fill: { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.18, opacityTo: 0.02, stops: [0, 95] } },
+                    grid: { borderColor: "#dde4e5", strokeDashArray: 3 },
+                    xaxis: { categories: d.meses },
+                    yaxis: { min: 0, forceNiceScale: true, labels: { formatter: function (v) { return Math.round(v); } } },
+                    legend: { position: "top", markers: { radius: 2 } },
+                    tooltip: { y: { formatter: function (v) { return v + " itens"; } } }
+                  }).render();
+                }
+                window.initDashboardHome = initDashboardHome;
+                if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initDashboardHome);
+                else initDashboardHome();
+              })();
+            </script>
           </div>
-
-          <script>
-          // Gráfico do Dashboard. Pode ser chamado de novo: window.initDashboardHome()
-          (function () {
-            function lerDados() {
-              var padrao = { meses: ["Jan","Fev","Mar","Abr","Mai","Jun"], emprestimos: [0,0,0,0,0,0], devolucoes: [0,0,0,0,0,0] };
-              var el = document.getElementById("lem-dash-grafico");
-              if (!el) return padrao;
-              try { var d = JSON.parse(el.textContent); return d && d.meses ? d : padrao; } catch (e) { return padrao; }
-            }
-            function initDashboardHome() {
-              var alvo = document.querySelector("#lem-chart-emprestimos");
-              if (!alvo || typeof ApexCharts === "undefined") return;
-              alvo.innerHTML = "";
-              var d = lerDados();
-              new ApexCharts(alvo, {
-                series: [{ name: "Empréstimos", data: d.emprestimos }, { name: "Devoluções", data: d.devolucoes }],
-                chart: { height: 260, type: "area", toolbar: { show: false }, fontFamily: "inherit" },
-                colors: ["#0b6e6a", "#14394f"],
-                dataLabels: { enabled: false },
-                stroke: { curve: "smooth", width: 2 },
-                fill: { type: "gradient", gradient: { shadeIntensity: 1, opacityFrom: 0.18, opacityTo: 0.02, stops: [0, 95] } },
-                grid: { borderColor: "#dde4e5", strokeDashArray: 3 },
-                xaxis: { categories: d.meses },
-                yaxis: { min: 0, forceNiceScale: true, labels: { formatter: function (v) { return Math.round(v); } } },
-                legend: { position: "top", markers: { radius: 2 } },
-                tooltip: { y: { formatter: function (v) { return v + " itens"; } } }
-              }).render();
-            }
-            window.initDashboardHome = initDashboardHome;
-            if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initDashboardHome);
-            else initDashboardHome();
-          })();
-          </script>
-
+      </main>
       <!--end::App Main-->
+
+
       <!--begin::Footer-->
       <footer class="app-footer">
         <!--begin::To the end-->
@@ -662,20 +663,22 @@ try {
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
 
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
-      crossorigin="anonymous"
-    ></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
+  <script
+    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js" crossorigin="anonymous"></script>
+
 
 <script>
 const conteudoPrincipal = document.getElementById("conteudoPrincipal");
