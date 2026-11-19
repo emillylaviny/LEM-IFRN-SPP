@@ -47,6 +47,12 @@ class User(AbstractUser):
     ativo = models.BooleanField(default=True)
     data_cadastro = models.DateTimeField(auto_now_add=True)
 
+    historico_escola = models.FileField(
+    upload_to='historicos/%Y/%m/',
+    blank=True,
+    null=True,
+)
+
     class Meta:
         verbose_name = "Usuário"
         verbose_name_plural = "Usuários"

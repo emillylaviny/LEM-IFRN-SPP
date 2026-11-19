@@ -3006,3 +3006,589 @@ a.rp-item-text:hover {
 
 .dv-resposta { margin-top: 1rem; padding: 1rem; border-left: 4px solid var(--cor-primaria); border-radius: 0 12px 12px 0; background-color: var(--lemaq-teal-lighter); }
 .dv-aguardando { color: var(--hor-text-gray); font-style: italic; }
+
+/* =====================================================================
+   CADASTRO  (classes com prefixo cad-)
+   Não altera login/FAQ: .page, .side-panel, .field etc. continuam intactos.
+   ===================================================================== */
+
+.cad-page {
+  --cad-teal: #17b8a6;
+  --cad-teal-d: #0e8f80;
+  --cad-navy: #0b3d63;
+  --cad-txt: #2f3438;
+  --cad-muted: #6b7378;
+  --cad-bord: #dfe3e6;
+  --cad-erro: #e0435c;
+
+  display: flex;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: var(--fonte, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif);
+  color: var(--cad-txt);
+  background: #fff;
+}
+
+.cad-page *,
+.cad-page *::before,
+.cad-page *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- LADO ESQUERDO (fixo) ---------- */
+
+.cad-side {
+  flex: 0 0 40%;
+  width: 40%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 36px 56px 40px;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(120% 80% at 0% 0%, #2fd6b8 0%, rgba(47, 214, 184, 0) 55%),
+    linear-gradient(165deg, #19bfab 0%, #11a393 50%, #0a7f73 100%);
+}
+
+.cad-side > * { position: relative; z-index: 2; }
+
+.cad-sym {
+  position: absolute;
+  z-index: 1;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.09);
+  user-select: none;
+  pointer-events: none;
+}
+
+.cad-ring {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+}
+
+.cad-brand {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 14px;
+  padding: 9px 13px;
+}
+
+.cad-brand__lem  { height: 80px; width: auto; display: block; }
+.cad-brand__ifrn { height: 32px; width: auto; display: block; }
+
+.cad-brand__div {
+  width: 1px;
+  align-self: stretch;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.cad-hero {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 0 8px;
+}
+
+.cad-hero__title {
+  margin: 0;
+  max-width: 560px;
+  font-size: 2.3rem;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.cad-hero__title em {
+  font-style: normal;
+  white-space: nowrap;
+  padding: 0 0.28em;
+  border-radius: 8px;
+  color: var(--cad-navy);
+  background: #fff;
+}
+
+.cad-hero__img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 35vh;
+  margin: 26px auto 0;
+  object-fit: contain;
+}
+
+/* ---------- LADO DIREITO (rola) ---------- */
+
+.cad-main {
+  flex: 0 0 60%;
+  width: 60%;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: -1px;
+  padding: 48px 32px 64px;
+  overflow-y: auto;
+  background: #fff;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+}
+
+.cad-main::-webkit-scrollbar { width: 10px; }
+.cad-main::-webkit-scrollbar-thumb {
+  background: #c9d3d6;
+  border-radius: 8px;
+  border: 2px solid #fff;
+}
+
+.cad-form { width: 100%; max-width: 520px; }
+
+.cad-title {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--cad-navy);
+}
+
+.cad-subtitle {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+  color: var(--cad-muted);
+}
+
+.cad-hint {
+  margin: 10px 0 0;
+  font-size: 0.92rem;
+  color: var(--cad-muted);
+}
+
+.cad-link {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--cad-teal-d);
+}
+.cad-link:hover { text-decoration: underline; }
+
+/* ---------- CARTÕES ---------- */
+
+.cad-card {
+  margin-top: 22px;
+  padding: 22px 22px 8px;
+  border: 1px solid var(--cad-bord);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(11, 61, 99, 0.04);
+}
+
+.cad-card__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--cad-navy);
+}
+
+.cad-ico {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  font-size: 1.05rem;
+  border-radius: 10px;
+  background: #e2f6f1;
+  color: var(--cad-teal-d);
+}
+
+.cad-card__desc {
+  margin: -6px 0 14px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--cad-muted);
+}
+
+/* ---------- CAMPOS ---------- */
+
+.cad-field { margin-bottom: 16px; }
+
+.cad-field > label,
+.cad-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--cad-txt);
+}
+
+.cad-req { margin-left: 2px; color: var(--cad-erro); }
+
+.cad-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--cad-txt);
+  background: #fff;
+  border: 1.5px solid var(--cad-bord);
+  border-radius: 10px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cad-input::placeholder { color: #aab2b6; }
+
+.cad-input:focus {
+  outline: none;
+  border-color: var(--cad-teal);
+  box-shadow: 0 0 0 4px rgba(23, 184, 166, 0.15);
+}
+
+.cad-erro {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--cad-erro);
+}
+.cad-erro:empty { display: none; }
+
+/* ---------- SENHA ---------- */
+
+.cad-pass { position: relative; }
+.cad-pass .cad-input { padding-right: 48px; }
+
+.cad-eye {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+  color: #7b868b;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.cad-eye:hover { color: var(--cad-teal-d); }
+.cad-eye:focus-visible { outline: 2px solid var(--cad-teal); outline-offset: 1px; }
+
+.cad-regras {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cad-regras li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  color: var(--cad-muted);
+  background: #eef1f2;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.cad-regras li.ok {
+  font-weight: 600;
+  color: var(--cad-teal-d);
+  background: #e2f6f1;
+}
+
+/* ---------- BOTÃO ---------- */
+
+.cad-btn {
+  width: 100%;
+  height: 50px;
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--cad-teal);
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(23, 184, 166, 0.35);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.cad-btn:hover { background: var(--cad-teal-d); }
+.cad-btn:active { transform: translateY(1px); }
+.cad-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.cad-foot {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--cad-muted);
+}
+
+/* ---------- RESPONSIVIDADE ---------- */
+
+/* celular/tablet: lado verde vira uma faixa curta no topo e a página inteira rola */
+@media (max-width: 900px) {
+  .cad-page {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .cad-side {
+    flex: none;
+    width: 100%;
+    padding: 20px 20px 44px;
+  }
+
+  .cad-sym, .cad-ring, .cad-hero__img { display: none; }
+
+  .cad-brand { gap: 12px; padding: 8px 12px; }
+  .cad-brand__lem  { height: 30px; }
+  .cad-brand__ifrn { height: 28px; }
+
+  .cad-hero { flex: none; margin: 16px 0 0; padding: 0; }
+  .cad-hero__title { font-size: 1.1rem; max-width: 100%; line-height: 1.3; }
+
+  .cad-main {
+    flex: none;
+    width: 100%;
+    margin-left: 0;
+    margin-top: -24px;
+    padding: 36px 20px 56px;
+    overflow: visible;
+    border-radius: 28px 28px 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .cad-title { font-size: 1.55rem; }
+  .cad-card { padding: 18px 16px 4px; }
+}
+
+/* ===================== CAMPO DE ESCOLAS (seleção + texto) ===================== */
+
+.combo {
+  position: relative;
+}
+
+/* espaço à direita para a setinha (precisa vencer ".field input[type=text]") */
+.field .combo input.combo-entrada {
+  padding-right: 44px;
+}
+
+.combo-seta {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--cor-texto-claro);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.combo-seta:hover {
+  color: var(--cor-primaria-escura);
+  background: rgba(23, 184, 166, 0.1);
+}
+
+.combo-seta svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.15s ease;
+}
+
+.combo.aberto .combo-seta svg {
+  transform: rotate(180deg);
+}
+
+.combo-lista {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  display: none;
+  max-height: 232px;
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  list-style: none;
+  background: #ffffff;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-campo);
+  box-shadow: 0 12px 28px rgba(31, 41, 55, 0.12);
+}
+
+.combo.aberto .combo-lista {
+  display: block;
+}
+
+.combo-opcao {
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: var(--cor-texto);
+  cursor: pointer;
+}
+
+.combo-opcao[hidden],
+.combo-vazio[hidden] {
+  display: none;
+}
+
+.combo-opcao.ativa {
+  background: rgba(23, 184, 166, 0.12);
+  color: var(--cor-primaria-escura);
+}
+
+.combo-vazio {
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--cor-texto-claro);
+}
+
+.combo-dica {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  color: var(--cor-texto-claro);
+}
+
+.cad-upload {
+  position: relative;
+  margin-top: 20px;
+}
+.cad-upload[hidden] { display: none; }
+
+.cad-upload__titulo {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b3a5b;
+}
+
+/* o input real fica invisível, mas continua focável e validável */
+.cad-upload__input {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cad-upload__box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1.5px dashed #b6c8d2;
+  border-radius: 12px;
+  background: #f8fbfc;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.cad-upload__box:hover {
+  border-color: #14b8a6;
+  background: #effaf8;
+}
+.cad-upload__input:focus-visible + .cad-upload__box {
+  outline: 3px solid rgba(20, 184, 166, .35);
+  outline-offset: 2px;
+}
+
+.cad-upload__ico {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #dff5f1;
+  color: #0e8f82;
+  font-size: 22px;
+}
+
+.cad-upload__txt {
+  flex: 1 1 auto;
+  min-width: 0;            /* permite cortar nomes de arquivo longos */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cad-upload__txt strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b3a5b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cad-upload__txt small {
+  font-size: 12.5px;
+  color: #6b7f8c;
+}
+
+.cad-upload__trocar {
+  flex: 0 0 auto;
+  padding: 6px 14px;
+  border: 1px solid #14b8a6;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0e8f82;
+  background: #fff;
+}
+
+/* arquivo escolhido */
+.cad-upload.tem-arquivo .cad-upload__box {
+  border-style: solid;
+  border-color: #14b8a6;
+  background: #effaf8;
+}
+.cad-upload.tem-arquivo .cad-upload__ico {
+  background: #14b8a6;
+  color: #fff;
+}
+
+/* erro */
+.cad-upload.invalido .cad-upload__box {
+  border-color: #dc3545;
+  background: #fdf2f3;
+}
+
+/* afasta o campo da dica do combobox */
+.combo-dica { margin-bottom: 0; }

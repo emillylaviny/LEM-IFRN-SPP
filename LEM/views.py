@@ -10,6 +10,14 @@ from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db import IntegrityError
 
+# Escolas sugeridas no campo "Vínculo Profissional" do cadastro.
+ESCOLAS = [
+    "IFRN - Campus São Paulo do Potengi",
+    "Escola Estadual Maurício Freire",
+    "Escola Estadual Senador Dinarte Mariz",
+    "Escola Municipal Dep. Djalma Marinho",
+]
+
 def home(request):
     agora = timezone.localtime()   # usa o TIME_ZONE do settings
     hoje = agora.weekday()         # 0 = segunda ... 6 = domingo
@@ -38,7 +46,7 @@ def home(request):
 
 def cadastro(request):
     if request.method == 'POST':
-        form = CadastroForm(request.POST)
+        form = CadastroForm(request.POST, request.FILES)
 
         if form.is_valid():
             try:
@@ -81,7 +89,7 @@ def cadastro(request):
     else:
         form = CadastroForm()
 
-    return render(request, 'LEM/cadastro.html', {'form': form})
+    return render(request, 'LEM/cadastro.html', {'form': form, 'escolas': ESCOLAS})
 
 
 @login_required

@@ -26,15 +26,17 @@ class CadastroForm(UserCreationForm):
         'required': 'Informe seu e-mail.',
     })
 
-    
-    vinculos_profissionais = forms.ModelMultipleChoiceField(
-        label='Vínculo profissional',
-        queryset=Instituicao.objects.filter(ativa=True),
-        widget=forms.CheckboxSelectMultiple,
-        error_messages={
-            'required': 'Selecione pelo menos uma instituição.',
-            'invalid_choice': 'Instituição inválida.',
-        },
+    vinculo_profissional = forms.CharField(
+    label='Vínculo profissional',
+    max_length=255,  # use o mesmo max_length do campo no model User
+    error_messages={
+        'required': 'Informe pelo menos uma instituição.',
+    },
+    )
+
+    historico_escola = forms.FileField(
+        label='Histórico da escola',
+        required=False,
     )
 
     class Meta:
@@ -44,7 +46,8 @@ class CadastroForm(UserCreationForm):
             'last_name',
             'email',
             'cpf',
-            'vinculos_profissionais',
+            'vinculo_profissional',
+            'historico_escola',
         ]
 
     def clean_cpf(self):
@@ -98,8 +101,28 @@ class CadastroForm(UserCreationForm):
         return user
 
     def clean_vinculo_profissional(self):
-        # transforma a lista marcada em texto: "UFRN, IFRN"
-        return ', '.join(self.cleaned_data['vinculo_profissional'])
+        valor = self.cleaned_data.get('vinculo_profissional', '')
+        escolas = [parte.strip() for parte in valor.split(',') if parte.strip()]
+
+        if not escolas:
+            raise forms.ValidationError('Informe pelo menos uma instituição.')
+
+        return ', '.join(escolas)
+    
+    def clean_historico_escola(self):
+        arquivo = self.cleaned_data.get('historico_escola')
+
+        if not arquivo:
+            raise forms.ValidationError('Anexe o histórico de uma das escolas.')
+
+        extensoes = ('.pdf', '.jpg', '.jpeg', '.png')
+        if not arquivo.name.lower().endswith(extensoes):
+            raise forms.ValidationError('Envie um arquivo PDF, JPG ou PNG.')
+
+        if arquivo.size > 5 * 1024 * 1024:
+            raise forms.ValidationError('O arquivo pode ter no máximo 5 MB.')
+
+        return arquivo
 
 
 

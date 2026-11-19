@@ -9,261 +9,532 @@
   {% include "LEM/favicon.html" %}
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'LEM/css/style.css' %}?v=2">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'LEM/css/style.css' %}?v=3">
 </head>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <body>
 
-  <div class="page">
+  <div class="cad-page">
 
-    <!-- PAINEL ESQUERDO -->
-    <aside class="side-panel">
-      <div class="side-panel__logo">
-      <img src="{% static 'LEM/assets/img/Logo Horizontal - Fundo transparente.png' %}" alt="LEM - Laboratório de Ensino de Matemática">
+<aside class="cad-side">
+      <span class="cad-ring" style="width:460px;height:460px;right:-200px;top:-150px" aria-hidden="true"></span>
+      <span class="cad-ring" style="width:300px;height:300px;right:-110px;top:-60px" aria-hidden="true"></span>
+      <span class="cad-sym" style="font-size:150px;right:30px;top:300px" aria-hidden="true">π</span>
+      <span class="cad-sym" style="font-size:120px;left:-14px;top:560px" aria-hidden="true">÷</span>
+      <span class="cad-sym" style="font-size:96px;right:56px;top:520px" aria-hidden="true">+</span>
+      <span class="cad-sym" style="font-size:80px;left:300px;top:150px" aria-hidden="true">%</span>
+
+      <div class="cad-brand">
+        <img class="cad-brand__lem" src="{% static 'LEM/assets/img/Logo Horizontal - Fundo transparente.png' %}" alt="LEM - Laboratório de Ensino de Matemática">
+        <span class="cad-brand__div" aria-hidden="true"></span>
+        <img class="cad-brand__ifrn" src="{% static 'LEM/assets/img/logoIFRNSPP.png' %}" alt="IFRN - Instituto Federal do Rio Grande do Norte">
       </div>
 
-      <p class="side-panel__text">
-        Conectando a comunidade acadêmica aos recursos que transformam o ensino da Matemática.
-      </p>
-
-      <div class="side-panel__illustration">
-      <img src="{% static 'LEM/assets/img/Logo Principal - Fundo transparente.png' %}" alt="LEM - Laboratório de Ensino de Matemática">
+      <div class="cad-hero">
+        <h2 class="cad-hero__title">
+          Conectando a comunidade acadêmica aos recursos que transformam o <em>ensino da Matemática.</em>
+        </h2>
+        <img class="cad-hero__img" src="{% static 'LEM/assets/img/cadastro_ilustracao.png' %}" alt="Professora e crianças aprendendo Matemática com materiais manipuláveis">
       </div>
     </aside>
 
-    <!--  PAINEL DIREITO / FORMULÁRIO  -->
-    <main class="form-panel">
-      <div class="form-wrapper">
+    <!-- ===== LADO DIREITO (rola) ===== -->
+    <main class="cad-main">
+      <div class="cad-form">
 
-        <header class="form-header">
-          <h1>Seja bem-vindo(a)!</h1>
-          <h2>Faça seu cadastro no LEM</h2>
-          <p class="login-hint">
+        <header>
+          <h1 class="cad-title">Seja bem-vindo(a)!</h1>
+          <p class="cad-subtitle">Faça seu cadastro no LEM</p>
+          <p class="cad-hint">
             Já tem uma conta do LEM?
-            <a href="{% url 'login' %}" class="link-entrar">Entrar</a>
+            <a href="{% url 'login' %}" class="cad-link">Entrar</a>
           </p>
         </header>
 
-        <!--  MENSAGENS DE ERRO/SUCESSO -->
+        <!-- MENSAGENS DE ERRO/SUCESSO -->
         {% include 'LEM/mensagens.html' %}
 
-        <form id="form-cadastro" method="POST" action="{% url 'cadastro' %}">
+        <form id="form-cadastro" method="POST" action="{% url 'cadastro' %}" enctype="multipart/form-data">
           {% csrf_token %}
 
-          <!--DADOS PESSOAIS  -->
-          <section class="form-section">
-            <h3 class="section-title">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-              </svg>
+          <!-- DADOS PESSOAIS -->
+          <section class="cad-card">
+            <h3 class="cad-card__title">
+              <span class="cad-ico"><i class="bi bi-person-fill"></i></span>
               Dados pessoais
             </h3>
 
-            <div class="field">
-              <label for="id_nome">Nome*</label>
-              <input type="text" id="id_nome" name="first_name" required autocomplete="given-name" value="{{ form.first_name.value|default:'' }}">
+            <div class="cad-field">
+              <label for="id_nome">Nome<span class="cad-req">*</span></label>
+              <input class="cad-input" type="text" id="id_nome" name="first_name" required autocomplete="given-name" value="{{ form.first_name.value|default:'' }}">
             </div>
 
-            <div class="field">
-              <label for="id_sobrenome">Sobrenome*</label>
-              <input type="text" id="id_sobrenome" name="last_name" required autocomplete="family-name" value="{{ form.last_name.value|default:'' }}">
+            <div class="cad-field">
+              <label for="id_sobrenome">Sobrenome<span class="cad-req">*</span></label>
+              <input class="cad-input" type="text" id="id_sobrenome" name="last_name" required autocomplete="family-name" value="{{ form.last_name.value|default:'' }}">
             </div>
 
-            <div class="field">
-              <label for="id_cpf">CPF*</label>
-              <input type="text" id="id_cpf" name="cpf" required maxlength="14" placeholder="000.000.000-00" inputmode="numeric" value="{{ form.cpf.value|default:'' }}">
+            <div class="cad-field">
+              <label for="id_cpf">CPF<span class="cad-req">*</span></label>
+              <input class="cad-input" type="text" id="id_cpf" name="cpf" required maxlength="14" placeholder="000.000.000-00" inputmode="numeric" value="{{ form.cpf.value|default:'' }}">
             </div>
 
-          <div class="field">
-              <label for="id_email">E-mail*</label>
-              <input type="email" id="id_email" name="email" required autocomplete="email" value="{{ form.email.value|default:'' }}">
-              <small id="erro_email" class="text-danger"></small>
-          </div>
+            <div class="cad-field">
+              <label for="id_email">E-mail<span class="cad-req">*</span></label>
+              <input class="cad-input" type="email" id="id_email" name="email" required autocomplete="email" placeholder="nome@exemplo.com" value="{{ form.email.value|default:'' }}">
+              <small id="erro_email" class="cad-erro"></small>
+            </div>
+          </section>
 
-          <!--  VÍNCULO PROFISSIONAL -->
-          <section class="form-section">
-            <h3 class="section-title">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-briefcase-fill" viewBox="0 0 16 16">
-                <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5"/>
-                <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85z"/>
-              </svg>
-              Vínculo Profissional
+          <!-- VÍNCULO PROFISSIONAL -->
+          <section class="cad-card">
+            <h3 class="cad-card__title">
+              <span class="cad-ico"><i class="bi bi-briefcase-fill"></i></span>
+              Vínculo profissional
             </h3>
 
-            <p class="section-description">
+            <p class="cad-card__desc">
               Informe todas as instituições de ensino em que você atua atualmente.
             </p>
 
-          <div class="field">
-            <label id="label_vinculos">Instituições*</label>
+            <div class="field">
+              <label for="id_instituicoes" class="visually-hidden">Instituições de ensino</label>
 
-            <div class="multiselect">
-              <button type="button" class="multiselect__btn" aria-haspopup="true"
-                      aria-expanded="false" aria-labelledby="label_vinculos">
-                <span class="multiselect__texto">Selecione</span>
-                <svg class="multiselect__seta" width="14" height="14" viewBox="0 0 16 16" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" aria-hidden="true"><path d="M3 6l5 5 5-5"/></svg>
-              </button>
+              <div class="combo" id="combo-escolas">
+                <input type="text" id="id_instituicoes" name="vinculo_profissional" class="combo-entrada"
+                       role="combobox" aria-autocomplete="list" aria-haspopup="listbox"
+                       aria-expanded="false" aria-controls="lista-escolas"
+                       autocomplete="off" placeholder="Digite ou selecione sua escola"
+                       value="{{ form.vinculo_profissional.value|default:'' }}">
 
-              <div class="multiselect__painel" hidden>
-                {% for opcao in form.vinculos_profissionais %}
-                  <label class="multiselect__item" for="{{ opcao.id_for_label }}">
-                    {{ opcao.tag }}
-                    <span class="multiselect__caixa"></span>
-                    <span class="multiselect__nome">{{ opcao.choice_label }}</span>
-                  </label>
-                {% endfor %}
+                <button type="button" class="combo-seta" id="combo-seta" tabindex="-1"
+                        aria-label="Mostrar lista de escolas">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                  </svg>
+                </button>
+
+                <ul class="combo-lista" id="lista-escolas" role="listbox" aria-label="Escolas">
+                  {% for escola in escolas %}
+                    <li class="combo-opcao" role="option" id="escola-{{ forloop.counter }}"
+                        data-valor="{{ escola }}">{{ escola }}</li>
+                  {% endfor %}
+                  <li class="combo-vazio" id="combo-vazio" aria-hidden="true">
+                    Nenhuma escola da lista. Continue digitando para informar outra.
+                  </li>
+                </ul>
               </div>
+
+              <p class="combo-dica">Atua em mais de uma instituição? Separe os nomes por vírgula.</p>
+
+            <div class="cad-upload" id="campo-historico" hidden>
+              <span class="cad-upload__titulo" id="titulo-historico">
+                Histórico de uma das escolas<span class="cad-req">*</span>
+              </span>
+
+              <input class="cad-upload__input" type="file" id="id_historico_escola"
+                    name="historico_escola" accept=".pdf,.jpg,.jpeg,.png"
+                    aria-labelledby="titulo-historico">
+
+              <label class="cad-upload__box" for="id_historico_escola">
+                <span class="cad-upload__ico"><i class="bi bi-cloud-arrow-up"></i></span>
+                <span class="cad-upload__txt">
+                  <strong id="upload-nome">Clique para anexar o arquivo</strong>
+                  <small>PDF, JPG ou PNG, até 5 MB</small>
+                </span>
+                <span class="cad-upload__trocar">Escolher</span>
+              </label>
+
+              <small class="cad-erro" id="erro_historico">{{ form.historico_escola.errors.0 }}</small>
             </div>
+            
+          </section>
 
-            <small class="text-danger">{{ form.vinculos_profissionais.errors.0 }}</small>
-          </div>
-
-          <!--  SEGURANÇA  -->
-          <section class="form-section">
-            <h3 class="section-title">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 0a4 4 0 0 1 4 4v2.05a2.5 2.5 0 0 1 2 2.45v5a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 13.5v-5a2.5 2.5 0 0 1 2-2.45V4a4 4 0 0 1 4-4m0 1a3 3 0 0 0-3 3v2h6V4a3 3 0 0 0-3-3"/>
-            </svg>              Segurança
+          <!-- SEGURANÇA -->
+          <section class="cad-card">
+            <h3 class="cad-card__title">
+              <span class="cad-ico"><i class="bi bi-lock-fill"></i></span>
+              Segurança
             </h3>
 
-            <p class="section-description">
+            <p class="cad-card__desc">
               Sua conta está quase pronta. Crie sua senha.
             </p>
 
-            <div class="field">
+            <div class="cad-field">
               <label for="id_senha">Senha</label>
-              <div class="password-wrapper">
-                <input type="password" id="id_senha" name="password1" required minlength="6">
-                <button type="button" class="toggle-senha" data-target="id_senha" aria-label="Mostrar senha">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
-                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
-                    <line class="slash" x1="2" y1="2" x2="14" y2="14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                  </svg>
+              <div class="cad-pass">
+                <input class="cad-input" type="password" id="id_senha" name="password1" required minlength="6" autocomplete="new-password">
+                <button type="button" class="cad-eye" data-target="id_senha" aria-label="Mostrar senha">
+                  <i class="bi bi-eye"></i>
                 </button>
               </div>
-              <small class="text-danger">{{ form.password1.errors.0 }}</small>
+              <small class="cad-erro">{{ form.password1.errors.0 }}</small>
 
-              <ul class="password-requirements">
-                <li>Mínimo de 6 caracteres</li>
-                <li>Maiúscula (A-Z)</li>
-                <li>Caractere especial</li>
-                <li>Número</li>
+              <ul class="cad-regras" id="regras-senha">
+                <li data-regra="tamanho"><i class="bi bi-circle"></i>Mínimo de 6 caracteres</li>
+                <li data-regra="maiuscula"><i class="bi bi-circle"></i>Maiúscula (A-Z)</li>
+                <li data-regra="especial"><i class="bi bi-circle"></i>Caractere especial</li>
+                <li data-regra="numero"><i class="bi bi-circle"></i>Número</li>
               </ul>
             </div>
 
-            <div class="field">
+            <div class="cad-field">
               <label for="id_confirmar_senha">Confirme sua senha</label>
-              <div class="password-wrapper">
-                <input type="password" id="id_confirmar_senha" name="password2" required>
-                <button type="button" class="toggle-senha" data-target="id_confirmar_senha" aria-label="Mostrar senha">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
-                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
-                    <line class="slash" x1="2" y1="2" x2="14" y2="14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                  </svg>
+              <div class="cad-pass">
+                <input class="cad-input" type="password" id="id_confirmar_senha" name="password2" required autocomplete="new-password">
+                <button type="button" class="cad-eye" data-target="id_confirmar_senha" aria-label="Mostrar senha">
+                  <i class="bi bi-eye"></i>
                 </button>
               </div>
-              <small class="text-danger">{{ form.password2.errors.0 }}</small>
+              <small class="cad-erro">{{ form.password2.errors.0 }}</small>
             </div>
+          </section>
 
           <!-- BOTÃO -->
-          <button type="submit" class="btn-cadastrar">Cadastrar</button>
+          <button type="submit" class="cad-btn">
+            Cadastrar <i class="bi bi-arrow-right"></i>
+          </button>
 
+          <p class="cad-foot">
+            Ao se cadastrar, você poderá solicitar empréstimos e agendar visitas ao LEM.
+          </p>
         </form>
+
       </div>
     </main>
+    
+    <script>
+(function () {
+  var campo  = document.getElementById("id_instituicoes");
+  var combo  = document.getElementById("combo-escolas");
+  var lista  = document.getElementById("lista-escolas");
+  var seta   = document.getElementById("combo-seta");
+  var vazio  = document.getElementById("combo-vazio");
+  var form   = document.getElementById("form-cadastro");
+  if (!campo || !combo || !lista) return;
+
+  var opcoes    = Array.prototype.slice.call(lista.querySelectorAll(".combo-opcao"));
+  var visiveis  = [];   // opções que combinam com o que foi digitado, já ordenadas
+  var ativa     = -1;   // posição da opção destacada dentro de "visiveis"
+
+  /* ---------- utilidades ---------- */
+
+  // minúsculas e sem acentos: "São" e "sao" ficam iguais
+  function normalizar(texto) {
+    return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  }
+
+  // Trecho que está sendo digitado = tudo depois da última vírgula
+  function trechoAtual() {
+    var valor = campo.value, i = valor.lastIndexOf(",");
+    return { inicio: i + 1, texto: valor.slice(i + 1) };
+  }
+
+  // Escolas que já foram informadas antes da vírgula atual
+  function jaInformadas() {
+    var valor = campo.value, i = valor.lastIndexOf(",");
+    if (i < 0) return [];
+    return valor.slice(0, i).split(",").map(normalizar).filter(Boolean);
+  }
+
+  // 0 = começa com o termo | 1 = alguma palavra começa | 2 = contém | -1 = não combina
+  function pontuar(nome, termo) {
+    var n = normalizar(nome);
+    if (!termo) return 3;
+    if (n.indexOf(termo) === 0) return 0;
+    if (n.indexOf(" " + termo) > -1) return 1;
+    if (n.indexOf(termo) > -1) return 2;
+    return -1;
+  }
+
+  /* ---------- lista ---------- */
+
+  function estaAberta() { return combo.classList.contains("aberto"); }
+
+  function abrir() {
+    combo.classList.add("aberto");
+    campo.setAttribute("aria-expanded", "true");
+    // garante que a lista apareça inteira dentro do painel que rola
+    lista.scrollIntoView({ block: "nearest" });
+  }
+
+  function fechar() {
+    combo.classList.remove("aberto");
+    campo.setAttribute("aria-expanded", "false");
+    campo.removeAttribute("aria-activedescendant");
+    definirAtiva(-1);
+  }
+
+  function definirAtiva(posicao) {
+    ativa = posicao;
+    opcoes.forEach(function (li) {
+      li.classList.remove("ativa");
+      li.setAttribute("aria-selected", "false");
+    });
+    var atual = visiveis[ativa];
+    if (atual) {
+      atual.opcao.classList.add("ativa");
+      atual.opcao.setAttribute("aria-selected", "true");
+      campo.setAttribute("aria-activedescendant", atual.opcao.id);
+      atual.opcao.scrollIntoView({ block: "nearest" });
+    } else {
+      campo.removeAttribute("aria-activedescendant");
+    }
+  }
+
+  // Filtra, ordena e destaca a primeira sugestão
+  function atualizar() {
+    var termo = normalizar(trechoAtual().texto);
+    var feitas = jaInformadas();
+
+    visiveis = [];
+    opcoes.forEach(function (li, indice) {
+      var nome = li.getAttribute("data-valor");
+      var nota = feitas.indexOf(normalizar(nome)) > -1 ? -1 : pontuar(nome, termo);
+      li.hidden = nota < 0;
+      if (nota >= 0) visiveis.push({ opcao: li, nota: nota, indice: indice });
+    });
+
+    visiveis.sort(function (a, b) { return a.nota - b.nota || a.indice - b.indice; });
+    visiveis.forEach(function (item) { lista.insertBefore(item.opcao, vazio); });
+
+    vazio.hidden = visiveis.length > 0 || termo === "";
+    definirAtiva(visiveis.length ? 0 : -1);
+  }
+
+  function escolher(opcao) {
+    var trecho = trechoAtual();
+    var antes = campo.value.slice(0, trecho.inicio);
+    var espaco = antes && !/\s$/.test(antes) ? " " : "";
+    campo.value = antes + espaco + opcao.getAttribute("data-valor");
+    campo.setSelectionRange(campo.value.length, campo.value.length);
+    fechar();
+    campo.focus();
+    atualizarHistorico();
+  }
+
+  /* ---------- eventos ---------- */
+
+  campo.addEventListener("focus", function () { atualizar(); abrir(); });
+  campo.addEventListener("click", function () { if (!estaAberta()) { atualizar(); abrir(); } });
+  campo.addEventListener("input", function () { atualizar(); abrir(); });
+  campo.addEventListener("blur", fechar);
+
+  campo.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (!estaAberta()) { atualizar(); abrir(); return; }
+      if (visiveis.length) definirAtiva((ativa + 1) % visiveis.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (!estaAberta()) { atualizar(); abrir(); return; }
+      if (visiveis.length) definirAtiva((ativa - 1 + visiveis.length) % visiveis.length);
+    } else if (e.key === "Enter") {
+      // com uma sugestão destacada, Enter preenche o campo em vez de enviar o formulário
+      if (estaAberta() && visiveis[ativa]) {
+        e.preventDefault();
+        escolher(visiveis[ativa].opcao);
+      }
+    } else if (e.key === "Escape") {
+      if (estaAberta()) { e.preventDefault(); fechar(); }
+    }
+  });
+
+  // mousedown não tira o foco do campo; o clique escolhe a escola
+  lista.addEventListener("mousedown", function (e) { e.preventDefault(); });
+  lista.addEventListener("click", function (e) {
+    var opcao = e.target.closest(".combo-opcao");
+    if (opcao) escolher(opcao);
+  });
+  lista.addEventListener("mouseover", function (e) {
+    var opcao = e.target.closest(".combo-opcao");
+    if (!opcao) return;
+    for (var i = 0; i < visiveis.length; i++) {
+      if (visiveis[i].opcao === opcao) { definirAtiva(i); break; }
+    }
+  });
+
+  // seta: abre/fecha a lista completa (funciona como um seletor comum)
+  seta.addEventListener("mousedown", function (e) { e.preventDefault(); });
+  seta.addEventListener("click", function () {
+    if (estaAberta()) { fechar(); return; }
+    campo.focus();
+    atualizar();
+    abrir();
+  });
+
+  // ao enviar: remove vírgulas e espaços sobrando e nomes repetidos
+  if (form) {
+    form.addEventListener("submit", function () {
+      var vistos = {};
+      campo.value = campo.value.split(",")
+        .map(function (parte) { return parte.replace(/\s+/g, " ").trim(); })
+        .filter(function (parte) {
+          var chave = normalizar(parte);
+          if (!parte || vistos[chave]) return false;
+          vistos[chave] = true;
+          return true;
+        })
+        .join(", ");
+    });
+  }
+  /* ---------- campo de histórico ---------- */
+  var campoHistorico = document.getElementById("campo-historico");
+  var inputHistorico = document.getElementById("id_historico_escola");
+  var nomeArquivo    = document.getElementById("upload-nome");
+  var erroHistorico  = document.getElementById("erro_historico");
+  var TEXTO_PADRAO   = "Clique para anexar o arquivo";
+
+  function mostrarArquivo() {
+    var arq = inputHistorico.files && inputHistorico.files[0];
+    var msg = "";
+
+    if (arq) {
+      if (!/\.(pdf|jpe?g|png)$/i.test(arq.name)) {
+        msg = "Envie um arquivo PDF, JPG ou PNG.";
+      } else if (arq.size > 5 * 1024 * 1024) {
+        msg = "O arquivo pode ter no máximo 5 MB.";
+      }
+      if (msg) inputHistorico.value = "";
+    }
+
+    var valido = !msg && inputHistorico.files.length > 0;
+    inputHistorico.setCustomValidity("");
+    nomeArquivo.textContent = valido ? inputHistorico.files[0].name : TEXTO_PADRAO;
+    campoHistorico.classList.toggle("tem-arquivo", valido);
+    campoHistorico.classList.toggle("invalido", !!msg);
+    erroHistorico.textContent = msg;
+  }
+
+  function atualizarHistorico() {
+    var preenchido = campo.value.replace(/[,\s]/g, "").length > 0;
+    campoHistorico.hidden = !preenchido;
+    inputHistorico.required = preenchido;
+    if (!preenchido) { inputHistorico.value = ""; mostrarArquivo(); }
+  }
+
+  inputHistorico.addEventListener("change", mostrarArquivo);
+  campo.addEventListener("input", atualizarHistorico);
+  campo.addEventListener("change", atualizarHistorico);
+  atualizarHistorico();
+})();
+</script>
 
   </div>
-<script>
-// Máscara do CPF
-const cpfInput = document.getElementById('id_cpf');
 
-cpfInput.addEventListener('input', function () {
-  let v = this.value.replace(/\D/g, '').slice(0, 11);
-  v = v.replace(/(\d{3})(\d)/, '$1.$2')
-       .replace(/(\d{3})(\d)/, '$1.$2')
-       .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-  this.value = v;
-});
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  // ---------- Máscara do CPF ----------
+  const cpfInput = document.getElementById('id_cpf');
 
-// Validação do e-mail
-const emailInput = document.getElementById('id_email');
-const emailErro = document.getElementById('erro_email');
-
-function validarEmail() {
-  const v = emailInput.value.trim();
-  let msg = '';
-
-  if (!v) {
-    msg = 'Informe seu e-mail.';
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
-    msg = 'Digite um e-mail válido, por exemplo: nome@exemplo.com';
-  }
-
-  emailInput.setCustomValidity(msg);
-  emailErro.textContent = msg;
-  return !msg;
-}
-
-emailInput.addEventListener('blur', validarEmail);
-emailInput.addEventListener('input', function () {
-  if (emailErro.textContent) validarEmail();
-});
-
-// Mostrar / ocultar senha
-document.querySelectorAll('.toggle-senha').forEach(function (btn) {
-  btn.addEventListener('click', function () {
-    const input = document.getElementById(btn.dataset.target);
-    const mostrar = input.type === 'password';
-
-    input.type = mostrar ? 'text' : 'password';
-    btn.classList.toggle('ativo', mostrar);
-    btn.setAttribute('aria-label', mostrar ? 'Ocultar senha' : 'Mostrar senha');
-  });
-});
-
-// Campo suspenso de vínculo profissional
-document.querySelectorAll('.multiselect').forEach(function (ms) {
-  const btn = ms.querySelector('.multiselect__btn');
-  const painel = ms.querySelector('.multiselect__painel');
-  const texto = ms.querySelector('.multiselect__texto');
-  const inputs = painel.querySelectorAll('input[type="checkbox"]');
-
-  function atualizarTexto() {
-    const nomes = Array.from(inputs)
-      .filter(function (i) { return i.checked; })
-      .map(function (i) { return i.closest('label').querySelector('.multiselect__nome').textContent.trim(); });
-
-    if (nomes.length === 0) texto.textContent = 'Selecione';
-    else if (nomes.length <= 2) texto.textContent = nomes.join(', ');
-    else texto.textContent = nomes.length + ' instituições selecionadas';
-  }
-
-  function abrir(sim) {
-    painel.hidden = !sim;
-    ms.classList.toggle('aberto', sim);
-    btn.setAttribute('aria-expanded', sim);
-  }
-
-  btn.addEventListener('click', function () { abrir(painel.hidden); });
-  inputs.forEach(function (i) { i.addEventListener('change', atualizarTexto); });
-
-  document.addEventListener('click', function (e) {
-    if (!ms.contains(e.target)) abrir(false);
+  cpfInput.addEventListener('input', function () {
+    let v = this.value.replace(/\D/g, '').slice(0, 11);
+    v = v.replace(/(\d{3})(\d)/, '$1.$2')
+         .replace(/(\d{3})(\d)/, '$1.$2')
+         .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    this.value = v;
   });
 
-  ms.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { abrir(false); btn.focus(); }
+  // ---------- Validação do e-mail ----------
+  const emailInput = document.getElementById('id_email');
+  const emailErro = document.getElementById('erro_email');
+
+  function validarEmail() {
+    const v = emailInput.value.trim();
+    let msg = '';
+
+    if (!v) {
+      msg = 'Informe seu e-mail.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+      msg = 'Digite um e-mail válido, por exemplo: nome@exemplo.com';
+    }
+
+    emailInput.setCustomValidity(msg);
+    emailErro.textContent = msg;
+    return !msg;
+  }
+
+  emailInput.addEventListener('blur', validarEmail);
+  emailInput.addEventListener('input', function () {
+    if (emailErro.textContent) validarEmail();
   });
 
-  atualizarTexto(); // mostra as opções já marcadas se a página voltar com erro
-});
-</script>
+  // ---------- Mostrar / ocultar senha ----------
+  document.querySelectorAll('.cad-eye').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const input = document.getElementById(btn.dataset.target);
+      const icone = btn.querySelector('i');
+      const mostrar = input.type === 'password';
+
+      input.type = mostrar ? 'text' : 'password';
+      icone.classList.toggle('bi-eye', !mostrar);
+      icone.classList.toggle('bi-eye-slash', mostrar);
+      btn.setAttribute('aria-label', mostrar ? 'Ocultar senha' : 'Mostrar senha');
+    });
+  });
+
+  // ---------- Requisitos da senha (feedback visual) ----------
+  const senhaInput = document.getElementById('id_senha');
+  const regras = {
+    tamanho:   function (s) { return s.length >= 6; },
+    maiuscula: function (s) { return /[A-Z]/.test(s); },
+    especial:  function (s) { return /[^A-Za-z0-9]/.test(s); },
+    numero:    function (s) { return /\d/.test(s); }
+  };
+
+  function atualizarRegras() {
+    const s = senhaInput.value;
+    document.querySelectorAll('#regras-senha li').forEach(function (li) {
+      const ok = regras[li.dataset.regra](s);
+      const icone = li.querySelector('i');
+      li.classList.toggle('ok', ok);
+      icone.classList.toggle('bi-check-circle-fill', ok);
+      icone.classList.toggle('bi-circle', !ok);
+    });
+  }
+
+  senhaInput.addEventListener('input', atualizarRegras);
+  atualizarRegras();
+
+  // ---------- Campo suspenso de vínculo profissional ----------
+  document.querySelectorAll('.cad-ms').forEach(function (ms) {
+    const btn = ms.querySelector('.cad-ms__btn');
+    const painel = ms.querySelector('.cad-ms__painel');
+    const texto = ms.querySelector('.cad-ms__texto');
+    const inputs = painel.querySelectorAll('input[type="checkbox"]');
+
+    function atualizarTexto() {
+      const nomes = Array.from(inputs)
+        .filter(function (i) { return i.checked; })
+        .map(function (i) { return i.closest('label').querySelector('.cad-ms__nome').textContent.trim(); });
+
+      if (nomes.length === 0) texto.textContent = 'Selecione';
+      else if (nomes.length <= 2) texto.textContent = nomes.join(', ');
+      else texto.textContent = nomes.length + ' instituições selecionadas';
+    }
+
+    function abrir(sim) {
+      painel.hidden = !sim;
+      ms.classList.toggle('aberto', sim);
+      btn.setAttribute('aria-expanded', sim);
+    }
+
+    btn.addEventListener('click', function () { abrir(painel.hidden); });
+    inputs.forEach(function (i) { i.addEventListener('change', atualizarTexto); });
+
+    document.addEventListener('click', function (e) {
+      if (!ms.contains(e.target)) abrir(false);
+    });
+
+    ms.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { abrir(false); btn.focus(); }
+    });
+
+    atualizarTexto(); // mostra as opções já marcadas se a página voltar com erro
+  });
+  </script>
 
 </body>
 </html>
