@@ -3637,3 +3637,190 @@ a.rp-item-text:hover {
 
 /* afasta o campo da dica do combobox */
 .combo-dica { margin-bottom: 0; }
+
+/* ===== Menu de perfil da barra de navegação ===== */
+
+.perfil {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+@media (min-width: 992px) {
+    .perfil { margin-right: 200px; } /* mesmo recuo que o botão "Entrar" usa */
+}
+
+.perfil__btn {
+    padding: 2px;
+    line-height: 0;
+    background: none;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.perfil__btn:hover,
+.perfil.aberto .perfil__btn {
+    border-color: var(--lemaq-teal-2, #1fbfa8);
+}
+
+.perfil__btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(31, 191, 168, 0.35);
+}
+
+/* avatar: iniciais por baixo, foto por cima (se a foto falhar, as iniciais aparecem) */
+.perfil__avatar {
+    position: relative;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 50%;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    background: linear-gradient(135deg, var(--lemaq-teal-1, #0e9d8a), var(--lemaq-navy, #0b3d63));
+}
+
+.perfil__avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.perfil__avatar--g {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+}
+
+/* menu suspenso */
+.perfil__menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    z-index: 1050;
+    width: 290px;
+    padding: 8px;
+    background: #fff;
+    border: 1px solid #e3e8ec;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(11, 61, 99, 0.16);
+}
+
+.perfil__menu[hidden] { display: none; }
+
+.perfil__menu::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    right: 18px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-top: 1px solid #e3e8ec;
+    border-left: 1px solid #e3e8ec;
+    transform: rotate(45deg);
+}
+
+.perfil__cab {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 10px 12px;
+}
+
+.perfil__id {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.perfil__id strong {
+    overflow: hidden;
+    font-size: 0.95rem;
+    color: var(--lemaq-navy, #0b3d63);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.perfil__id small {
+    overflow: hidden;
+    font-size: 0.8rem;
+    color: #6b7378;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.perfil__sep {
+    height: 1px;
+    margin: 4px 6px;
+    background: #e9edf0;
+}
+
+.perfil form { margin: 0; }
+
+.perfil__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #2f3438;
+    text-align: left;
+    text-decoration: none;
+    background: none;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.perfil__item i {
+    width: 18px;
+    font-size: 1.05rem;
+    text-align: center;
+    color: #6b7378;
+}
+
+.perfil__item:hover,
+.perfil__item:focus-visible {
+    outline: none;
+    color: var(--lemaq-navy, #0b3d63);
+    background: #f1f8f7;
+}
+
+.perfil__item:hover i,
+.perfil__item:focus-visible i { color: var(--lemaq-teal-1, #0e9d8a); }
+
+.perfil__item--sair,
+.perfil__item--sair i { color: #c0392b; }
+
+.perfil__item--sair:hover,
+.perfil__item--sair:focus-visible { color: #a93226; background: #fdf0ee; }
+
+.perfil__item--sair:hover i,
+.perfil__item--sair:focus-visible i { color: #a93226; }
+
+/* telas pequenas: o menu abre dentro do painel do hambúrguer, sem flutuar */
+@media (max-width: 991.98px) {
+    .perfil { display: block; padding: 8px 0 4px; }
+    .perfil__btn { display: block; margin: 0 auto; }
+    .perfil__menu { position: static; width: 100%; margin-top: 10px; }
+    .perfil__menu::before { display: none; }
+}
+
+.btn-dashboard:hover {
+    background-color: #005F8F;
+    color: #fff;
+    transform: scale(1.1);
+}

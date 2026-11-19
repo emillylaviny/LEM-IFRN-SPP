@@ -56,22 +56,56 @@
                     <a class="nav-link" href="#duvidas">Dúvidas</a>
                 </li>
             </ul>
+                        {% if user.is_authenticated %}
 
-            <!-- Botão Entrar à direita -->
-
-            {% if user.is_authenticated %}
-
-                <span class="me-2">
-                   Olá, {{ user.nome_exibicao }}!
-                </span>
-
-                <form method="POST" action="{% url 'logout' %}" class="d-inline">
-                    {% csrf_token %}
-                    <button type="submit"
-                            class="btn btn-entrar d-flex align-items-center justify-content-center gap-1">
-                        <i class="bi bi-box-arrow-right"></i> Sair
+                <!-- Menu de perfil -->
+                <div class="perfil" id="perfil">
+                    <button type="button" class="perfil__btn" id="perfil-btn"
+                            aria-label="Abrir menu do perfil" aria-haspopup="menu"
+                            aria-expanded="false" aria-controls="perfil-menu">
+                        <span class="perfil__avatar">
+                            <span>{{ user.nome_exibicao|slice:":1"|upper }}</span>
+                            {% if user.foto %}<img src="{{ user.foto.url }}" alt="" onerror="this.remove()">{% endif %}
+                        </span>
                     </button>
-                </form>
+
+                    <div class="perfil__menu" id="perfil-menu" role="menu" aria-labelledby="perfil-btn" hidden>
+
+                        <div class="perfil__cab">
+                            <span class="perfil__avatar perfil__avatar--g">
+                                <span>{{ user.nome_exibicao|slice:":1"|upper }}</span>
+                                {% if user.foto %}<img src="{{ user.foto.url }}" alt="" onerror="this.remove()">{% endif %}
+                            </span>
+                            <div class="perfil__id">
+                                <strong>{{ user.nome_completo|default:user.nome_exibicao }}</strong>
+                                <small>{{ user.email }}</small>
+                            </div>
+                        </div>
+
+                        <div class="perfil__sep" role="separator"></div>
+
+                        <a href="{% url 'dashboard' %}" class="perfil__item" role="menuitem">
+                            <i class="bi bi-speedometer2"></i> Ir para o dashboard
+                        </a>
+
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{% url 'login' %}">
+                            <button type="submit" class="perfil__item" role="menuitem">
+                                <i class="bi bi-arrow-left-right"></i> Trocar de conta
+                            </button>
+                        </form>
+
+                        <div class="perfil__sep" role="separator"></div>
+
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="perfil__item perfil__item--sair" role="menuitem">
+                                <i class="bi bi-box-arrow-right"></i> Sair da conta
+                            </button>
+                        </form>
+                    </div>
+                </div>
 
             {% else %}
 
@@ -210,6 +244,50 @@
     </div>
   </div>
 </footer>
+
+<script>
+// Menu de perfil (abrir/fechar, Esc, clique fora e setas do teclado)
+(function () {
+  var raiz = document.getElementById('perfil');
+  if (!raiz) return;
+
+  var btn  = document.getElementById('perfil-btn');
+  var menu = document.getElementById('perfil-menu');
+
+  function itens() { return [].slice.call(menu.querySelectorAll('[role="menuitem"]')); }
+
+  function abrir(sim, focarPrimeiro) {
+    menu.hidden = !sim;
+    btn.setAttribute('aria-expanded', sim);
+    raiz.classList.toggle('aberto', sim);
+    if (sim && focarPrimeiro) itens()[0].focus();
+  }
+
+  btn.addEventListener('click', function () { abrir(menu.hidden); });
+
+  document.addEventListener('click', function (e) {
+    if (!raiz.contains(e.target)) abrir(false);
+  });
+
+  raiz.addEventListener('focusout', function (e) {
+    if (e.relatedTarget && !raiz.contains(e.relatedTarget)) abrir(false);
+  });
+
+  raiz.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !menu.hidden) {
+      abrir(false);
+      btn.focus();
+    } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (menu.hidden) { abrir(true, true); return; }
+      var lista = itens();
+      var i = lista.indexOf(document.activeElement);
+      i = e.key === 'ArrowDown' ? (i + 1) % lista.length : (i - 1 + lista.length) % lista.length;
+      lista[i].focus();
+    }
+  });
+})();
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>

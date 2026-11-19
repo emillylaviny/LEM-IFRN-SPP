@@ -114,6 +114,279 @@
     }
   }
 
+    /* Rodapé da barra lateral: botão Sair */
+  .lem-side-footer {
+    flex: none;
+    padding: 12px 16px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .lem-side-footer form { margin: 0; }
+
+  .lem-sair {
+    width: 100%;
+    height: 42px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .lem-sair i { font-size: 1.1rem; }
+
+  .lem-sair:hover,
+  .lem-sair:focus-visible {
+    outline: none;
+    color: #ffb4ae;
+    background: rgba(220, 53, 69, 0.16);
+    border-color: rgba(255, 120, 110, 0.5);
+  }
+
+  .lem-sair:focus-visible { box-shadow: 0 0 0 3px rgba(255, 120, 110, 0.25); }
+  .lem-sair:active { transform: translateY(1px); }
+
+
+    /* Menu do perfil (cabeçalho) */
+  .lem-perfil__toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 12px 4px 4px;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #2f3438;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .lem-perfil__toggle:hover,
+  .lem-perfil__toggle.show {
+    background: #f1f4f6;
+    border-color: #e3e8ec;
+  }
+
+  .lem-perfil__toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(14, 157, 138, 0.3);
+  }
+
+  .lem-perfil__seta {
+    font-size: 0.7rem;
+    color: #6b7378;
+    transition: transform 0.15s ease;
+  }
+
+  .lem-perfil__toggle.show .lem-perfil__seta { transform: rotate(180deg); }
+
+  /* avatar: inicial por baixo, foto por cima (se a foto falhar, a inicial aparece) */
+  .lem-avatar {
+    position: relative;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 50%;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    background: linear-gradient(135deg, #0e9d8a, #0b3d63);
+  }
+
+  .lem-avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lem-avatar--g { width: 52px; height: 52px; font-size: 1.3rem; }
+
+  .lem-perfil__menu {
+    width: 310px;
+    padding: 8px;
+    border: 1px solid #e3e8ec;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(11, 61, 99, 0.16);
+  }
+
+  .lem-perfil__cab {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 10px 12px;
+  }
+
+  .lem-perfil__id {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lem-perfil__id strong,
+  .lem-perfil__id small {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .lem-perfil__id strong { font-size: 0.98rem; color: #0b3d63; }
+  .lem-perfil__id small  { font-size: 0.82rem; color: #6b7378; }
+
+  .lem-perfil__desde {
+    margin-top: 4px;
+    font-size: 0.74rem;
+    color: #0e8f80;
+  }
+
+  .lem-perfil__menu .dropdown-divider { margin: 4px 6px; }
+  .lem-perfil__menu form { margin: 0; }
+
+  .lem-perfil__menu .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #2f3438;
+    border-radius: 8px;
+  }
+
+  .lem-perfil__menu .dropdown-item i {
+    width: 18px;
+    font-size: 1.05rem;
+    text-align: center;
+    color: #6b7378;
+  }
+
+  .lem-perfil__menu .dropdown-item:hover,
+  .lem-perfil__menu .dropdown-item:focus-visible {
+    color: #0b3d63;
+    background: #f1f8f7;
+  }
+
+  .lem-perfil__menu .dropdown-item:hover i,
+  .lem-perfil__menu .dropdown-item:focus-visible i { color: #0e9d8a; }
+
+  .lem-perfil__menu .lem-perfil__sair,
+  .lem-perfil__menu .lem-perfil__sair i { color: #c0392b; }
+
+  .lem-perfil__menu .lem-perfil__sair:hover,
+  .lem-perfil__menu .lem-perfil__sair:focus-visible { color: #a93226; background: #fdf0ee; }
+
+  .lem-perfil__menu .lem-perfil__sair:hover i,
+  .lem-perfil__menu .lem-perfil__sair:focus-visible i { color: #a93226; }
+
+  /* ===== Menu lateral: visual ===== */
+.app-sidebar.lem-sb {
+  --lte-sidebar-color: #d5e3ec;
+  --lte-sidebar-hover-color: #fff;
+  --lte-sidebar-hover-bg: rgba(255, 255, 255, .08);
+  --lte-sidebar-menu-active-color: #fff;
+  --lte-sidebar-menu-active-bg: rgba(45, 212, 191, .18);
+  --lte-sidebar-header-color: #9db9cc;
+  background-color: #00233d;               /* --lemaq-navy do style.css */
+}
+
+/* logo centralizada */
+.lem-sb .sidebar-brand {
+  height: auto;
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+.lem-sb .sidebar-brand .brand-link {
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+.lem-sb .sidebar-brand .brand-link .brand-image {
+  float: none;
+  display: block;
+  height: 50px;
+  width: auto;
+  max-width: 100%;
+  max-height: none;
+  margin: -10px auto -6px;
+  object-fit: contain;
+}
+.lem-sb .sidebar-brand .brand-text {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #9db9cc;
+}
+
+/* pesquisa */
+.lem-sb .sidebar-search { padding: 14px 16px 4px; }
+.lem-sb .sidebar-search .form-control {
+  background: rgba(255, 255, 255, .08);
+  border-color: rgba(255, 255, 255, .12);
+  border-radius: 10px;
+  color: #fff;
+}
+.lem-sb .sidebar-search .form-control::placeholder { color: #9db9cc; }
+.lem-sb .sidebar-search .form-control:focus {
+  background: rgba(255, 255, 255, .12);
+  border-color: #5eead4;
+  box-shadow: 0 0 0 .2rem rgba(94, 234, 212, .25);
+}
+
+/* grupos e links */
+.lem-sb .sidebar-wrapper { padding: 4px 12px 16px; }
+
+.lem-sb .sidebar-menu .nav-header {
+  display: block;
+  margin: 18px 0 6px;
+  padding: 0 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.lem-sb .sidebar-menu .nav-header:first-child { margin-top: 10px; }
+
+.lem-sb .sidebar-wrapper .sidebar-menu > .nav-item > .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+  margin-bottom: 4px;
+  border-radius: 12px;
+  font-size: 14.5px;
+  font-weight: 500;
+}
+.lem-sb .sidebar-menu .nav-link p { padding-left: 0; }
+.lem-sb .sidebar-menu .nav-icon { font-size: 19px; opacity: .85; }
+
+.lem-sb .sidebar-wrapper .sidebar-menu > .nav-item > .nav-link.active { font-weight: 600; }
+.lem-sb .sidebar-menu .nav-link.active .nav-icon { color: #5eead4; opacity: 1; }
+
+.lem-sb .sidebar-menu .nav-link:focus-visible {
+  outline: 2px solid #5eead4;
+  outline-offset: 2px;
+}
+
 </style>
 
 <script>
@@ -256,48 +529,65 @@ try {
             </div>
           </form>
 
+                    <!-- Ações do lado direito do cabeçalho -->
+          <ul class="navbar-nav ms-auto align-items-center gap-1">
+
             <li class="nav-item d-md-none">
               <a class="nav-link" href="./pages/search-results.html" aria-label="Search">
                 <i class="bi bi-search" aria-hidden="true"></i>
               </a>
             </li>
 
-            
-            
+            <!-- Menu do perfil -->
+            <li class="nav-item dropdown lem-perfil">
+              <button type="button" class="lem-perfil__toggle" data-bs-toggle="dropdown"
+                      data-bs-offset="0,10" aria-expanded="false" aria-label="Abrir menu do perfil">
+                <span class="lem-avatar">
+                  <span>{{ user.nome_exibicao|slice:":1"|upper }}</span>
+                  {% if user.foto %}<img src="{{ user.foto.url }}" alt="" onerror="this.remove()">{% endif %}
+                </span>
+                <span class="lem-perfil__nome d-none d-md-inline">{{ user.nome_exibicao }}</span>
+                <i class="bi bi-chevron-down lem-perfil__seta" aria-hidden="true"></i>
+              </button>
 
-            <!--Perfil do usuário na nav-->
-            <li class="nav-item dropdown user-menu">
-              <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                <img/>
-                  {% if request.user.foto %}
-                      <img src="{{ request.user.foto.url }}" alt="Foto do usuário">
-                  {% else %}
-                      <img src="{% static 'LEM/assets/img/user.jpe' %}" alt="{{ request.user.first_name }}">
-                  {% endif %}
-                <span class="d-none d-md-inline">{{ request.user.first_name }}</span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-                <!--imagem do usuário-->
-                <li class="user-header text-bg-primary">
-                  <img
-                    src="./assets/img/user.jpeg"
-                    class="rounded-circle shadow"
-                    alt="{{ request.user.first_name }}"
-                  />
-                  <p>
-                    {{ request.user.first_name }} - Teacher <br/>
-                    <small>Member since {{ request.user.date_joined|date:"d/m/Y" }}</small>
-                  </p>
-                </li>
-                
-                </li>
-                <!-- fim do menu -->
+              <div class="dropdown-menu dropdown-menu-end lem-perfil__menu">
 
-                <li class="user-footer">
-                  <a href="#" class="btn btn-outline-secondary">Perfil</a>
-                  <a href="#" class="btn btn-outline-danger float-end">Sair</a>
-                </li>
-              </ul>
+                <div class="lem-perfil__cab">
+                  <span class="lem-avatar lem-avatar--g">
+                    <span>{{ user.nome_exibicao|slice:":1"|upper }}</span>
+                    {% if user.foto %}<img src="{{ user.foto.url }}" alt="" onerror="this.remove()">{% endif %}
+                  </span>
+                  <div class="lem-perfil__id">
+                    <strong>{{ user.nome_completo|default:user.nome_exibicao }}</strong>
+                    <small>{{ user.email }}</small>
+                    <span class="lem-perfil__desde">Membro desde {{ user.date_joined|date:"d/m/Y" }}</span>
+                  </div>
+                </div>
+
+                <div class="dropdown-divider"></div>
+
+                <a class="dropdown-item" href="{% url 'home' %}">
+                  <i class="bi bi-house-door" aria-hidden="true"></i> Ir para o site
+                </a>
+
+                <form method="POST" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="next" value="{% url 'login' %}">
+                  <button type="submit" class="dropdown-item">
+                    <i class="bi bi-arrow-left-right" aria-hidden="true"></i> Trocar de conta
+                  </button>
+                </form>
+
+                <div class="dropdown-divider"></div>
+
+                <form method="POST" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="dropdown-item lem-perfil__sair">
+                    <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sair da conta
+                  </button>
+                </form>
+
+              </div>
             </li>
             <!--Fim do Menu suspenso do usuário-->
           </ul>
@@ -307,172 +597,71 @@ try {
       </nav>
       <!-- fim do header-->
 
+            <!-- barra lateral -->
+      <aside class="app-sidebar lem-sb shadow" data-bs-theme="dark">
 
-      <!-- barra lateral -->
-      <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
         <!--logo da barra lateral-->
         <div class="sidebar-brand">
-          <a href="{% url 'home'%}" class="brand-link">
-            <!-- imagem da logo-->
-            <img
-              src="{% static 'LEM/assets/img/Logo Principal - Fundo transparente.png' %}"
-              alt="LEM IFSPP"
-              class="brand-image opacity-75 shadow"
-            />
-            <!--textro da logo-->
-            <span class="brand-text fw-light">Administrador</span>
+          <a href="{% url 'home' %}" class="brand-link">
+            <img src="{% static 'LEM/assets/img/Logo Principal - Fundo transparente.png' %}"
+                 alt="LEM IFSPP" class="brand-image" />
+            <span class="brand-text">Administrador</span>
           </a>
         </div>
 
         <!--pesquisa da barra lateral-->
         <div class="sidebar-search" role="search">
           <label for="sidebar-search-input" class="visually-hidden">Busca menu</label>
-          <input
-            type="search"
-            id="sidebar-search-input"
-            class="form-control form-control-sm"
-            placeholder="Pesquisar menu…"
-            autocomplete="off"
-            data-lte-toggle="sidebar-search"
-            data-lte-target="#navigation"
-          />
+          <input type="search" id="sidebar-search-input" class="form-control form-control-sm"
+                 placeholder="Pesquisar menu…" autocomplete="off"
+                 data-lte-toggle="sidebar-search" data-lte-target="#navigation" />
           <p class="fs-7 text-secondary mt-2 mb-0" data-lte-search-empty role="status" hidden>
-            No matching pages.
+            Nenhuma página encontrada.
           </p>
         </div>
 
         <!-- Container da Barra Lateral -->
-          <div class="sidebar-wrapper">
-          <nav class="mt-2" aria-label="Main navigation">
+        <div class="sidebar-wrapper">
+          <nav class="mt-2" aria-label="Menu principal">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" data-accordion="false" id="navigation">
 
-            <ul
-              class="nav sidebar-menu flex-column"
-              data-lte-toggle="treeview"
-              data-accordion="false"
-              id="navigation"
-            >
-              <li class="nav-item">
-                <a href="#" class="nav-link" data-page="dashboard">
-                  <i class="nav-icon bi bi-speedometer"></i>
-                  <p>
-                    Dashboard
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./starter.html" class="nav-link" data-page="usuarios">
-                  <i class="nav-icon bi bi-file-earmark"></i>
-                  <p>Usuários</p>
-                  <i class="nav-arrow bi bi-chevron-right"></i>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./generate/theme.html" class="nav-link" data-page="materiais">
-                  <i class="nav-icon bi bi-palette"></i>
-                  <p>Materiais</p>
-                  <i class="nav-arrow bi bi-chevron-right"></i>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link" data-page="etiquetas">
-                  <i class="nav-icon bi bi-box-seam-fill"></i>
-                  <p>
-                    Etiquetas
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link" data-page="localizacao">
-                  <i class="nav-icon bi bi-clipboard-fill"></i>
-                  <p>
-                    Localização
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link" data-page="emprestimos">
-                  <i class="nav-icon bi bi-tree-fill"></i>
-                  <p>
-                   Empréstimos
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link" data-page="solicitacoes">
-                  <i class="nav-icon bi bi-envelope"></i>
-                  <p>
-                    Solicitações
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link" data-page="visitas">
-                  <i class="nav-icon bi bi-pencil-square"></i>
-                  <p>
-                    Visitas
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link" data-page="perguntas">
-                  <i class="nav-icon bi bi-table"></i>
-                  <p>
-                    Perguntas frequentes
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link" data-page="escolas">
-                  <i class="nav-icon bi bi-table"></i>
-                  <p>
-                    Escolas
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-              </li>
+              <li class="nav-header">Principal</li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="dashboard"><i class="nav-icon bi bi-grid-1x2-fill"></i><p>Dashboard</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="solicitacoes"><i class="nav-icon bi bi-inbox"></i><p>Solicitações</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="emprestimos"><i class="nav-icon bi bi-arrow-left-right"></i><p>Empréstimos</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="visitas"><i class="nav-icon bi bi-calendar-event"></i><p>Visitas</p></a></li>
 
-              <li class="nav-header">Conteúdo do laboratório </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link" data-page="Informações do Laboratório">
-                  <i class="nav-icon bi bi-file-earmark-text"></i>
-                  <p>
-                    Informações do laboratório
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./users.html" class="nav-link" data-page="Horários de funcionamento">
-                  <i class="nav-icon bi bi-people"></i>
-                  <p>Horártios de funcionamento</p>
-                  <i class="nav-arrow bi bi-chevron-right"></i>
-                </a>
-              </li>
+              <li class="nav-header">Acervo</li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="materiais"><i class="nav-icon bi bi-box-seam"></i><p>Materiais</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="etiquetas"><i class="nav-icon bi bi-tags"></i><p>Etiquetas</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="localizacao"><i class="nav-icon bi bi-geo-alt"></i><p>Localização</p></a></li>
 
-              {% if user.is_authenticated %}
+              <li class="nav-header">Gestão</li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="usuarios"><i class="nav-icon bi bi-people"></i><p>Usuários</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="escolas"><i class="nav-icon bi bi-building"></i><p>Escolas</p></a></li>
 
-                <span class="me-2 c-white">
-                    Olá, {{ user.nome_exibicao }}!
-                </span>
-
-                <form method="POST" action="{% url 'logout' %}" class="d-inline">
-                    {% csrf_token %}
-                    <button type="submit"
-                            class="btn btn-entrar d-flex align-items-center justify-content-center gap-1 c-white">
-                        <i class="bi bi-box-arrow-right"></i> SAIR
-                    </button>
-                </form>
-
-            {% else %}
-            {% endif %}
+              <li class="nav-header">Conteúdo do laboratório</li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="Informações do Laboratório"><i class="nav-icon bi bi-info-circle"></i><p>Informações do laboratório</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="Horários de funcionamento"><i class="nav-icon bi bi-clock"></i><p>Horários de funcionamento</p></a></li>
+              <li class="nav-item"><a href="#" class="nav-link" data-page="perguntas"><i class="nav-icon bi bi-question-circle"></i><p>Perguntas frequentes</p></a></li>
+              
+            </ul>
+          </nav>
+        </div>
         <!--end::Sidebar Wrapper-->
+      </aside>
+      <!--end::Sidebar-->
+
+        <!-- Rodapé da barra lateral -->
+        <div class="lem-side-footer">
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="lem-sair">
+              <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+              <span>Sair da conta</span>
+            </button>
+          </form>
+        </div>
       </aside>
       <!--end::Sidebar-->
 
@@ -494,14 +683,6 @@ try {
               </defs>
             </svg>
             {% include 'LEM/mensagens.html' %}
-
-            <div class="d-head">
-              <div>
-                <h2>Dashboard</h2>
-                <p class="d-sub">Visão geral do Laboratório de Ensino de Matemática</p>
-              </div>
-              <div class="d-crumb"><a href="{% url 'home' %}">Home</a> / Dashboard</div>
-            </div>
 
             <div class="d-grid g4">
               <div class="card stat"><div class="tile"><svg><use href="#lem-i-box"/></svg></div><div><div class="lb">Materiais cadastrados</div><div class="nm">248</div></div></div>
@@ -1090,6 +1271,65 @@ document.addEventListener("submit", async function (e) {
     }
 });
 
+</script>
+<script>
+// ---------- Busca do menu lateral ----------
+(function () {
+    const campo  = document.getElementById("sidebar-search-input");
+    const menu   = document.getElementById("navigation");
+    const vazio  = document.querySelector("[data-lte-search-empty]");
+    if (!campo || !menu) return;
+
+    // minúsculas e sem acento: "solicitacoes" encontra "Solicitações"
+    function normalizar(texto) {
+        return texto.toLowerCase()
+            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+            .trim();
+    }
+
+    function filtrar() {
+        const termo = normalizar(campo.value);
+        let cabecalho = null;        // título do grupo atual
+        let itensDoGrupo = 0;        // quantos itens do grupo continuam visíveis
+        let total = 0;
+
+        function fecharGrupo() {
+            if (cabecalho) cabecalho.hidden = termo !== "" && itensDoGrupo === 0;
+        }
+
+        Array.from(menu.children).forEach(function (li) {
+            if (li.classList.contains("nav-header")) {
+                fecharGrupo();
+                cabecalho = li;
+                itensDoGrupo = 0;
+            } else if (li.classList.contains("nav-item")) {
+                const nome = normalizar(li.textContent);
+                const mostrar = termo === "" || nome.indexOf(termo) > -1;
+                li.hidden = !mostrar;
+                if (mostrar) { itensDoGrupo++; total++; }
+            }
+        });
+        fecharGrupo();
+
+        if (vazio) vazio.hidden = termo === "" || total > 0;
+    }
+
+    campo.addEventListener("input", filtrar);
+
+    campo.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            // Enter abre o primeiro resultado visível
+            e.preventDefault();
+            const primeiro = menu.querySelector(".nav-item:not([hidden]) .nav-link");
+            if (primeiro) primeiro.click();
+        } else if (e.key === "Escape" && campo.value) {
+            // Esc limpa a busca (sem fechar o menu no celular)
+            e.stopPropagation();
+            campo.value = "";
+            filtrar();
+        }
+    });
+})();
 </script>
     <!--end::Script-->
   </body>
