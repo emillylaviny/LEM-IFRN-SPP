@@ -86,69 +86,108 @@
               <small id="erro_email" class="cad-erro"></small>
             </div>
           </section>
-
+          
           <!-- VÍNCULO PROFISSIONAL -->
           <section class="cad-card">
-            <h3 class="cad-card__title">
-              <span class="cad-ico"><i class="bi bi-briefcase-fill"></i></span>
-              Vínculo profissional
-            </h3>
+              <h3 class="cad-card__title">
+                  <span class="cad-ico">
+                      <i class="bi bi-briefcase-fill"></i>
+                  </span>
+                  Vínculo profissional
+              </h3>
 
-            <p class="cad-card__desc">
-              Informe todas as instituições de ensino em que você atua atualmente.
-            </p>
+              <p class="cad-card__desc">
+                  Informe todas as instituições de ensino em que você atua atualmente.
+                  Separe as instituições por vírgula.
+              </p>
 
-            <div class="field">
-              <label for="id_instituicoes" class="visually-hidden">Instituições de ensino</label>
+              <div class="cad-field" id="campo-instituicoes">
+                  <label for="id_vinculos_profissionais_texto">
+                      Instituição(ões) onde trabalha
+                      <span class="cad-req">*</span>
+                  </label>
 
-              <div class="combo" id="combo-escolas">
-                <input type="text" id="id_instituicoes" name="vinculo_profissional" class="combo-entrada"
-                       role="combobox" aria-autocomplete="list" aria-haspopup="listbox"
-                       aria-expanded="false" aria-controls="lista-escolas"
-                       autocomplete="off" placeholder="Digite ou selecione sua escola"
-                       value="{{ form.vinculo_profissional.value|default:'' }}">
+                  <input
+                      class="cad-input"
+                      type="text"
+                      id="id_vinculos_profissionais_texto"
+                      name="vinculos_profissionais_texto"
+                      placeholder="Digite o nome da instituição"
+                      autocomplete="off"
+                      value="{{ form.vinculos_profissionais_texto.value|default:'' }}"
+                  >
 
-                <button type="button" class="combo-seta" id="combo-seta" tabindex="-1"
-                        aria-label="Mostrar lista de escolas">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
-                  </svg>
-                </button>
+                  <div id="sugestoes-instituicoes" class="cad-sugestoes" hidden>
+                      {% for escola in escolas %}
+                          <button
+                              type="button"
+                              class="cad-sugestao"
+                              data-nome="{{ escola.nome }}"
+                              data-cidade="{{ escola.cidade_escola }}"
+                          >
+                              {{ escola.nome }} — {{ escola.cidade_escola }}
+                          </button>
+                      {% endfor %}
+                  </div>
 
-                <ul class="combo-lista" id="lista-escolas" role="listbox" aria-label="Escolas">
-                  {% for escola in escolas %}
-                    <li class="combo-opcao" role="option" id="escola-{{ forloop.counter }}"
-                        data-valor="{{ escola }}">{{ escola }}</li>
-                  {% endfor %}
-                  <li class="combo-vazio" id="combo-vazio" aria-hidden="true">
-                    Nenhuma escola da lista. Continue digitando para informar outra.
-                  </li>
-                </ul>
+                  <small class="cad-erro">
+                      {{ form.vinculos_profissionais_texto.errors.0 }}
+                  </small>
+
+                  <small class="cad-erro" id="erro-instituicoes"></small>
               </div>
 
-              <p class="combo-dica">Atua em mais de uma instituição? Separe os nomes por vírgula.</p>
+              <!-- Cidades das instituições ainda não cadastradas -->
+              <div id="cidades-instituicoes"></div>
 
-            <div class="cad-upload" id="campo-historico" hidden>
-              <span class="cad-upload__titulo" id="titulo-historico">
-                Histórico de uma das escolas<span class="cad-req">*</span>
-              </span>
+              <!-- Campo oculto que enviará as cidades ao Django -->
+              <input
+                  type="hidden"
+                  name="instituicoes_cidades"
+                  id="id_instituicoes_cidades"
+                  value="{{ form.instituicoes_cidades.value|default:'{}' }}"
+              >
 
-              <input class="cad-upload__input" type="file" id="id_historico_escola"
-                    name="historico_escola" accept=".pdf,.jpg,.jpeg,.png"
-                    aria-labelledby="titulo-historico">
+              <p class="combo-dica">
+                  Para adicionar uma instituição não cadastrada, digite o nome e pressione Enter.
+                  Depois, informe a cidade.
+              </p>
 
-              <label class="cad-upload__box" for="id_historico_escola">
-                <span class="cad-upload__ico"><i class="bi bi-cloud-arrow-up"></i></span>
-                <span class="cad-upload__txt">
-                  <strong id="upload-nome">Clique para anexar o arquivo</strong>
-                  <small>PDF, JPG ou PNG, até 5 MB</small>
-                </span>
-                <span class="cad-upload__trocar">Escolher</span>
-              </label>
+              <!-- HISTÓRICO ESCOLAR: mantenha apenas este bloco -->
+              <div class="cad-upload" id="campo-historico" hidden>
+                  <span class="cad-upload__titulo" id="titulo-historico">
+                      Histórico de uma das escolas
+                      <span class="cad-req">*</span>
+                  </span>
 
-              <small class="cad-erro" id="erro_historico">{{ form.historico_escola.errors.0 }}</small>
-            </div>
-            
+                  <input
+                      class="cad-upload__input"
+                      type="file"
+                      id="id_historico_escola"
+                      name="historico_escola"
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      aria-labelledby="titulo-historico"
+                  >
+
+                  <label class="cad-upload__box" for="id_historico_escola">
+                      <span class="cad-upload__ico">
+                          <i class="bi bi-cloud-arrow-up"></i>
+                      </span>
+
+                      <span class="cad-upload__txt">
+                          <strong id="upload-nome">
+                              Clique para anexar o arquivo
+                          </strong>
+                          <small>PDF, JPG ou PNG, até 5 MB</small>
+                      </span>
+
+                      <span class="cad-upload__trocar">Escolher</span>
+                  </label>
+
+                  <small class="cad-erro" id="erro_historico">
+                      {{ form.historico_escola.errors.0 }}
+                  </small>
+              </div>
           </section>
 
           <!-- SEGURANÇA -->
@@ -204,223 +243,6 @@
 
       </div>
     </main>
-    
-    <script>
-(function () {
-  var campo  = document.getElementById("id_instituicoes");
-  var combo  = document.getElementById("combo-escolas");
-  var lista  = document.getElementById("lista-escolas");
-  var seta   = document.getElementById("combo-seta");
-  var vazio  = document.getElementById("combo-vazio");
-  var form   = document.getElementById("form-cadastro");
-  if (!campo || !combo || !lista) return;
-
-  var opcoes    = Array.prototype.slice.call(lista.querySelectorAll(".combo-opcao"));
-  var visiveis  = [];   // opções que combinam com o que foi digitado, já ordenadas
-  var ativa     = -1;   // posição da opção destacada dentro de "visiveis"
-
-  /* ---------- utilidades ---------- */
-
-  // minúsculas e sem acentos: "São" e "sao" ficam iguais
-  function normalizar(texto) {
-    return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-  }
-
-  // Trecho que está sendo digitado = tudo depois da última vírgula
-  function trechoAtual() {
-    var valor = campo.value, i = valor.lastIndexOf(",");
-    return { inicio: i + 1, texto: valor.slice(i + 1) };
-  }
-
-  // Escolas que já foram informadas antes da vírgula atual
-  function jaInformadas() {
-    var valor = campo.value, i = valor.lastIndexOf(",");
-    if (i < 0) return [];
-    return valor.slice(0, i).split(",").map(normalizar).filter(Boolean);
-  }
-
-  // 0 = começa com o termo | 1 = alguma palavra começa | 2 = contém | -1 = não combina
-  function pontuar(nome, termo) {
-    var n = normalizar(nome);
-    if (!termo) return 3;
-    if (n.indexOf(termo) === 0) return 0;
-    if (n.indexOf(" " + termo) > -1) return 1;
-    if (n.indexOf(termo) > -1) return 2;
-    return -1;
-  }
-
-  /* ---------- lista ---------- */
-
-  function estaAberta() { return combo.classList.contains("aberto"); }
-
-  function abrir() {
-    combo.classList.add("aberto");
-    campo.setAttribute("aria-expanded", "true");
-    // garante que a lista apareça inteira dentro do painel que rola
-    lista.scrollIntoView({ block: "nearest" });
-  }
-
-  function fechar() {
-    combo.classList.remove("aberto");
-    campo.setAttribute("aria-expanded", "false");
-    campo.removeAttribute("aria-activedescendant");
-    definirAtiva(-1);
-  }
-
-  function definirAtiva(posicao) {
-    ativa = posicao;
-    opcoes.forEach(function (li) {
-      li.classList.remove("ativa");
-      li.setAttribute("aria-selected", "false");
-    });
-    var atual = visiveis[ativa];
-    if (atual) {
-      atual.opcao.classList.add("ativa");
-      atual.opcao.setAttribute("aria-selected", "true");
-      campo.setAttribute("aria-activedescendant", atual.opcao.id);
-      atual.opcao.scrollIntoView({ block: "nearest" });
-    } else {
-      campo.removeAttribute("aria-activedescendant");
-    }
-  }
-
-  // Filtra, ordena e destaca a primeira sugestão
-  function atualizar() {
-    var termo = normalizar(trechoAtual().texto);
-    var feitas = jaInformadas();
-
-    visiveis = [];
-    opcoes.forEach(function (li, indice) {
-      var nome = li.getAttribute("data-valor");
-      var nota = feitas.indexOf(normalizar(nome)) > -1 ? -1 : pontuar(nome, termo);
-      li.hidden = nota < 0;
-      if (nota >= 0) visiveis.push({ opcao: li, nota: nota, indice: indice });
-    });
-
-    visiveis.sort(function (a, b) { return a.nota - b.nota || a.indice - b.indice; });
-    visiveis.forEach(function (item) { lista.insertBefore(item.opcao, vazio); });
-
-    vazio.hidden = visiveis.length > 0 || termo === "";
-    definirAtiva(visiveis.length ? 0 : -1);
-  }
-
-  function escolher(opcao) {
-    var trecho = trechoAtual();
-    var antes = campo.value.slice(0, trecho.inicio);
-    var espaco = antes && !/\s$/.test(antes) ? " " : "";
-    campo.value = antes + espaco + opcao.getAttribute("data-valor");
-    campo.setSelectionRange(campo.value.length, campo.value.length);
-    fechar();
-    campo.focus();
-    atualizarHistorico();
-  }
-
-  /* ---------- eventos ---------- */
-
-  campo.addEventListener("focus", function () { atualizar(); abrir(); });
-  campo.addEventListener("click", function () { if (!estaAberta()) { atualizar(); abrir(); } });
-  campo.addEventListener("input", function () { atualizar(); abrir(); });
-  campo.addEventListener("blur", fechar);
-
-  campo.addEventListener("keydown", function (e) {
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      if (!estaAberta()) { atualizar(); abrir(); return; }
-      if (visiveis.length) definirAtiva((ativa + 1) % visiveis.length);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      if (!estaAberta()) { atualizar(); abrir(); return; }
-      if (visiveis.length) definirAtiva((ativa - 1 + visiveis.length) % visiveis.length);
-    } else if (e.key === "Enter") {
-      // com uma sugestão destacada, Enter preenche o campo em vez de enviar o formulário
-      if (estaAberta() && visiveis[ativa]) {
-        e.preventDefault();
-        escolher(visiveis[ativa].opcao);
-      }
-    } else if (e.key === "Escape") {
-      if (estaAberta()) { e.preventDefault(); fechar(); }
-    }
-  });
-
-  // mousedown não tira o foco do campo; o clique escolhe a escola
-  lista.addEventListener("mousedown", function (e) { e.preventDefault(); });
-  lista.addEventListener("click", function (e) {
-    var opcao = e.target.closest(".combo-opcao");
-    if (opcao) escolher(opcao);
-  });
-  lista.addEventListener("mouseover", function (e) {
-    var opcao = e.target.closest(".combo-opcao");
-    if (!opcao) return;
-    for (var i = 0; i < visiveis.length; i++) {
-      if (visiveis[i].opcao === opcao) { definirAtiva(i); break; }
-    }
-  });
-
-  // seta: abre/fecha a lista completa (funciona como um seletor comum)
-  seta.addEventListener("mousedown", function (e) { e.preventDefault(); });
-  seta.addEventListener("click", function () {
-    if (estaAberta()) { fechar(); return; }
-    campo.focus();
-    atualizar();
-    abrir();
-  });
-
-  // ao enviar: remove vírgulas e espaços sobrando e nomes repetidos
-  if (form) {
-    form.addEventListener("submit", function () {
-      var vistos = {};
-      campo.value = campo.value.split(",")
-        .map(function (parte) { return parte.replace(/\s+/g, " ").trim(); })
-        .filter(function (parte) {
-          var chave = normalizar(parte);
-          if (!parte || vistos[chave]) return false;
-          vistos[chave] = true;
-          return true;
-        })
-        .join(", ");
-    });
-  }
-  /* ---------- campo de histórico ---------- */
-  var campoHistorico = document.getElementById("campo-historico");
-  var inputHistorico = document.getElementById("id_historico_escola");
-  var nomeArquivo    = document.getElementById("upload-nome");
-  var erroHistorico  = document.getElementById("erro_historico");
-  var TEXTO_PADRAO   = "Clique para anexar o arquivo";
-
-  function mostrarArquivo() {
-    var arq = inputHistorico.files && inputHistorico.files[0];
-    var msg = "";
-
-    if (arq) {
-      if (!/\.(pdf|jpe?g|png)$/i.test(arq.name)) {
-        msg = "Envie um arquivo PDF, JPG ou PNG.";
-      } else if (arq.size > 5 * 1024 * 1024) {
-        msg = "O arquivo pode ter no máximo 5 MB.";
-      }
-      if (msg) inputHistorico.value = "";
-    }
-
-    var valido = !msg && inputHistorico.files.length > 0;
-    inputHistorico.setCustomValidity("");
-    nomeArquivo.textContent = valido ? inputHistorico.files[0].name : TEXTO_PADRAO;
-    campoHistorico.classList.toggle("tem-arquivo", valido);
-    campoHistorico.classList.toggle("invalido", !!msg);
-    erroHistorico.textContent = msg;
-  }
-
-  function atualizarHistorico() {
-    var preenchido = campo.value.replace(/[,\s]/g, "").length > 0;
-    campoHistorico.hidden = !preenchido;
-    inputHistorico.required = preenchido;
-    if (!preenchido) { inputHistorico.value = ""; mostrarArquivo(); }
-  }
-
-  inputHistorico.addEventListener("change", mostrarArquivo);
-  campo.addEventListener("input", atualizarHistorico);
-  campo.addEventListener("change", atualizarHistorico);
-  atualizarHistorico();
-})();
-</script>
 
   </div>
 
@@ -498,41 +320,378 @@
   senhaInput.addEventListener('input', atualizarRegras);
   atualizarRegras();
 
-  // ---------- Campo suspenso de vínculo profissional ----------
-  document.querySelectorAll('.cad-ms').forEach(function (ms) {
-    const btn = ms.querySelector('.cad-ms__btn');
-    const painel = ms.querySelector('.cad-ms__painel');
-    const texto = ms.querySelector('.cad-ms__texto');
-    const inputs = painel.querySelectorAll('input[type="checkbox"]');
+  </script>
 
-    function atualizarTexto() {
-      const nomes = Array.from(inputs)
-        .filter(function (i) { return i.checked; })
-        .map(function (i) { return i.closest('label').querySelector('.cad-ms__nome').textContent.trim(); });
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const campo = document.getElementById('id_vinculos_profissionais_texto');
+      const sugestoes = document.getElementById('sugestoes-instituicoes');
+      const containerCidades = document.getElementById('cidades-instituicoes');
+      const campoCidades = document.getElementById('id_instituicoes_cidades');
+      const formulario = document.getElementById('form-cadastro');
 
-      if (nomes.length === 0) texto.textContent = 'Selecione';
-      else if (nomes.length <= 2) texto.textContent = nomes.join(', ');
-      else texto.textContent = nomes.length + ' instituições selecionadas';
+      if (!campo || !sugestoes || !containerCidades || !campoCidades) {
+          return;
+      }
+
+      const opcoes = Array.from(
+          sugestoes.querySelectorAll('.cad-sugestao')
+      );
+
+      function normalizar(texto) {
+          return texto
+              .trim()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLowerCase();
+      }
+
+      function obterNomes() {
+          return campo.value
+              .split(',')
+              .map(nome => nome.trim())
+              .filter(Boolean);
+      }
+
+      function encontrarInstituicao(nome) {
+          return opcoes.find(opcao =>
+              normalizar(opcao.dataset.nome) === normalizar(nome)
+          ) || null;
+      }
+
+      function atualizarCidades() {
+          const cidades = {};
+
+          containerCidades.querySelectorAll('[data-cidade-instituicao]').forEach(input => {
+              const nome = input.dataset.cidadeInstituicao;
+              cidades[nome] = input.value.trim();
+          });
+
+          campoCidades.value = JSON.stringify(cidades);
+      }
+
+      function criarCampoCidade(nome, valor = '') {
+          const existente = Array.from(
+              containerCidades.querySelectorAll('[data-cidade-instituicao]')
+          ).find(input =>
+              normalizar(input.dataset.cidadeInstituicao) === normalizar(nome)
+          );
+
+          if (existente) return;
+
+          const grupo = document.createElement('div');
+          grupo.className = 'cad-cidade-instituicao';
+
+          const label = document.createElement('label');
+          label.textContent = 'Cidade da instituição: ' + nome;
+
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.className = 'cad-input';
+          input.placeholder = 'Digite a cidade';
+          input.required = true;
+          input.value = valor;
+          input.dataset.cidadeInstituicao = nome;
+
+          input.addEventListener('input', atualizarCidades);
+
+          grupo.appendChild(label);
+          grupo.appendChild(input);
+          containerCidades.appendChild(grupo);
+
+          atualizarCidades();
+      }
+
+      function removerCamposDeCidadesDesnecessarios() {
+          const nomes = obterNomes().map(normalizar);
+
+          containerCidades.querySelectorAll('.cad-cidade-instituicao').forEach(grupo => {
+              const input = grupo.querySelector('[data-cidade-instituicao]');
+
+              if (!input || !nomes.includes(normalizar(input.dataset.cidadeInstituicao))) {
+                  grupo.remove();
+              }
+          });
+
+          atualizarCidades();
+      }
+
+      function esconderSugestoes() {
+          sugestoes.hidden = true;
+          opcoes.forEach(opcao => {
+              opcao.hidden = false;
+          });
+      }
+
+      function mostrarSugestoes() {
+          const partes = campo.value.split(',');
+          const termo = partes[partes.length - 1].trim();
+
+          if (!termo) {
+              esconderSugestoes();
+              return;
+          }
+
+          let quantidade = 0;
+
+          opcoes.forEach(opcao => {
+              const nome = opcao.dataset.nome || '';
+              const corresponde = normalizar(nome).includes(normalizar(termo));
+
+              opcao.hidden = !corresponde;
+
+              if (corresponde) quantidade++;
+          });
+
+          sugestoes.hidden = quantidade === 0;
+      }
+
+      function adicionarInstituicao(nome, instituicaoCadastrada = null) {
+          nome = nome.trim();
+
+          if (!nome) return;
+
+          const nomesAtuais = obterNomes();
+
+          const duplicada = nomesAtuais.some(item =>
+              normalizar(item) === normalizar(nome)
+          );
+
+          if (duplicada) {
+              campo.value = nomesAtuais.join(', ') + ', ';
+              esconderSugestoes();
+              campo.focus();
+              return;
+          }
+
+          const nomeFinal = instituicaoCadastrada
+              ? instituicaoCadastrada.dataset.nome
+              : nome;
+
+          const partes = campo.value.split(',');
+          partes.pop();
+
+          const anteriores = partes
+              .map(item => item.trim())
+              .filter(Boolean);
+
+          anteriores.push(nomeFinal);
+
+          campo.value = anteriores.join(', ') + ', ';
+
+          if (!instituicaoCadastrada) {
+              criarCampoCidade(nomeFinal);
+          }
+
+          esconderSugestoes();
+          removerCamposDeCidadesDesnecessarios();
+          atualizarCidades();
+          atualizarHistorico();
+          campo.focus();
+      }
+
+      function processarInstituicao(nome) {
+          nome = nome.trim();
+
+          if (!nome) return;
+
+          const cadastrada = encontrarInstituicao(nome);
+
+          // Se já existe no banco, não precisa informar cidade.
+          if (cadastrada) {
+              const grupos = containerCidades.querySelectorAll(
+                  '.cad-cidade-instituicao'
+              );
+
+              grupos.forEach(grupo => {
+                  const input = grupo.querySelector(
+                      '[data-cidade-instituicao]'
+                  );
+
+                  if (
+                      input &&
+                      normalizar(input.dataset.cidadeInstituicao) === normalizar(nome)
+                  ) {
+                      grupo.remove();
+                  }
+              });
+
+              atualizarCidades();
+              return;
+          }
+
+          // Se não existe, cria o campo de cidade.
+          criarCampoCidade(nome);
+      }
+
+      function confirmarTextoAtual() {
+          const partes = campo.value.split(',');
+          const nome = partes[partes.length - 1].trim();
+
+          if (!nome) return;
+
+          const cadastrada = encontrarInstituicao(nome);
+
+          adicionarInstituicao(nome, cadastrada || null);
+      }
+
+      opcoes.forEach(opcao => {
+          opcao.addEventListener('click', function () {
+              adicionarInstituicao(this.dataset.nome, this);
+          });
+      });
+
+      campo.addEventListener('input', function () {
+          mostrarSugestoes();
+          atualizarHistorico();
+
+          const partes = campo.value.split(',');
+
+          // Todas as partes anteriores à última foram finalizadas com vírgula.
+          partes.slice(0, -1).forEach(function (nome) {
+              processarInstituicao(nome);
+          });
+
+          atualizarCidades();
+      });
+
+      campo.addEventListener('keydown', function (evento) {
+          if (evento.key === 'Enter') {
+              evento.preventDefault();
+              evento.stopPropagation();
+
+              const partes = campo.value.split(',');
+              const nome = partes[partes.length - 1].trim();
+
+              if (!nome) return;
+
+              processarInstituicao(nome);
+
+              // Finaliza a instituição e deixa espaço para a próxima.
+              campo.value = campo.value.trimEnd() + ', ';
+
+              esconderSugestoes();
+              atualizarCidades();
+              atualizarHistorico();
+
+              campo.focus();
+          }
+
+          if (evento.key === 'Escape') {
+              esconderSugestoes();
+          }
+      });
+
+      document.addEventListener('click', function (evento) {
+          if (
+              !sugestoes.contains(evento.target) &&
+              evento.target !== campo
+          ) {
+              esconderSugestoes();
+          }
+      });
+
+      function atualizarHistorico() {
+          const bloco = document.getElementById('campo-historico');
+          const arquivo = document.getElementById('id_historico_escola');
+
+          if (!bloco || !arquivo) return;
+
+          const temInstituicao = obterNomes().length > 0;
+
+          bloco.hidden = !temInstituicao;
+          arquivo.required = temInstituicao;
+      }
+
+      // Recupera as cidades caso o formulário volte com erros.
+      try {
+          const cidadesSalvas = JSON.parse(campoCidades.value || '{}');
+
+          Object.entries(cidadesSalvas).forEach(([nome, cidade]) => {
+              criarCampoCidade(nome, cidade);
+          });
+      } catch (erro) {
+          campoCidades.value = '{}';
+      }
+
+      // Se o formulário for enviado com um nome ainda não confirmado,
+      // confirma esse nome e cria o campo de cidade correspondente.
+      if (formulario) {
+        formulario.addEventListener('submit', function (evento) {
+            const nomes = obterNomes();
+            let criouCampo = false;
+
+            nomes.forEach(function (nome) {
+                const instituicaoCadastrada = encontrarInstituicao(nome);
+
+                // Se não estiver cadastrada, precisa informar a cidade.
+                if (!instituicaoCadastrada) {
+                    const quantidadeAntes = containerCidades.children.length;
+
+                    criarCampoCidade(nome);
+
+                    if (containerCidades.children.length > quantidadeAntes) {
+                        criouCampo = true;
+                    }
+                }
+            });
+
+            atualizarCidades();
+
+            // Dá tempo para a pessoa preencher as cidades que faltam.
+            if (criouCampo) {
+                evento.preventDefault();
+
+                const primeiroCampoVazio = containerCidades.querySelector(
+                    '[data-cidade-instituicao]:invalid'
+                );
+
+                if (primeiroCampoVazio) {
+                    primeiroCampoVazio.focus();
+                }
+            }
+        });
     }
 
-    function abrir(sim) {
-      painel.hidden = !sim;
-      ms.classList.toggle('aberto', sim);
-      btn.setAttribute('aria-expanded', sim);
-    }
+      const arquivo = document.getElementById('id_historico_escola');
+      const nomeArquivo = document.getElementById('upload-nome');
+      const erroArquivo = document.getElementById('erro_historico');
 
-    btn.addEventListener('click', function () { abrir(painel.hidden); });
-    inputs.forEach(function (i) { i.addEventListener('change', atualizarTexto); });
+      if (arquivo) {
+          arquivo.addEventListener('change', function () {
+              if (erroArquivo) erroArquivo.textContent = '';
 
-    document.addEventListener('click', function (e) {
-      if (!ms.contains(e.target)) abrir(false);
-    });
+              const selecionado = this.files[0];
 
-    ms.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { abrir(false); btn.focus(); }
-    });
+              if (!selecionado) return;
 
-    atualizarTexto(); // mostra as opções já marcadas se a página voltar com erro
+              const extensaoValida = /\.(pdf|jpg|jpeg|png)$/i.test(selecionado.name);
+              const tamanhoValido = selecionado.size <= 5 * 1024 * 1024;
+
+              if (!extensaoValida || !tamanhoValido) {
+                  if (erroArquivo) {
+                      erroArquivo.textContent = !extensaoValida
+                          ? 'Envie um arquivo PDF, JPG ou PNG.'
+                          : 'O arquivo pode ter no máximo 5 MB.';
+                  }
+
+                  this.value = '';
+
+                  if (nomeArquivo) {
+                      nomeArquivo.textContent = 'Clique para anexar o arquivo';
+                  }
+
+                  return;
+              }
+
+              if (nomeArquivo) {
+                  nomeArquivo.textContent = selecionado.name;
+              }
+          });
+      }
+
+      atualizarHistorico();
+      mostrarSugestoes();
   });
   </script>
 

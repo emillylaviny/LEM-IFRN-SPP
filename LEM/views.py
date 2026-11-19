@@ -3,20 +3,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib import messages
 from .forms import CardMaterialForm, CadastroForm, MaterialForm, LoginForm, DuvidaForm
-from .models import Card, User, HorarioFuncionamento, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, HistoricoAlteracao, FAQ
+from .models import Card, User, HorarioFuncionamento, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, HistoricoAlteracao, FAQ, Instituicao
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db import IntegrityError
-
-# Escolas sugeridas no campo "Vínculo Profissional" do cadastro.
-ESCOLAS = [
-    "IFRN - Campus São Paulo do Potengi",
-    "Escola Estadual Maurício Freire",
-    "Escola Estadual Senador Dinarte Mariz",
-    "Escola Municipal Dep. Djalma Marinho",
-]
 
 def home(request):
     agora = timezone.localtime()   # usa o TIME_ZONE do settings
@@ -45,6 +37,10 @@ def home(request):
 
 
 def cadastro(request):
+    escolas = Instituicao.objects.filter(
+        ativa=True
+    ).order_by("nome")
+
     if request.method == 'POST':
         form = CadastroForm(request.POST, request.FILES)
 
@@ -89,8 +85,10 @@ def cadastro(request):
     else:
         form = CadastroForm()
 
-    return render(request, 'LEM/cadastro.html', {'form': form, 'escolas': ESCOLAS})
-
+    return render(request, 'LEM/cadastro.html', {
+        'form': form,
+        'escolas': escolas,
+    })
 
 @login_required
 def duvida_enviar(request):

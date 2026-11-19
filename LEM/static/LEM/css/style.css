@@ -3036,6 +3036,60 @@ a.rp-item-text:hover {
   box-sizing: border-box;
 }
 
+/* Sugestões de instituições */
+#sugestoes-instituicoes {
+    margin-top: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid #dce7e2;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(20, 50, 50, 0.08);
+}
+
+#sugestoes-instituicoes[hidden] {
+    display: none !important;
+}
+
+#sugestoes-instituicoes .cad-sugestao {
+    display: block;
+    width: 100%;
+    padding: 11px 13px;
+    border: 0;
+    border-bottom: 1px solid #edf1ef;
+    background: #fff;
+    color: #16313a;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+}
+
+#sugestoes-instituicoes .cad-sugestao:last-child {
+    border-bottom: 0;
+}
+
+#sugestoes-instituicoes .cad-sugestao:hover,
+#sugestoes-instituicoes .cad-sugestao:focus {
+    background: #f0f7f3;
+    outline: none;
+}
+
+/* Campo de cidade de uma instituição nova */
+.cad-cidade-instituicao {
+    margin-top: 12px;
+    padding: 14px;
+    border: 1px solid #dce7e2;
+    border-radius: 10px;
+    background: #f8fbf9;
+}
+
+.cad-cidade-instituicao label {
+    display: block;
+    margin-bottom: 7px;
+    color: #16313a;
+    font-weight: 600;
+}
+
 /* ---------- LADO ESQUERDO (fixo) ---------- */
 
 .cad-side {
