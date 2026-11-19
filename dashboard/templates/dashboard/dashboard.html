@@ -224,7 +224,7 @@
     padding: 8px;
     border: 1px solid #e3e8ec;
     border-radius: 14px;
-    box-shadow: 0 12px 32px rgba(11, 61, 99, 0.16);
+    box-shadow: 0 12px 32px rgba(39, 50, 58, 0.16);
   }
 
   .lem-perfil__cab {
@@ -303,7 +303,7 @@
   --lte-sidebar-menu-active-color: #fff;
   --lte-sidebar-menu-active-bg: rgba(45, 212, 191, .18);
   --lte-sidebar-header-color: #9db9cc;
-  background-color: #00233d;               /* --lemaq-navy do style.css */
+  background-color: #082a45;               /* --lemaq-navy do style.css */
 }
 
 /* logo centralizada */
@@ -1019,17 +1019,22 @@ document.addEventListener("click", function(e) {
     let url = "";
 
     if (acao === "novo-usuario") {
-        url = "/usuarios/formulario/";
-    } else if (acao === "editar") {
-        const id = botao.dataset.id;
-        url = `/usuarios/editar/${id}/`;
-    } else if (acao === "voltar-usuarios") {
-        url = "/usuarios/";
-    }
+    url = "/usuarios/formulario/";
+} else if (acao === "editar") {
+    const id = botao.dataset.id;
+    url = `/usuarios/editar/${id}/`;
+} else if (acao === "voltar-usuarios") {
+    url = "/usuarios/";
+} else if (acao === "novo-material") {
+    url = "/materiais/novo/";
+} else if (acao === "voltar-materiais") {
+    url = "/materiais/";
+}
 
-    if (url) {
-        carregarConteudo(url);
-    }
+if (url) {
+    carregarConteudo(url);
+}
+    
 });
 
 // Envio do formulário de usuário

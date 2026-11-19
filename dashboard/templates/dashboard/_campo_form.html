@@ -1,0 +1,10 @@
+{# Campo de formulário no padrão lem-frm. Uso: {% include "dashboard/_campo_form.html" with campo=form.nome %} (adicione full=True para ocupar a linha toda) #}
+<div class="lem-frm-field{% if full %} lem-frm-field--full{% endif %}">
+  <label class="lem-frm-label" for="{{ campo.id_for_label }}">
+    {{ campo.label }}
+    {% if campo.field.required %}<span class="lem-frm-req">*</span>{% else %}<span class="lem-frm-opt">(opcional)</span>{% endif %}
+  </label>
+  {{ campo }}
+  {% if campo.help_text %}<p class="lem-frm-hint">{{ campo.help_text }}</p>{% endif %}
+  {% for erro in campo.errors %}<p class="lem-frm-error">{{ erro }}</p>{% endfor %}
+</div>

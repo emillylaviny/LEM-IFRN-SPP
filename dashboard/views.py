@@ -190,17 +190,13 @@ def novo_material(request):
 
         if form.is_valid():
             form.save()
-            messages.success(
-                request,
-                "Material cadastrado com sucesso!"
-            )
-        else:
-            messages.error(
-                request,
-                "Não foi possível cadastrar. Verifique os campos."
-            )
+            messages.success(request, "Material cadastrado com sucesso!")
+            return redirect("materiais")
+    else:
+        form = MaterialForm()
 
-    return redirect("materiais")
+    # GET (tela em branco) ou POST com erro (volta com as mensagens)
+    return render(request, "dashboard/form_material.html", {"form": form})
 
 
 @login_required
