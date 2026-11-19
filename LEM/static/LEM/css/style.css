@@ -37,7 +37,7 @@
     --cor-borda: #dfe3e6;
     --cor-borda-foco: #17b8a6;
     --cor-erro: #e0435c;
-    --cor-sucesso: #17b8a6;
+    --cor-sucesso: hsl(173, 78%, 41%);
     --cor-fundo-branco: #ffffff;
     --fonte: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     --raio-campo: 8px;
@@ -3080,8 +3080,8 @@ a.rp-item-text:hover {
   padding: 9px 13px;
 }
 
-.cad-brand__lem  { height: 80px; width: auto; display: block; }
-.cad-brand__ifrn { height: 32px; width: auto; display: block; }
+.cad-brand__lem  { height: 100px; width: auto; display: block; }
+.cad-brand__ifrn { height: 40px; width: auto; display: block; }
 
 .cad-brand__div {
   width: 1px;
@@ -3106,15 +3106,6 @@ a.rp-item-text:hover {
   font-weight: 800;
   letter-spacing: -0.01em;
   color: #fff;
-}
-
-.cad-hero__title em {
-  font-style: normal;
-  white-space: nowrap;
-  padding: 0 0.28em;
-  border-radius: 8px;
-  color: var(--cad-navy);
-  background: #fff;
 }
 
 .cad-hero__img {
