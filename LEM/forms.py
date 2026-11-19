@@ -1,4 +1,5 @@
 import re
+import json
 import uuid
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -18,20 +19,41 @@ def cpf_valido(cpf):
             return False
     return True
 
-class CadastroForm(UserCreationForm):
-    username = forms.CharField(required=False, widget=forms.HiddenInput())
-    cpf = forms.CharField(label='CPF', max_length=14)
-    email = forms.EmailField(label='E-mail', error_messages={
-        'invalid': 'Digite um e-mail válido, por exemplo: nome@exemplo.com',
-        'required': 'Informe seu e-mail.',
-    })
 
-    vinculo_profissional = forms.CharField(
-    label='Vínculo profissional',
-    max_length=255,  # use o mesmo max_length do campo no model User
-    error_messages={
-        'required': 'Informe pelo menos uma instituição.',
-    },
+class CadastroForm(UserCreationForm):
+    username = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+
+    cpf = forms.CharField(
+        label='CPF',
+        max_length=14
+    )
+
+    email = forms.EmailField(
+        label='E-mail',
+        error_messages={
+            'invalid': 'Digite um e-mail válido, por exemplo: nome@exemplo.com',
+            'required': 'Informe seu e-mail.',
+        }
+    )
+
+    # Campo onde o usuário digitará as instituições separadas por vírgula
+    vinculos_profissionais_texto = forms.CharField(
+        label='Instituição(ões) onde trabalha',
+        required=False,
+        widget=forms.TextInput(attrs={
+            'id': 'id_vinculos_profissionais_texto',
+            'placeholder': 'Digite o nome da instituição',
+            'autocomplete': 'off',
+        })
+    )
+
+    # Receberá as cidades das instituições ainda não cadastradas
+    instituicoes_cidades = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput()
     )
 
     historico_escola = forms.FileField(
@@ -46,7 +68,6 @@ class CadastroForm(UserCreationForm):
             'last_name',
             'email',
             'cpf',
-            'vinculo_profissional',
             'historico_escola',
         ]
 
@@ -68,7 +89,6 @@ class CadastroForm(UserCreationForm):
 
         return cpf
 
-
     def clean_email(self):
         email = self.cleaned_data['email'].strip().lower()
 
@@ -84,46 +104,162 @@ class CadastroForm(UserCreationForm):
 
         return email
 
+    def clean_historico_escola(self):
+        arquivo = self.cleaned_data.get('historico_escola')
+
+        if not arquivo:
+            raise forms.ValidationError(
+                'Anexe o histórico de uma das escolas.'
+            )
+
+        extensoes = ('.pdf', '.jpg', '.jpeg', '.png')
+
+        if not arquivo.name.lower().endswith(extensoes):
+            raise forms.ValidationError(
+                'Envie um arquivo PDF, JPG ou PNG.'
+            )
+
+        if arquivo.size > 5 * 1024 * 1024:
+            raise forms.ValidationError(
+                'O arquivo pode ter no máximo 5 MB.'
+            )
+
+        return arquivo
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        texto = cleaned_data.get(
+            'vinculos_profissionais_texto', ''
+        ).strip()
+
+        cidades_json = cleaned_data.get(
+            'instituicoes_cidades', ''
+        )
+
+        try:
+            cidades = json.loads(cidades_json or '{}')
+
+            if not isinstance(cidades, dict):
+                raise ValueError
+
+        except (ValueError, TypeError):
+            self.add_error(
+                'instituicoes_cidades',
+                'Não foi possível identificar as cidades das instituições.'
+            )
+            return cleaned_data
+
+        # Separa as instituições pela vírgula e remove espaços extras
+        nomes = [
+            nome.strip()
+            for nome in texto.split(',')
+            if nome.strip()
+        ]
+
+        # Evita nomes repetidos na mesma inscrição
+        nomes_unicos = []
+        nomes_vistos = set()
+
+        for nome in nomes:
+            chave = nome.casefold()
+
+            if chave not in nomes_vistos:
+                nomes_unicos.append(nome)
+                nomes_vistos.add(chave)
+
+        if not nomes_unicos:
+            self.add_error(
+                'vinculos_profissionais_texto',
+                'Informe pelo menos uma instituição.'
+            )
+            return cleaned_data
+
+        instituicoes_processadas = []
+
+        for nome in nomes_unicos:
+            instituicao = Instituicao.objects.filter(
+                nome__iexact=nome
+            ).first()
+
+            if instituicao:
+                instituicoes_processadas.append({
+                    'nome': instituicao.nome,
+                    'cidade': instituicao.cidade_escola,
+                })
+
+            else:
+                cidade = str(
+                    cidades.get(nome, '')
+                ).strip()
+
+                if not cidade:
+                    self.add_error(
+                        'vinculos_profissionais_texto',
+                        f'Informe a cidade da nova instituição: {nome}.'
+                    )
+                    continue
+
+                instituicoes_processadas.append({
+                    'nome': nome,
+                    'cidade': cidade,
+                })
+
+        cleaned_data['instituicoes_processadas'] = (
+            instituicoes_processadas
+        )
+
+        return cleaned_data
+
     def save(self, commit=True):
         user = super().save(commit=False)
 
         user.username = uuid.uuid4().hex
 
-        primeiro_nome = self.cleaned_data.get('first_name', '').strip()
-        ultimo_nome = self.cleaned_data.get('last_name', '').strip()
+        primeiro_nome = self.cleaned_data.get(
+            'first_name', ''
+        ).strip()
 
-        user.nome_completo = f"{primeiro_nome} {ultimo_nome}".strip()
+        ultimo_nome = self.cleaned_data.get(
+            'last_name', ''
+        ).strip()
+
+        user.nome_completo = (
+            f"{primeiro_nome} {ultimo_nome}"
+        ).strip()
 
         if commit:
             user.save()
-            self.save_m2m()
+
+            escolas = []
+
+            for dados in self.cleaned_data.get(
+                'instituicoes_processadas', []
+            ):
+                escola = Instituicao.objects.filter(
+                    nome__iexact=dados['nome']
+                ).first()
+
+                if not escola:
+                    escola = Instituicao.objects.create(
+                        nome=dados['nome'],
+                        cidade_escola=dados['cidade'],
+                        ativa=True
+                    )
+
+                escolas.append(escola)
+
+            user.vinculos_profissionais.set(escolas)
+
+            user.vinculo_profissional = ', '.join(
+                escola.nome for escola in escolas
+            )
+
+            user.save(
+                update_fields=['vinculo_profissional']
+            )
 
         return user
-
-    def clean_vinculo_profissional(self):
-        valor = self.cleaned_data.get('vinculo_profissional', '')
-        escolas = [parte.strip() for parte in valor.split(',') if parte.strip()]
-
-        if not escolas:
-            raise forms.ValidationError('Informe pelo menos uma instituição.')
-
-        return ', '.join(escolas)
-    
-    def clean_historico_escola(self):
-        arquivo = self.cleaned_data.get('historico_escola')
-
-        if not arquivo:
-            raise forms.ValidationError('Anexe o histórico de uma das escolas.')
-
-        extensoes = ('.pdf', '.jpg', '.jpeg', '.png')
-        if not arquivo.name.lower().endswith(extensoes):
-            raise forms.ValidationError('Envie um arquivo PDF, JPG ou PNG.')
-
-        if arquivo.size > 5 * 1024 * 1024:
-            raise forms.ValidationError('O arquivo pode ter no máximo 5 MB.')
-
-        return arquivo
-
 
 
 
