@@ -208,7 +208,6 @@ def novo_material(request):
 
         if form.is_valid():
             form.save()
-<<<<<<< HEAD
             messages.success(
                 request,
                 "Material cadastrado com sucesso!"
@@ -247,15 +246,6 @@ def visualizar_material(request, material_id):
         "dashboard/visualizar_material.html",
         {"material": material}
     )
-=======
-            messages.success(request, "Material cadastrado com sucesso!")
-            return redirect("materiais")
-    else:
-        form = MaterialForm()
-
-    # GET (tela em branco) ou POST com erro (volta com as mensagens)
-    return render(request, "dashboard/form_material.html", {"form": form})
->>>>>>> fbfeb9b2d008c30e09571673f439c03132b66298
 
 
 @login_required
