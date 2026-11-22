@@ -207,6 +207,13 @@
     color: #4b5d55;
   }
 
+  .lem-mat-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+  }
   .lem-mat-code {
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-size: .75rem;
@@ -365,11 +372,8 @@
      data-lem-materiais
      data-total="{{ materiais|length }}">
 
-<<<<<<< HEAD
-=======
 <div class="app-content lem-mat" data-lem-materiais data-total="{{ materiais|length }}">
     {% include 'LEM/mensagens.html' %}
->>>>>>> fbfeb9b2d008c30e09571673f439c03132b66298
   <div class="container-fluid">
 
     <!-- Cabeçalho -->
@@ -392,13 +396,8 @@
         <button type="button"
                 class="lem-mat-btn lem-mat-btn--primary"
                 data-acao="novo-material">
-<<<<<<< HEAD
           <i class="bi bi-plus-lg" aria-hidden="true"></i>
           Novo material
-=======
-            <i class="bi bi-plus-lg" aria-hidden="true"></i>
-            Novo material
->>>>>>> fbfeb9b2d008c30e09571673f439c03132b66298
         </button>
       </div>
     </div>
@@ -477,11 +476,19 @@
 
                 <td>
                   <div class="lem-mat-name">
-                    <span class="lem-mat-thumb">
-                      <i class="bi bi-image" aria-hidden="true"></i>
-                    </span>
 
-                    <span>{{ m.nome }}</span>
+                      <span class="lem-mat-thumb">
+                          {% if m.imagem %}
+                              <img src="{{ m.imagem.url }}"
+                                  alt="Imagem de {{ m.nome }}"
+                                  class="lem-mat-thumb-img">
+                          {% else %}
+                              <i class="bi bi-image" aria-hidden="true"></i>
+                          {% endif %}
+                      </span>
+
+                      <span>{{ m.nome }}</span>
+
                   </div>
                 </td>
 
@@ -610,7 +617,6 @@
 
         <div class="modal-content lem-confirm-content">
 
-<<<<<<< HEAD
             <div class="modal-header lem-confirm-header">
 
                 <h5 class="modal-title lem-confirm-title"
@@ -663,8 +669,6 @@
 
 {% endfor %}
 
-=======
->>>>>>> fbfeb9b2d008c30e09571673f439c03132b66298
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>

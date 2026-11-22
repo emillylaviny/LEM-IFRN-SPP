@@ -270,6 +270,46 @@
     flex-wrap: wrap;
   }
 
+
+  /* Requisitos da senha */
+  .lem-frm-regras-senha {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      list-style: none;
+      padding: 0;
+      margin: 9px 0 0;
+  }
+
+  .lem-frm-regras-senha li {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: #f0f2f3;
+      color: #737b7d;
+      font-size: .6875rem;
+      transition: background .2s, color .2s;
+  }
+
+  .lem-frm-regras-senha li i {
+      font-size: .75rem;
+  }
+
+  .lem-frm-regras-senha li.ok {
+      background: #e2f4eb;
+      color: #08734e;
+  }
+
+  .lem-frm-senha-erro {
+      display: block;
+      margin-top: 5px;
+      color: var(--lf-danger);
+      font-size: .6875rem;
+  }
+
+
   @media (max-width: 767.98px) {
     .lem-frm-card-body {
       grid-template-columns: minmax(0, 1fr);
@@ -287,7 +327,7 @@
   }
 </style>
 
-<div class="app-content lem-frm" data-lem-form-usuario>
+<div class="app-content lem-frm p-3" data-lem-form-usuario>
   <div class="container-fluid">
 
     <div class="lem-frm-header">
@@ -521,30 +561,65 @@
               inputmode="tel" maxlength="15" required>
           </div>
 
+          
           <div class="lem-frm-field">
-            <label class="lem-frm-label" for="usr-senha">
-              Senha <span class="lem-frm-req">*</span>
-            </label>
+              <label class="lem-frm-label" for="usr-senha">
+                  Senha <span class="lem-frm-req">*</span>
+              </label>
 
-            <input type="password" id="usr-senha" name="senha"
-              class="lem-frm-input" minlength="8"
-              autocomplete="new-password"
-              {% if not usuario %}required{% endif %}>
+              <input type="password"
+                  id="usr-senha"
+                  name="senha"
+                  class="lem-frm-input"
+                  minlength="6"
+                  autocomplete="new-password"
+                  {% if not usuario %}required{% endif %}>
 
-            <p class="lem-frm-hint">Mínimo de 8 caracteres.</p>
+              <ul class="lem-frm-regras-senha" id="regras-senha-usuario">
+                  <li data-regra="tamanho">
+                      <i class="bi bi-circle"></i>
+                      Mínimo de 6 caracteres
+                  </li>
+
+                  <li data-regra="maiuscula">
+                      <i class="bi bi-circle"></i>
+                      Maiúscula (A-Z)
+                  </li>
+
+                  <li data-regra="especial">
+                      <i class="bi bi-circle"></i>
+                      Caractere especial
+                  </li>
+
+                  <li data-regra="numero">
+                      <i class="bi bi-circle"></i>
+                      Número
+                  </li>
+              </ul>
+
+              {% for error in form.senha.errors %}
+                  <small class="lem-frm-senha-erro">{{ error }}</small>
+              {% endfor %}
           </div>
 
           <div class="lem-frm-field">
-            <label class="lem-frm-label" for="usr-senha2">
-              Confirmação de senha <span class="lem-frm-req">*</span>
-            </label>
+              <label class="lem-frm-label" for="usr-senha2">
+                  Confirmação de senha <span class="lem-frm-req">*</span>
+              </label>
 
-            <input type="password" id="usr-senha2"
-              name="confirmacao_senha"
-              class="lem-frm-input" minlength="8"
-              autocomplete="new-password"
-              {% if not usuario %}required{% endif %}>
+              <input type="password"
+                  id="usr-senha2"
+                  name="confirmacao_senha"
+                  class="lem-frm-input"
+                  minlength="6"
+                  autocomplete="new-password"
+                  {% if not usuario %}required{% endif %}>
+
+              {% for error in form.confirmacao_senha.errors %}
+                  <small class="lem-frm-senha-erro">{{ error }}</small>
+              {% endfor %}
           </div>
+
 
         </div>
       </section>
@@ -952,10 +1027,57 @@
         });
     }
 
-    document.querySelectorAll("[data-lem-form-usuario]").forEach(
-        iniciarInstituicoes
-    );
+    /* Requisitos visuais da senha */
+    function iniciarRegrasSenha(container) {
+        var senha = container.querySelector("#usr-senha");
+        var lista = container.querySelector("#regras-senha-usuario");
 
+        if (!senha || !lista) return;
+
+        function atualizarRegras() {
+            var valor = senha.value;
+
+            var regras = {
+                tamanho: valor.length >= 6,
+                maiuscula: /[A-Z]/.test(valor),
+                especial: /[^A-Za-z0-9]/.test(valor),
+                numero: /\d/.test(valor)
+            };
+
+            lista.querySelectorAll("li").forEach(function (item) {
+                var nome = item.dataset.regra;
+                var icone = item.querySelector("i");
+                var valido = regras[nome];
+
+                item.classList.toggle("ok", valido);
+
+                icone.classList.toggle(
+                    "bi-check-circle-fill",
+                    valido
+                );
+
+                icone.classList.toggle(
+                    "bi-circle",
+                    !valido
+                );
+            });
+        }
+
+        if (senha.dataset.regrasInicializadas !== "true") {
+            senha.addEventListener("input", atualizarRegras);
+            senha.dataset.regrasInicializadas = "true";
+        }
+
+        atualizarRegras();
+    }
+
+
+    document.querySelectorAll("[data-lem-form-usuario]").forEach(
+        function (container) {
+            iniciarInstituicoes(container);
+            iniciarRegrasSenha(container);
+        }
+    );
 })();
 </script>
 {% endblock %}

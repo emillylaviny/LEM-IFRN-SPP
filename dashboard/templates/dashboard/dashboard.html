@@ -1141,7 +1141,6 @@ document.addEventListener("click", function(e) {
 
     // Usuários
     if (acao === "novo-usuario") {
-<<<<<<< HEAD
         url = "/usuarios/formulario/";
     } else if (acao === "editar") {
         url = `/usuarios/editar/${id}/`;
@@ -1163,24 +1162,6 @@ document.addEventListener("click", function(e) {
     if (url) {
         carregarConteudo(url);
     }
-=======
-    url = "/usuarios/formulario/";
-} else if (acao === "editar") {
-    const id = botao.dataset.id;
-    url = `/usuarios/editar/${id}/`;
-} else if (acao === "voltar-usuarios") {
-    url = "/usuarios/";
-} else if (acao === "novo-material") {
-    url = "/materiais/novo/";
-} else if (acao === "voltar-materiais") {
-    url = "/materiais/";
-}
-
-if (url) {
-    carregarConteudo(url);
-}
-    
->>>>>>> fbfeb9b2d008c30e09571673f439c03132b66298
 });
 
 

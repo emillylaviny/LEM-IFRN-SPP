@@ -428,6 +428,28 @@
     border:1px solid var(--line);
 }
 
+#lem-esc .e-message {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+}
+
+#lem-esc .e-message-close {
+    border:0;
+    background:transparent;
+    color:var(--mut);
+    font-size:20px;
+    line-height:1;
+    cursor:pointer;
+    padding:0 4px;
+    flex-shrink:0;
+}
+
+#lem-esc .e-message-close:hover {
+    color:var(--ink);
+}
+
 /* Centralização do modal de exclusão */
 #lem-esc .modal {
     display:none;
@@ -515,8 +537,17 @@
 
         {% if messages %}
             {% for message in messages %}
-                <div class="e-message">
-                    {{ message }}
+                <div class="e-message" role="alert">
+                    <span>{{ message }}</span>
+
+                    <button
+                        type="button"
+                        class="e-message-close"
+                        aria-label="Fechar mensagem"
+                        title="Fechar"
+                    >
+                        &times;
+                    </button>
                 </div>
             {% endfor %}
         {% endif %}
@@ -815,6 +846,15 @@
         var corpo = $("e-body");
         var form = $("e-form");
 
+        // Fechar mensagens de sucesso ou erro
+        root.addEventListener("click", function (evento) {
+            var fechar = evento.target.closest(".e-message-close");
+
+            if (!fechar || !root.contains(fechar)) return;
+
+            fechar.closest(".e-message").remove();
+        });
+
         function normalizar(texto) {
             return String(texto || "")
                 .normalize("NFD")
@@ -1065,6 +1105,7 @@
         };
 
         // Envio dos formulários sem sair do Dashboard
+        
         async function enviarFormularioEscola(evento) {
             evento.preventDefault();
 
@@ -1072,6 +1113,27 @@
             var botao = formulario.querySelector('[type="submit"]');
 
             if (!formulario.reportValidity()) return;
+
+            // Se for exclusão, fecha o modal antes de atualizar a tela
+            if (formulario.matches("[data-form-excluir-escola]")) {
+                var modal = formulario.closest(".modal");
+
+                if (modal && modal.classList.contains("show")) {
+                    var instancia = bootstrap.Modal.getInstance(modal);
+
+                    if (instancia) {
+                        await new Promise(function(resolve) {
+                            modal.addEventListener(
+                                "hidden.bs.modal",
+                                resolve,
+                                { once: true }
+                            );
+
+                            instancia.hide();
+                        });
+                    }
+                }
+            }
 
             if (botao) botao.disabled = true;
 
