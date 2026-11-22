@@ -21,7 +21,7 @@
     object-fit: cover;
     border-radius: 50%;
     display: block;
-}
+  }
 
   /* Cabeçalho */
   .lem-usr-header {
@@ -253,7 +253,7 @@
           <tbody>
             {% for u in usuarios %}
               <tr data-usr-linha
-                  data-busca="{{ u.nome_completo }} {{ u.cpf }} {{ u.email }} {{ u.vinculo_profissional }}"
+                  data-busca="{{ u.nome_completo }} {{ u.cpf }} {{ u.email }} {% for instituicao in u.vinculos_profissionais.all %}{{ instituicao.nome }} {{ instituicao.cidade_escola }} {% endfor %}"
                   data-cpf="{{ u.cpf }}"
                   data-situacao="{% if u.ativo %}ativo{% else %}inativo{% endif %}">
                 <td>
@@ -275,8 +275,20 @@
                 </td>
                 <td class="lem-usr-nowrap">{{ u.cpf }}</td>
                 <td>{{ u.email }}</td>
-                <td>{{ u.vinculo_profissional|default:"—" }}</td>
-                <td>{{ u.cidade_escola|default:"—" }}</td>
+                <td>
+                    {% for instituicao in u.vinculos_profissionais.all %}
+                        {{ instituicao.nome }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        —
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for instituicao in u.vinculos_profissionais.all %}
+                        {{ instituicao.cidade_escola|default:"Não informado" }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        —
+                    {% endfor %}
+                </td>
                 <td>
                   {% if u.ativo %}
                     <span class="lem-usr-badge lem-usr-badge--ativo">Ativo</span>

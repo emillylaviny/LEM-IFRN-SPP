@@ -1,19 +1,21 @@
+
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from LEM.forms import MaterialForm, FAQForm, UsuarioAdminForm, InstituicaoForm
-from LEM.models import Materiais, LocalizacaoLab, FAQ, User, Instituicao
 from django.db.models.deletion import ProtectedError
 from django.http import JsonResponse
-from django.db.models import ProtectedError
 from django.views.decorators.http import require_POST
 
+from LEM.forms import MaterialForm, FAQForm, UsuarioAdminForm, InstituicaoForm
+from LEM.models import Materiais, LocalizacaoLab, FAQ, User, Instituicao
 
 
 @login_required
 def usuarios(request):
-    lista_usuarios = User.objects.all().order_by("nome_completo")
+    lista_usuarios = User.objects.prefetch_related(
+        "vinculos_profissionais"
+    ).all().order_by("nome_completo")
 
     return render(
         request,
@@ -47,6 +49,7 @@ def form_usuario(request):
         }
     )
 
+
 @login_required
 def usuario_cadastrar(request):
 
@@ -71,8 +74,8 @@ def usuario_cadastrar(request):
             "escolas": escolas,
         }
     )
-    
-    
+
+
 @login_required
 def usuario_visualizar(request, id):
     usuario = get_object_or_404(User, id=id)
@@ -82,6 +85,7 @@ def usuario_visualizar(request, id):
         'dashboard/visualizar_usuario.html',
         {'usuario': usuario}
     )
+
 
 @login_required
 def usuario_excluir(request, id):
@@ -108,6 +112,7 @@ def usuario_excluir(request, id):
         )
 
     return JsonResponse({"ok": True, "mensagem": "Usuário excluído com sucesso!"})
+
 
 @login_required
 def dashboard(request):
@@ -176,12 +181,11 @@ def faq_excluir(request, id):
     if request.method == "POST":
         faq.delete()
         messages.success(
-            request, "Pergunta excluída com sucesso!"
+            request,
+            "Pergunta excluída com sucesso!"
         )
 
     return redirect("perguntasfaq")
-
-
 
 
 @login_required
@@ -233,7 +237,8 @@ def novo_material(request):
         },
         status=200
     )
-    
+
+
 @login_required
 def visualizar_material(request, material_id):
     material = get_object_or_404(
@@ -301,6 +306,7 @@ def remover_material(request, material_id):
         messages.success(request, "Material excluído com sucesso!")
 
     return redirect("/dashboard/?pagina=materiais")
+
 
 @login_required
 def etiquetas(request):
@@ -370,6 +376,14 @@ def escola_excluir(request, id):
 
     escola = get_object_or_404(Instituicao, id=id)
 
+    # Verifica se existem usuários vinculados à instituição
+    if escola.profissionais.exists():
+        messages.error(
+            request,
+            "Esta instituição possui usuários vinculados e não pode ser excluída. Desative-a em vez de excluir."
+        )
+        return redirect("escolas")
+
     try:
         escola.delete()
         messages.success(request, "Instituição excluída com sucesso!")
@@ -377,7 +391,7 @@ def escola_excluir(request, id):
     except ProtectedError:
         messages.error(
             request,
-            "Esta instituição possui usuários vinculados e não pode ser excluída. Desative-a em vez de excluir."
+            "Esta instituição possui registros vinculados e não pode ser excluída."
         )
 
     return redirect("escolas")

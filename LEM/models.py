@@ -60,6 +60,11 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.nome_completo
+    
+    @property
+    def iniciais(self):
+        nomes = self.nome_completo.split()
+        return "".join(nome[0] for nome in nomes[:2]).upper()
    
 
     @property

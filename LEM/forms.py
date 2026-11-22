@@ -1,11 +1,31 @@
 import re
 import json
 import uuid
+from django.contrib.auth.password_validation import validate_password
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Materiais, User, FAQ, Duvida, Instituicao
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit
+
+
+def validar_regras_senha(senha):
+    erros = []
+
+    if len(senha) < 6:
+        erros.append("A senha deve ter no mínimo 6 caracteres.")
+
+    if not re.search(r'[A-Z]', senha):
+        erros.append("A senha deve conter pelo menos uma letra maiúscula.")
+
+    if not re.search(r'[^A-Za-z0-9]', senha):
+        erros.append("A senha deve conter pelo menos um caractere especial.")
+
+    if not re.search(r'\d', senha):
+        erros.append("A senha deve conter pelo menos um número.")
+
+    if erros:
+        raise forms.ValidationError(erros)
 
 
 def cpf_valido(cpf):
@@ -268,7 +288,6 @@ class UsuarioAdminForm(forms.ModelForm):
     senha = forms.CharField(
         label="Senha",
         widget=forms.PasswordInput,
-        min_length=8,
         required=False
     )
 
@@ -375,20 +394,30 @@ class UsuarioAdminForm(forms.ModelForm):
         return email
 
     
+    
     def clean(self):
         cleaned_data = super().clean()
 
         senha = cleaned_data.get("senha")
         confirmacao = cleaned_data.get("confirmacao_senha")
 
+        # Exige senha no cadastro de novos usuários
         if not self.instance.pk and not senha:
             self.add_error("senha", "A senha é obrigatória.")
 
+        # Verifica se as senhas coincidem
         if senha and senha != confirmacao:
             self.add_error(
                 "confirmacao_senha",
                 "As senhas não coincidem."
             )
+
+        # Aplica os mesmos validadores de senha do Django
+        if senha:
+            try:
+                validate_password(senha, self.instance)
+            except forms.ValidationError as erro:
+                self.add_error("senha", erro)
 
         texto = cleaned_data.get("vinculos_profissionais_texto", "")
         cidades_json = cleaned_data.get("instituicoes_cidades", "{}")
