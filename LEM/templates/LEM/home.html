@@ -52,42 +52,6 @@
 
   </div>
 
-  <!-- Acesso rápido -->
-  <div class="hm-quick-access">
-    <a href="#materiais" class="hm-quick-card">
-      <span class="hm-quick-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
-      </span>
-      <span class="hm-quick-text">
-        <strong>Explorar materiais</strong>
-        <small>Veja o acervo por conteúdo</small>
-      </span>
-      <span class="hm-quick-arrow" aria-hidden="true">›</span>
-    </a>
-
-    <a href="{% url 'login' %}" class="hm-quick-card">
-      <span class="hm-quick-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
-      </span>
-      <span class="hm-quick-text">
-        <strong>Solicitar empréstimo</strong>
-        <small>Escolha e peça pelo sistema</small>
-      </span>
-      <span class="hm-quick-arrow" aria-hidden="true">›</span>
-    </a>
-
-    <a href="#laboratorio" class="hm-quick-card">
-      <span class="hm-quick-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
-      </span>
-      <span class="hm-quick-text">
-        <strong>Agendar visita</strong>
-        <small>Conheça o espaço do LEM</small>
-      </span>
-      <span class="hm-quick-arrow" aria-hidden="true">›</span>
-    </a>
-  </div>
-
 </section>
 
 <!-- Seção laboratório -->
@@ -294,61 +258,89 @@
   </div>
 
   <!-- Como funciona? -->
-  <div class="mat-how-block">
-    <div class="container">
-      <p class="mat-how-eyebrow">Como funciona?</p>
-      <h3 class="mat-how-title">Empréstimo de materiais</h3>
+    <div class="emprestimo-section">
 
-      <div class="mat-steps-row">
+        <!-- Transição em ondas -->
+        <svg class="emprestimo-wave"
+            viewBox="0 0 1440 100"
+            preserveAspectRatio="none"
+            aria-hidden="true">
 
-        <div class="mat-step">
-          <div class="mat-step-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2"/>
-              <path d="M20 20l-4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <p class="mat-step-title">Escolha o material</p>
-          <p class="mat-step-text">Navegue pelos materiais e selecione o que deseja utilizar</p>
+            <path
+                d="M0,35 C220,90 350,15 570,45
+                  C800,75 960,15 1150,35
+                  C1280,50 1360,65 1440,35
+                  L1440,100 L0,100 Z"
+                fill="#d9f1ec"/>
+
+            <path
+                d="M0,55 C220,105 350,35 570,60
+                  C800,85 960,35 1150,50
+                  C1280,65 1360,80 1440,50
+                  L1440,100 L0,100 Z"
+                fill="#ffffff"/>
+        </svg>
+
+        <div class="emprestimo-container">
+
+            <span class="emprestimo-subtitulo">
+                Como funciona?
+            </span>
+
+            <h2>Empréstimo de materiais</h2>
+
+            <div class="emprestimo-linha"></div>
+
+            <div class="emprestimo-etapas">
+
+                <div class="emprestimo-item">
+                    <div class="emprestimo-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Escolha o material</h3>
+                    <p>
+                        Navegue pelos materiais e
+                        selecione o que deseja utilizar.
+                    </p>
+                </div>
+
+                <div class="emprestimo-item">
+                    <div class="emprestimo-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3>Faça a sua solicitação</h3>
+                    <p>
+                        Preencha o formulário de
+                        empréstimo com os dados necessários.
+                    </p>
+                </div>
+
+                <div class="emprestimo-item">
+                    <div class="emprestimo-icon">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <h3>Retire no LEM</h3>
+                    <p>
+                        Retire o material no
+                        laboratório no dia combinado.
+                    </p>
+                </div>
+
+                <div class="emprestimo-item">
+                    <div class="emprestimo-icon">
+                        <i class="far fa-calendar-alt"></i>
+                    </div>
+                    <h3>Devolva no prazo</h3>
+                    <p>
+                        Devolva o material conforme
+                        a data combinada.
+                    </p>
+                </div>
+
+            </div>
         </div>
 
-        <div class="mat-step">
-          <div class="mat-step-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
-              <path d="M9 8h6M9 12h6M9 16h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <p class="mat-step-title">Faça a sua solicitação</p>
-          <p class="mat-step-text">Preencha o formulário de empréstimo com os dados necessários</p>
-        </div>
-
-        <div class="mat-step">
-          <div class="mat-step-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <path d="M3 9l9-5 9 5-9 5-9-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-              <path d="M3 9v6l9 5 9-5V9" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <p class="mat-step-title">Retire no LEM</p>
-          <p class="mat-step-text">Retire o material no laboratório no dia combinado</p>
-        </div>
-
-        <div class="mat-step">
-          <div class="mat-step-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
-              <path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <p class="mat-step-title">Devolva no prazo</p>
-          <p class="mat-step-text">Devolva o material conforme a data combinada</p>
-        </div>
-
-      </div>
     </div>
-  </div>
-
 </section>
 <script>
   // Carrossel 
@@ -536,12 +528,77 @@
           </div>
         </div>
 
-        <a href="{% url 'duvida_enviar' %}" class="faq-btn-new-question">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
-          </svg>
-          Fazer nova pergunta
-        </a>
+
+        <!-- MODAL NOVA PERGUNTA -->
+        <div class="dv-modal-overlay"
+            id="modal-nova-duvida"
+            hidden
+            data-abrir="{{ abrir_modal_duvida|yesno:'true,false' }}">
+
+            <div class="dv-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="titulo-modal-duvida">
+
+                <button type="button"
+                        class="dv-modal-fechar"
+                        id="fechar-modal-duvida"
+                        aria-label="Fechar">
+                    &times;
+                </button>
+
+                <h2 id="titulo-modal-duvida">
+                    Fazer nova pergunta
+                </h2>
+
+                <p class="dv-modal-texto">
+                    Escreva sua dúvida e nossa equipe responderá em breve.
+                </p>
+
+                <form method="POST" action="{% url 'home' %}" novalidate>
+                    {% csrf_token %}
+
+                    <input type="hidden" name="enviar_duvida" value="1">
+
+                    <label for="{{ form_duvida.pergunta.id_for_label }}"
+                          class="dv-modal-label">
+                        {{ form_duvida.pergunta.label }}
+                    </label>
+
+                    {{ form_duvida.pergunta }}
+
+                    {% for erro in form_duvida.pergunta.errors %}
+                        <p class="dv-modal-erro">{{ erro }}</p>
+                    {% endfor %}
+
+                    <div class="dv-modal-acoes">
+
+                        <button type="button"
+                                class="dv-modal-voltar"
+                                id="cancelar-modal-duvida">
+                            Voltar
+                        </button>
+
+                        <button type="submit"
+                                class="dv-modal-enviar">
+                            Enviar pergunta
+                        </button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+        <button type="button" class="faq-btn-new-question" id="abrir-modal-duvida">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+            </svg>
+            Fazer nova pergunta
+        </button>
       </div>
 
     </div>
@@ -550,6 +607,61 @@
 </section>
 
 <script>
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modal = document.getElementById("modal-nova-duvida");
+    const abrir = document.getElementById("abrir-modal-duvida");
+    const fechar = document.getElementById("fechar-modal-duvida");
+    const cancelar = document.getElementById("cancelar-modal-duvida");
+
+    if (!modal || !abrir) return;
+
+    function abrirModal() {
+        modal.hidden = false;
+        document.body.style.overflow = "hidden";
+
+        const campo = modal.querySelector("textarea, input:not([type=hidden])");
+
+        if (campo) {
+            campo.focus();
+        }
+    }
+
+    function fecharModal() {
+        modal.hidden = true;
+        document.body.style.overflow = "";
+        abrir.focus();
+    }
+
+    abrir.addEventListener("click", abrirModal);
+
+    fechar.addEventListener("click", fecharModal);
+    cancelar.addEventListener("click", fecharModal);
+
+    // Fecha ao clicar fora da caixa
+    modal.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            fecharModal();
+        }
+    });
+
+    // Fecha com a tecla ESC
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && !modal.hidden) {
+            fecharModal();
+        }
+    });
+
+    // Reabre automaticamente se o formulário apresentar erros
+    if (modal.dataset.abrir === "true") {
+        abrirModal();
+    }
+
+});
+
+
 (function () {
   var cards  = document.querySelectorAll('[data-dv-card]');
   var input  = document.getElementById('dv-busca');

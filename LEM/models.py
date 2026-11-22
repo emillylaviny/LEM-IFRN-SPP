@@ -166,26 +166,6 @@ class Visita(models.Model):
     def __str__(self):
         return f"{self.professor} - {self.data} {self.horario}"
 
-class Duvida(models.Model):
-    STATUS = [
-        ("PENDENTE", "Pendente"),
-        ("RESPONDIDA", "Respondida"),
-        ("FAQ", "Pergunta frequente"),
-    ]
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="duvidas")
-    pergunta = models.TextField()
-    resposta = models.TextField(blank=True)
-    status = models.CharField(max_length=20, choices=STATUS, default="PENDENTE")
-    enviada_em = models.DateTimeField(auto_now_add=True)
-    respondida_em = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        ordering = ["-enviada_em"]
-        verbose_name = "Dúvida"
-        verbose_name_plural = "Dúvidas"
-
-    def __str__(self):
-        return f"Dúvida de {self.usuario.get_full_name() or self.usuario.email}"
 
 class HorarioFuncionamento(models.Model):
     DIAS = [
@@ -247,11 +227,57 @@ class HorarioFuncionamento(models.Model):
 
 # Iniciando CRUD de perguntas fequentes
 
+
+class Duvida(models.Model):
+    STATUS = [
+        ("PENDENTE", "Pendente"),
+        ("RESPONDIDA", "Respondida"),
+        ("FAQ", "Pergunta frequente"),
+    ]
+
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="duvidas"
+    )
+
+    pergunta = models.TextField()
+    resposta = models.TextField(blank=True)
+    ordem = models.PositiveIntegerField(default=0)
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS,
+        default="PENDENTE"
+    )
+
+    enviada_em = models.DateTimeField(auto_now_add=True)
+    respondida_em = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["-enviada_em"]
+        verbose_name = "Dúvida"
+        verbose_name_plural = "Dúvidas"
+
+    def __str__(self):
+        return f"Dúvida de {self.usuario.get_full_name() or self.usuario.email}"
+
+
 class FAQ(models.Model):
+    # Relacionamento com a dúvida que originou a FAQ
+    duvida_origem = models.OneToOneField(
+        Duvida,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="faq"
+    )
+
     pergunta = models.CharField(max_length=255)
     resposta = models.TextField()
     ativa = models.BooleanField(default=True)
     ordem = models.PositiveIntegerField(default=0)
+
     criada_em = models.DateTimeField(auto_now_add=True)
     atualizada_em = models.DateTimeField(auto_now=True)
 
@@ -262,6 +288,7 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.pergunta
+
 
 class HistoricoAlteracao(models.Model):
     administrador = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="alteracoes")

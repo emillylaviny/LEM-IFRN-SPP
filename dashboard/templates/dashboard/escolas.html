@@ -13,7 +13,7 @@
     --red:#d6455d;
     font-family:"Inter","Segoe UI",system-ui,sans-serif;
     color:var(--ink);
-    padding: 10px;
+    padding:10px;
 }
 
 #lem-esc *,
@@ -96,6 +96,29 @@
 
 #lem-esc .btn-d:hover:not(:disabled) {
     background:#bb3249;
+}
+
+/* Botões dentro dos modais */
+#lem-esc .modal .btn-secondary {
+    background:#6c757d;
+    border-color:#6c757d;
+    color:#fff;
+}
+
+#lem-esc .modal .btn-secondary:hover {
+    background:#5c636a;
+    border-color:#565e64;
+}
+
+#lem-esc .modal .btn-danger {
+    background:var(--red);
+    border-color:var(--red);
+    color:#fff;
+}
+
+#lem-esc .modal .btn-danger:hover:not(:disabled) {
+    background:#bb3249;
+    border-color:#bb3249;
 }
 
 #lem-esc button:focus-visible,
@@ -271,27 +294,44 @@
     color:#5a6b6e;
 }
 
-
+/* Botões de ação da tabela */
 #lem-esc .ib {
-    display:inline-grid;
-    place-items:center;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
     width:32px;
     height:32px;
     margin-left:4px;
+    padding:0;
     border:1px solid transparent;
     border-radius:8px;
     background:transparent;
-    color:var(--ink);
+    color:#52635e;
     cursor:pointer;
+    transition:all .2s ease;
+}
+
+#lem-esc .ib svg,
+#lem-esc .ib i {
+    width:16px;
+    height:16px;
+    font-size:16px;
 }
 
 #lem-esc .ib:hover {
-    background:var(--tint);
-    border-color:var(--line);
+    background:#eef4f1;
+    border-color:#dfe7e3;
+    color:#0b6b4d;
 }
 
 #lem-esc .ib.del {
-    color:var(--red);
+    color:#d6455d;
+}
+
+#lem-esc .ib.del:hover {
+    background:#fff0f1;
+    border-color:#f4cbd1;
+    color:#bb3249;
 }
 
 #lem-esc .e-empty td {
@@ -380,20 +420,39 @@
     overflow-wrap:anywhere;
 }
 
-#lem-esc .e-confirm {
-    padding:18px;
-    background:var(--tint);
-    border:1px solid var(--line);
-    border-radius:10px;
-    line-height:1.6;
-}
-
 #lem-esc .e-message {
     padding:12px 16px;
     margin-bottom:16px;
     border-radius:8px;
     background:var(--tint);
     border:1px solid var(--line);
+}
+
+/* Centralização do modal de exclusão */
+#lem-esc .modal {
+    display:none;
+}
+
+#lem-esc .modal.show {
+    display:block;
+}
+
+#lem-esc .modal-dialog {
+    display:flex;
+    align-items:center;
+    min-height:calc(100% - 1rem);
+    margin:0.5rem auto;
+}
+
+#lem-esc .modal-content {
+    width:100%;
+}
+
+@media (min-width:576px) {
+    #lem-esc .modal-dialog {
+        min-height:calc(100% - 3.5rem);
+        margin:1.75rem auto;
+    }
 }
 
 @media(max-width:640px) {
@@ -418,7 +477,7 @@
 
 <div id="lem-esc">
 
-    <!-- Ícones -->
+    <!-- ÍCONES -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
         <defs>
             <symbol id="lem-e-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -430,18 +489,9 @@
                 <path d="M12 5v14M5 12h14"/>
             </symbol>
 
-            <symbol id="lem-e-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/>
-                <circle cx="12" cy="12" r="3"/>
-            </symbol>
-
             <symbol id="lem-e-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 20h4L19 9l-4-4L4 16z"/>
                 <path d="M13.5 6.5l4 4"/>
-            </symbol>
-
-            <symbol id="lem-e-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>
             </symbol>
         </defs>
     </svg>
@@ -534,8 +584,9 @@
                                         data-a="ver"
                                         data-id="{{ escola.id }}"
                                         aria-label="Visualizar"
+                                        title="Visualizar"
                                     >
-                                        <svg class="i"><use href="#lem-e-eye"/></svg>
+                                        <i class="bi bi-eye"></i>
                                     </button>
 
                                     <button
@@ -544,8 +595,9 @@
                                         data-a="edit"
                                         data-id="{{ escola.id }}"
                                         aria-label="Editar"
+                                        title="Editar"
                                     >
-                                        <i class="bi bi-eye"></i>
+                                        <i class="bi bi-pencil"></i>
                                     </button>
 
                                     <button
@@ -553,9 +605,12 @@
                                         class="ib del"
                                         data-a="del"
                                         data-id="{{ escola.id }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalExcluirEscola{{ escola.id }}"
                                         aria-label="Excluir"
+                                        title="Excluir"
                                     >
-                                       <i class="bi bi-trash" aria-hidden="true"></i>
+                                        <i class="bi bi-trash"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -655,38 +710,76 @@
         </div>
     </section>
 
-    <!-- TELA DE CONFIRMAÇÃO DE EXCLUSÃO -->
-    <section id="e-tela-del" class="e-page" hidden>
+    <!-- MODAIS DE EXCLUSÃO -->
+    {% for escola in escolas %}
+        <div
+            class="modal fade"
+            id="modalExcluirEscola{{ escola.id }}"
+            tabindex="-1"
+            aria-labelledby="tituloExcluirEscola{{ escola.id }}"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
 
-        <div class="e-page-head">
-            <div>
-                <h3>Excluir instituição</h3>
-                <p>Confirme se deseja realmente excluir este cadastro.</p>
+                    <div class="modal-header">
+                        <h5
+                            class="modal-title"
+                            id="tituloExcluirEscola{{ escola.id }}"
+                        >
+                            Excluir instituição
+                        </h5>
+
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar"
+                        ></button>
+                    </div>
+
+                    <div class="modal-body">
+                        Tem certeza de que deseja excluir
+                        <strong>{{ escola.nome }}</strong>?
+
+                        Esta ação não pode ser desfeita.
+
+                        <p class="mt-2 mb-0 text-muted">
+                            Se a instituição possuir usuários vinculados,
+                            ela não poderá ser excluída. Nesse caso,
+                            será necessário desativá-la.
+                        </p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Cancelar
+                        </button>
+
+                        <form
+                            method="POST"
+                            action="{% url 'escola_excluir' escola.id %}"
+                            data-form-excluir-escola
+                        >
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="btn btn-danger"
+                            >
+                                Excluir instituição
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
             </div>
         </div>
-
-        <div class="e-confirm">
-            <p id="e-del-p"></p>
-            <p>
-                Se a instituição possuir usuários vinculados, ela não poderá
-                ser excluída. Nesse caso, será necessário desativá-la.
-            </p>
-        </div>
-
-        <form id="e-form-del" method="POST">
-            {% csrf_token %}
-
-            <div class="e-page-actions">
-                <button type="button" class="btn" id="e-del-cancelar">
-                    Cancelar
-                </button>
-
-                <button type="submit" class="btn btn-d">
-                    Excluir instituição
-                </button>
-            </div>
-        </form>
-    </section>
+    {% endfor %}
 
 </div>
 
@@ -721,7 +814,6 @@
 
         var corpo = $("e-body");
         var form = $("e-form");
-        var formExcluir = $("e-form-del");
 
         function normalizar(texto) {
             return String(texto || "")
@@ -759,7 +851,6 @@
             $("e-tela-lista").hidden = tela !== "lista";
             $("e-tela-form").hidden = tela !== "form";
             $("e-tela-ver").hidden = tela !== "ver";
-            $("e-tela-del").hidden = tela !== "del";
         }
 
         function filtrar() {
@@ -818,22 +909,39 @@
                         </td>
 
                         <td class="r">
-                            <button type="button" class="ib"
-                                data-a="ver" data-id="${escapar(item.id)}"
-                                aria-label="Visualizar">
-                                <svg class="i"><use href="#lem-e-eye"/></svg>
+                            <button
+                                type="button"
+                                class="ib"
+                                data-a="ver"
+                                data-id="${escapar(item.id)}"
+                                aria-label="Visualizar"
+                                title="Visualizar"
+                            >
+                                <i class="bi bi-eye"></i>
                             </button>
 
-                            <button type="button" class="ib"
-                                data-a="edit" data-id="${escapar(item.id)}"
-                                aria-label="Editar">
-                                <svg class="i"><use href="#lem-e-edit"/></svg>
+                            <button
+                                type="button"
+                                class="ib"
+                                data-a="edit"
+                                data-id="${escapar(item.id)}"
+                                aria-label="Editar"
+                                title="Editar"
+                            >
+                                <i class="bi bi-pencil"></i>
                             </button>
 
-                            <button type="button" class="ib del"
-                                data-a="del" data-id="${escapar(item.id)}"
-                                aria-label="Excluir">
-                                <svg class="i"><use href="#lem-e-trash"/></svg>
+                            <button
+                                type="button"
+                                class="ib del"
+                                data-a="del"
+                                data-id="${escapar(item.id)}"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalExcluirEscola${escapar(item.id)}"
+                                aria-label="Excluir"
+                                title="Excluir"
+                            >
+                                <i class="bi bi-trash"></i>
                             </button>
                         </td>
                     </tr>`;
@@ -898,22 +1006,6 @@
             mostrarTela("ver");
         }
 
-        function abrirExcluir(item) {
-            alvoId = item.id;
-
-            $("e-del-p").textContent =
-                "Tem certeza de que deseja excluir a instituição " +
-                item.nome + "?";
-
-            formExcluir.action =
-                "{% url 'escola_excluir' 0 %}".replace(
-                    "/0/",
-                    "/" + item.id + "/"
-                );
-
-            mostrarTela("del");
-        }
-
         // Ações dos botões da tabela
         root.addEventListener("click", function (evento) {
             var botao = evento.target.closest("button");
@@ -928,7 +1020,8 @@
 
             if (acao === "ver") abrirVer(item);
             if (acao === "edit") abrirForm(item);
-            if (acao === "del") abrirExcluir(item);
+
+            // A exclusão é controlada pelo modal Bootstrap.
         });
 
         $("e-novo").onclick = function () {
@@ -946,10 +1039,6 @@
         $("e-ver-edit").onclick = function () {
             var item = achar(alvoId);
             if (item) abrirForm(item);
-        };
-
-        $("e-del-cancelar").onclick = function () {
-            mostrarTela("lista");
         };
 
         // Pesquisa
@@ -1009,14 +1098,27 @@
 
             } catch (erro) {
                 console.error("Erro ao enviar formulário:", erro);
-                alert("Não foi possível concluir a operação. Verifique o terminal e o console.");
+
+                alert(
+                    "Não foi possível concluir a operação. " +
+                    "Verifique o terminal e o console."
+                );
 
                 if (botao) botao.disabled = false;
             }
         }
 
         form.addEventListener("submit", enviarFormularioEscola);
-        formExcluir.addEventListener("submit", enviarFormularioEscola);
+
+        // Eventos dos formulários de exclusão dos modais
+        root.querySelectorAll("[data-form-excluir-escola]").forEach(
+            function (formulario) {
+                formulario.addEventListener(
+                    "submit",
+                    enviarFormularioEscola
+                );
+            }
+        );
 
         render();
         mostrarTela("lista");

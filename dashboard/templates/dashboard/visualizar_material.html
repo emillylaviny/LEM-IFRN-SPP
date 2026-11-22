@@ -1,0 +1,346 @@
+
+{% load static %}
+
+<style>
+#visualizar-material {
+    --verde: #0f7657;
+    --verde-escuro: #0a6047;
+    --texto: #19332c;
+    --muted: #71827b;
+    --borda: #dfe8e3;
+    color: var(--texto);
+    width: 100%;
+}
+
+#visualizar-material .vm-topo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+#visualizar-material .vm-titulo {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--texto);
+    margin: 0;
+}
+
+#visualizar-material .vm-subtitulo {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+#visualizar-material .vm-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--borda);
+    background: #fff;
+    color: #53665e;
+    border-radius: 9px;
+    padding: 9px 15px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+#visualizar-material .vm-voltar:hover {
+    background: #f3f8f5;
+}
+
+#visualizar-material .vm-card {
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 15px;
+    box-shadow: 0 2px 7px rgba(20, 50, 50, .04);
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+#visualizar-material .vm-card-header {
+    padding: 15px 18px;
+    border-bottom: 1px solid var(--borda);
+}
+
+#visualizar-material .vm-card-header h3 {
+    color: var(--texto);
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+}
+
+#visualizar-material .vm-card-body {
+    padding: 20px;
+}
+
+#visualizar-material .vm-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 15px;
+}
+
+#visualizar-material .vm-item {
+    min-width: 0;
+}
+
+#visualizar-material .vm-item.completo {
+    grid-column: 1 / -1;
+}
+
+#visualizar-material .vm-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #8a9a92;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+    letter-spacing: .2px;
+}
+
+#visualizar-material .vm-valor {
+    font-size: 13px;
+    color: #344c43;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+#visualizar-material .vm-imagem {
+    max-width: 220px;
+    max-height: 180px;
+    object-fit: contain;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 6px;
+    background: #fff;
+}
+
+#visualizar-material .vm-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+#visualizar-material .vm-ativo {
+    background: #e5f5ed;
+    color: #168052;
+    border: 1px solid #c5e9d5;
+}
+
+#visualizar-material .vm-inativo {
+    background: #f0f1f2;
+    color: #69757b;
+    border: 1px solid #e1e4e5;
+}
+
+#visualizar-material .vm-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 5px;
+    padding-bottom: 5px;
+}
+
+#visualizar-material .vm-editar {
+    border: none;
+    background: var(--verde);
+    color: #fff;
+    border-radius: 9px;
+    padding: 10px 19px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#visualizar-material .vm-editar:hover {
+    background: var(--verde-escuro);
+}
+
+@media (max-width: 650px) {
+    #visualizar-material .vm-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #visualizar-material .vm-item.completo {
+        grid-column: auto;
+    }
+
+    #visualizar-material .vm-card-body {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 450px) {
+    #visualizar-material .vm-topo {
+        flex-direction: column;
+    }
+
+    #visualizar-material .vm-acoes {
+        flex-direction: column;
+    }
+
+    #visualizar-material .vm-editar {
+        width: 100%;
+    }
+}
+</style>
+
+<div id="visualizar-material">
+
+    <div class="vm-topo">
+        <div>
+            <h2 class="vm-titulo">Detalhes do material</h2>
+            <div class="vm-subtitulo">
+                Consulte as informações do material cadastrado.
+            </div>
+        </div>
+
+        <button type="button"
+                class="vm-voltar"
+                data-acao="voltar-materiais">
+            ← Voltar
+        </button>
+    </div>
+
+    <div class="vm-card">
+
+        <div class="vm-card-header">
+            <h3>Informações gerais</h3>
+        </div>
+
+        <div class="vm-card-body">
+
+            <div class="vm-grid">
+
+                <div class="vm-item completo">
+                    <span class="vm-label">Imagem</span>
+
+                    {% if material.imagem %}
+                        <img src="{{ material.imagem.url }}"
+                             alt="{{ material.nome }}"
+                             class="vm-imagem">
+                    {% else %}
+                        <div class="vm-valor">Nenhuma imagem cadastrada.</div>
+                    {% endif %}
+                </div>
+
+                <div class="vm-item">
+                    <span class="vm-label">Nome</span>
+                    <div class="vm-valor">
+                        {{ material.nome|default:"Não informado" }}
+                    </div>
+                </div>
+
+                <div class="vm-item">
+                    <span class="vm-label">Código</span>
+                    <div class="vm-valor">
+                        {{ material.codigo|default:"Não informado" }}
+                    </div>
+                </div>
+
+                <div class="vm-item completo">
+                    <span class="vm-label">Descrição</span>
+                    <div class="vm-valor">
+                        {{ material.descricao|default:"Não informado"|linebreaksbr }}
+                    </div>
+                </div>
+
+                <div class="vm-item completo">
+                    <span class="vm-label">Orientação de uso</span>
+                    <div class="vm-valor">
+                        {{ material.orientacao_uso|default:"Não informado"|linebreaksbr }}
+                    </div>
+                </div>
+
+                <div class="vm-item completo">
+                    <span class="vm-label">Conceito matemático</span>
+                    <div class="vm-valor">
+                        {{ material.conceito_matematico|default:"Não informado" }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="vm-card">
+
+        <div class="vm-card-header">
+            <h3>Classificação e disponibilidade</h3>
+        </div>
+
+        <div class="vm-card-body">
+
+            <div class="vm-grid">
+
+                <div class="vm-item">
+                    <span class="vm-label">Nível</span>
+                    <div class="vm-valor">
+                        {{ material.nivel|default:"Não informado" }}
+                    </div>
+                </div>
+
+                <div class="vm-item">
+                    <span class="vm-label">Séries</span>
+                    <div class="vm-valor">
+                        {{ material.series|default:"Não informado" }}
+                    </div>
+                </div>
+
+                <div class="vm-item">
+                    <span class="vm-label">Quantidade total</span>
+                    <div class="vm-valor">
+                        {{ material.quantidade }}
+                    </div>
+                </div>
+
+                <div class="vm-item">
+                    <span class="vm-label">Quantidade disponível</span>
+                    <div class="vm-valor">
+                        {{ material.quantidade_disponivel }}
+                    </div>
+                </div>
+
+                <div class="vm-item">
+                    <span class="vm-label">Localização</span>
+                    <div class="vm-valor">
+                        {% if material.localizacao %}
+                            {{ material.localizacao.nome }}
+                        {% else %}
+                            Não informada
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="vm-item">
+                    <span class="vm-label">Status</span>
+                    <div class="vm-valor">
+                        {% if material.ativo %}
+                            <span class="vm-status vm-ativo">Ativo</span>
+                        {% else %}
+                            <span class="vm-status vm-inativo">Inativo</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="vm-acoes">
+
+        <button type="button"
+                class="vm-editar"
+                data-acao="editar-material"
+                data-id="{{ material.id }}">
+            Editar material
+        </button>
+
+    </div>
+
+</div>

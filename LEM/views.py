@@ -4,36 +4,128 @@ from django.utils import timezone
 from django.contrib import messages
 from .forms import CardMaterialForm, CadastroForm, MaterialForm, LoginForm, DuvidaForm
 from .models import Card, User, HorarioFuncionamento, LocalizacaoLab, Materiais, Emprestimo, Visita, Duvida, HistoricoAlteracao, FAQ, Instituicao
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db import IntegrityError
 
-def home(request):
-    agora = timezone.localtime()   # usa o TIME_ZONE do settings
-    hoje = agora.weekday()         # 0 = segunda ... 6 = domingo
 
-    cadastrados = {h.dia_semana: h for h in HorarioFuncionamento.objects.all()}
+from django.contrib.auth.views import redirect_to_login
+from django.shortcuts import render, redirect
+from django.urls import reverse
+
+def home(request):
+    agora = timezone.localtime()
+    hoje = agora.weekday()
+
+    # Formulário de nova dúvida
+    if request.method == "POST" and "enviar_duvida" in request.POST:
+
+        if not request.user.is_authenticated:
+            return redirect_to_login(request.get_full_path())
+
+        form = DuvidaForm(request.POST)
+
+        if form.is_valid():
+            duvida = form.save(commit=False)
+            duvida.usuario = request.user
+            duvida.save()
+
+            messages.success(
+                request,
+                "Pergunta enviada! Nossa equipe vai responder em breve."
+            )
+
+            return redirect(reverse("home") + "#duvidas")
+
+        abrir_modal_duvida = True
+
+    else:
+        form = DuvidaForm()
+        abrir_modal_duvida = False
+
+    cadastrados = {
+        h.dia_semana: h
+        for h in HorarioFuncionamento.objects.all()
+    }
 
     horarios = []
     aberto_agora = False
-    for dia, _nome in HorarioFuncionamento.DIAS:   # só segunda a sexta
-        # sem cadastro, o dia aparece do mesmo jeito, só que sem horários
-        h = cadastrados.get(dia) or HorarioFuncionamento(dia_semana=dia)
-        h.eh_hoje = (dia == hoje)                  # sábado e domingo: nenhum destaque
+
+    for dia, _nome in HorarioFuncionamento.DIAS:
+        h = cadastrados.get(dia) or HorarioFuncionamento(
+            dia_semana=dia
+        )
+
+        h.eh_hoje = (dia == hoje)
+
         if h.eh_hoje and h.esta_aberto(agora.time()):
             aberto_agora = True
+
         horarios.append(h)
 
     context = {
         "card": Card.objects.all(),
-        "faqs": FAQ.objects.filter(ativa=True).order_by("ordem", "id"),
+        "faqs": FAQ.objects.filter(
+            ativa=True
+        ).order_by("ordem", "id"),
         "horarios": horarios,
         "aberto_agora": aberto_agora,
         "tem_horarios": bool(cadastrados),
+
+        # Dados do formulário do modal
+        "form_duvida": form,
+        "abrir_modal_duvida": abrir_modal_duvida,
+
+        # Perguntas enviadas pelo usuário
+        "minhas_duvidas": (
+            Duvida.objects.filter(usuario=request.user)
+            if request.user.is_authenticated
+            else Duvida.objects.none()
+        ),
     }
+
     return render(request, "LEM/home.html", context)
+
+
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def transformar_em_faq(request, duvida_id):
+
+    duvida = get_object_or_404(Duvida, id=duvida_id)
+
+    if not duvida.resposta.strip():
+        messages.error(
+            request,
+            "É necessário responder à dúvida antes de transformá-la em FAQ."
+        )
+        return redirect("perguntasfaq")
+
+    FAQ.objects.update_or_create(
+        duvida_origem=duvida,
+        defaults={
+            "pergunta": duvida.pergunta[:255],
+            "resposta": duvida.resposta,
+            "ativa": True,
+            "ordem": duvida.ordem,
+        }
+    )
+
+    duvida.status = "FAQ"
+
+    if not duvida.respondida_em:
+        duvida.respondida_em = timezone.now()
+
+    duvida.save()
+
+    messages.success(
+        request,
+        "Pergunta adicionada às perguntas frequentes!"
+    )
+
+    return redirect("perguntasfaq")
 
 
 def cadastro(request):

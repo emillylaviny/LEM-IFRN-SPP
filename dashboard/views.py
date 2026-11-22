@@ -24,25 +24,16 @@ def usuarios(request):
 
 @login_required
 def form_usuario(request):
-    form = UsuarioAdminForm()
 
-    return render(
-        request,
-        "dashboard/form_usuario.html",
-        {"form": form}
-    )
+    escolas = Instituicao.objects.all().order_by("nome")
 
-
-
-@login_required
-def usuario_cadastrar(request):
     if request.method == "POST":
         form = UsuarioAdminForm(request.POST, request.FILES)
 
         if form.is_valid():
             form.save()
             messages.success(request, "Usuário cadastrado com sucesso!")
-            return redirect("usuarios")
+            return redirect("/dashboard/?pagina=usuarios")
 
     else:
         form = UsuarioAdminForm()
@@ -50,7 +41,35 @@ def usuario_cadastrar(request):
     return render(
         request,
         "dashboard/form_usuario.html",
-        {"form": form}
+        {
+            "form": form,
+            "escolas": escolas,
+        }
+    )
+
+@login_required
+def usuario_cadastrar(request):
+
+    escolas = Instituicao.objects.all().order_by("nome")
+
+    if request.method == "POST":
+        form = UsuarioAdminForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Usuário cadastrado com sucesso!")
+            return redirect("/dashboard/?pagina=usuarios")
+
+    else:
+        form = UsuarioAdminForm()
+
+    return render(
+        request,
+        "dashboard/form_usuario.html",
+        {
+            "form": form,
+            "escolas": escolas,
+        }
     )
     
     
@@ -164,21 +183,20 @@ def faq_excluir(request, id):
 
 
 
+
 @login_required
 def materiais(request):
-    materiais = Materiais.objects.all().order_by("nome")
-    form = MaterialForm()
-    
-    paginator = Paginator(materiais, 5)
+    lista_materiais = Materiais.objects.all().order_by("nome")
+
+    paginator = Paginator(lista_materiais, 5)
     numero_da_pagina = request.GET.get("pagina", 1)
-    materiais = paginator.get_page(numero_da_pagina)
-    
+    lista_materiais = paginator.get_page(numero_da_pagina)
+
     return render(
         request,
         "dashboard/materiais.html",
         {
-            "materiais": materiais,
-            "form_novo": form,
+            "materiais": lista_materiais,
         }
     )
 
@@ -194,13 +212,40 @@ def novo_material(request):
                 request,
                 "Material cadastrado com sucesso!"
             )
-        else:
-            messages.error(
-                request,
-                "Não foi possível cadastrar. Verifique os campos."
-            )
+            return redirect("/dashboard/?pagina=materiais")
 
-    return redirect("materiais")
+        messages.error(
+            request,
+            "Não foi possível cadastrar. Verifique os campos."
+        )
+
+    else:
+        form = MaterialForm()
+
+    return render(
+        request,
+        "dashboard/form_material.html",
+        {
+            "form": form,
+            "titulo": "Cadastrar material",
+            "botao": "Salvar material",
+            "modo": "novo",
+        },
+        status=200
+    )
+    
+@login_required
+def visualizar_material(request, material_id):
+    material = get_object_or_404(
+        Materiais.objects.select_related("localizacao"),
+        id=material_id
+    )
+
+    return render(
+        request,
+        "dashboard/visualizar_material.html",
+        {"material": material}
+    )
 
 
 @login_required
@@ -223,31 +268,41 @@ def editar_material(request, material_id):
                 request,
                 "Material atualizado com sucesso!"
             )
-        else:
-            messages.error(
-                request,
-                "Não foi possível atualizar. Verifique os campos."
-            )
+            return redirect("/dashboard/?pagina=materiais")
 
-    return redirect("materiais")
+        messages.error(
+            request,
+            "Não foi possível atualizar. Verifique os campos."
+        )
+
+    else:
+        form = MaterialForm(instance=material)
+
+    return render(
+        request,
+        "dashboard/form_material.html",
+        {
+            "form": form,
+            "material": material,
+            "titulo": "Editar material",
+            "botao": "Salvar alterações",
+            "modo": "editar",
+        },
+        status=200
+    )
 
 
 @login_required
 def remover_material(request, material_id):
-    material = get_object_or_404(
-        Materiais,
-        id=material_id
-    )
+    material = get_object_or_404(Materiais, id=material_id)
 
     if request.method == "POST":
         material.delete()
-        messages.success(
-            request,
-            "Material excluído com sucesso!"
-        )
+        messages.success(request, "Material excluído com sucesso!")
 
-    return redirect("materiais")
+    return redirect("/dashboard/?pagina=materiais")
 
+@login_required
 def etiquetas(request):
     return render(request, "dashboard/etiquetas.html")
 

@@ -30,30 +30,11 @@ urlpatterns = [
         name='faq_excluir'
     ),
 
-    path(
-        'materiais/', 
-        views.materiais, 
-        name='materiais'
-    ),
-    
-    
-    path(
-        'materiais/novo/',
-        views.novo_material,
-        name='novo_material'
-    ),
-
-    path(
-        'materiais/<int:material_id>/editar/',
-        views.editar_material,
-        name='editar_material'
-    ),
-
-    path(
-        'materiais/<int:material_id>/remover/',
-        views.remover_material,
-        name='remover_material'
-    ),
+    path('materiais/', views.materiais, name='materiais'),
+    path('materiais/novo/', views.novo_material, name='novo_material'),
+    path('materiais/<int:material_id>/visualizar/', views.visualizar_material, name='visualizar_material'),
+    path('materiais/<int:material_id>/editar/', views.editar_material, name='editar_material'),
+    path('materiais/<int:material_id>/remover/', views.remover_material, name='remover_material'),
     
     path(
         "usuarios/", 

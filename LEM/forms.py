@@ -296,6 +296,23 @@ class UsuarioAdminForm(forms.ModelForm):
             "required": "Informe seu e-mail.",
         }
     )
+    
+    vinculos_profissionais_texto = forms.CharField(
+        label="Instituição(ões) onde trabalha",
+        required=True,
+        widget=forms.TextInput(attrs={
+            "id": "id_vinculos_profissionais_texto",
+            "autocomplete": "off",
+            "placeholder": "Digite o nome da instituição",
+        })
+    )
+
+    instituicoes_cidades = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs={
+            "id": "id_instituicoes_cidades"
+        })
+    )
 
     class Meta:
         model = User
@@ -306,8 +323,6 @@ class UsuarioAdminForm(forms.ModelForm):
             "data_nascimento",
             "foto",
             "cidade_residencia",
-            "vinculo_profissional",
-            "cidade_escola",
             "declaracao_escola",
             "email",
             "telefone",
@@ -359,6 +374,7 @@ class UsuarioAdminForm(forms.ModelForm):
 
         return email
 
+    
     def clean(self):
         cleaned_data = super().clean()
 
@@ -366,7 +382,7 @@ class UsuarioAdminForm(forms.ModelForm):
         confirmacao = cleaned_data.get("confirmacao_senha")
 
         if not self.instance.pk and not senha:
-            self.add_error("senha", "Informe uma senha.")
+            self.add_error("senha", "A senha é obrigatória.")
 
         if senha and senha != confirmacao:
             self.add_error(
@@ -374,7 +390,75 @@ class UsuarioAdminForm(forms.ModelForm):
                 "As senhas não coincidem."
             )
 
+        texto = cleaned_data.get("vinculos_profissionais_texto", "")
+        cidades_json = cleaned_data.get("instituicoes_cidades", "{}")
+
+        try:
+            cidades = json.loads(cidades_json or "{}")
+        except (json.JSONDecodeError, TypeError):
+            cidades = {}
+
+        if not isinstance(cidades, dict):
+            cidades = {}
+
+        nomes = []
+
+        for nome in texto.split(","):
+            nome = nome.strip()
+
+            if nome and nome.casefold() not in [
+                n.casefold() for n in nomes
+            ]:
+                nomes.append(nome)
+
+        if not nomes:
+            self.add_error(
+                "vinculos_profissionais_texto",
+                "Informe pelo menos uma instituição."
+            )
+            return cleaned_data
+
+        instituicoes_processadas = []
+
+        for nome in nomes:
+            escola = Instituicao.objects.filter(
+                nome__iexact=nome,
+                ativa=True
+            ).first()
+
+            if escola:
+                instituicoes_processadas.append({
+                    "nome": escola.nome,
+                    "cidade": escola.cidade_escola
+                })
+
+            else:
+                cidade = next(
+                    (
+                        valor
+                        for chave, valor in cidades.items()
+                        if str(chave).strip().casefold() == nome.casefold()
+                    ),
+                    ""
+                )
+
+                cidade = str(cidade or "").strip()
+
+                if not cidade:
+                    self.add_error(
+                        "vinculos_profissionais_texto",
+                        f"Informe a cidade da instituição não cadastrada: {nome}."
+                    )
+                else:
+                    instituicoes_processadas.append({
+                        "nome": nome,
+                        "cidade": cidade
+                    })
+
+        self.instituicoes_processadas = instituicoes_processadas
+
         return cleaned_data
+
 
     def save(self, commit=True):
         usuario = super().save(commit=False)
@@ -387,11 +471,40 @@ class UsuarioAdminForm(forms.ModelForm):
         if senha:
             usuario.set_password(senha)
 
-        if not usuario.vinculo_profissional:
-            usuario.vinculo_profissional = "Não informado"
+        instituicoes = getattr(
+            self,
+            "instituicoes_processadas",
+            []
+        )
+
+        usuario.vinculo_profissional = ", ".join(
+            item["nome"] for item in instituicoes
+        )
+
+        if instituicoes:
+            usuario.cidade_escola = instituicoes[0]["cidade"]
 
         if commit:
             usuario.save()
+
+            escolas = []
+
+            for item in instituicoes:
+                escola = Instituicao.objects.filter(
+                    nome__iexact=item["nome"],
+                    ativa=True
+                ).first()
+
+                if not escola:
+                    escola = Instituicao.objects.create(
+                        nome=item["nome"],
+                        cidade_escola=item["cidade"],
+                        ativa=True
+                    )
+
+                escolas.append(escola)
+
+            usuario.vinculos_profissionais.set(escolas)
 
         return usuario
 

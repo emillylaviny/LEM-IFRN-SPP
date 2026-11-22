@@ -1,65 +1,320 @@
-{% block content %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ titulo }}</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-</head>
-<body class="bg-light">
+<style>
+#form-material {
+    --verde: #0f7657;
+    --verde-escuro: #0a6047;
+    --texto: #19332c;
+    --muted: #71827b;
+    --borda: #dfe8e3;
+    --fundo: #f7f9f8;
+    color: var(--texto);
+    width: 100%;
+}
 
-<div class="container py-4">
-    <div class="card shadow-sm">
-        <div class="card-body p-4">
+#form-material .fm-topo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
 
-            <h1 class="h3 mb-4">{{ titulo }}</h1>
+#form-material .fm-titulo {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--texto);
+    margin: 0;
+}
 
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
+#form-material .fm-subtitulo {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 5px;
+}
 
-                {{ form.non_field_errors }}
+#form-material .fm-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--borda);
+    background: #fff;
+    color: #53665e;
+    border-radius: 9px;
+    padding: 9px 15px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
 
-                {% for field in form %}
-                    <div class="mb-3">
-                        <label for="{{ field.id_for_label }}"
-                               class="form-label">
-                            {{ field.label }}
-                        </label>
+#form-material .fm-voltar:hover,
+#form-material .fm-cancelar:hover {
+    background: #f3f8f5;
+}
 
-                        {{ field }}
+#form-material .fm-card {
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: 15px;
+    box-shadow: 0 2px 7px rgba(20, 50, 50, .04);
+    margin-bottom: 18px;
+    overflow: hidden;
+}
 
-                        {% if field.help_text %}
-                            <div class="form-text">
-                                {{ field.help_text }}
-                            </div>
-                        {% endif %}
+#form-material .fm-card-header {
+    padding: 15px 18px;
+    border-bottom: 1px solid var(--borda);
+}
 
-                        {% for error in field.errors %}
-                            <div class="text-danger small">
-                                {{ error }}
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endfor %}
+#form-material .fm-card-header h3 {
+    color: var(--texto);
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+}
 
-                <button type="submit" class="btn btn-success">
-                    Salvar material
-                </button>
+#form-material .fm-card-header p {
+    color: var(--muted);
+    font-size: 12px;
+    margin: 4px 0 0;
+}
 
-                <a href="{% url 'dashboard' %}?pagina=materiais"
-                   class="btn btn-secondary">
-                    Cancelar
-                </a>
-            </form>
+#form-material .fm-card-body {
+    padding: 20px;
+}
+
+#form-material .fm-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 14px;
+}
+
+#form-material .fm-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+#form-material .fm-campo.completo {
+    grid-column: 1 / -1;
+}
+
+#form-material .fm-campo label {
+    color: var(--texto);
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0;
+}
+
+#form-material .fm-campo input:not([type="checkbox"]):not([type="file"]),
+#form-material .fm-campo select,
+#form-material .fm-campo textarea {
+    width: 100%;
+    min-height: 39px;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 9px 11px;
+    color: var(--texto);
+    font-size: 13px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+#form-material .fm-campo input[type="file"] {
+    width: 100%;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 12px;
+    color: var(--texto);
+    background: #fff;
+    box-sizing: border-box;
+}
+
+#form-material .fm-campo textarea {
+    resize: vertical;
+    min-height: 95px;
+}
+
+#form-material .fm-campo input:focus,
+#form-material .fm-campo select:focus,
+#form-material .fm-campo textarea:focus {
+    outline: none;
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(15, 118, 87, .09);
+}
+
+#form-material .fm-campo input[type="checkbox"] {
+    accent-color: var(--verde);
+    width: 16px;
+    height: 16px;
+}
+
+#form-material .fm-campo small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+#form-material .fm-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+#form-material .fm-checkbox label {
+    margin: 0;
+}
+
+#form-material .errorlist {
+    color: #c0392b;
+    font-size: 12px;
+    margin: 0;
+    padding-left: 17px;
+}
+
+#form-material .fm-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 0 0 20px;
+    margin-top: 5px;
+}
+
+#form-material .fm-cancelar {
+    border: 1px solid var(--borda);
+    background: #fff;
+    color: var(--texto);
+    border-radius: 9px;
+    padding: 10px 17px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+#form-material .fm-salvar {
+    border: none;
+    background: var(--verde);
+    color: #fff;
+    border-radius: 9px;
+    padding: 10px 19px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#form-material .fm-salvar:hover {
+    background: var(--verde-escuro);
+}
+
+@media (max-width: 700px) {
+    #form-material .fm-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #form-material .fm-campo.completo {
+        grid-column: auto;
+    }
+
+    #form-material .fm-card-body {
+        padding: 15px;
+    }
+
+    #form-material .fm-topo {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 450px) {
+    #form-material .fm-topo {
+        flex-direction: column;
+    }
+
+    #form-material .fm-acoes {
+        flex-direction: column-reverse;
+    }
+
+    #form-material .fm-acoes button {
+        width: 100%;
+    }
+}
+</style>
+
+<div id="form-material">
+
+    <div class="fm-topo">
+        <div>
+            <h2 class="fm-titulo">{{ titulo }}</h2>
+            <div class="fm-subtitulo">
+                Campos marcados com * são obrigatórios.
+            </div>
+        </div>
+
+        <button type="button"
+                class="fm-voltar"
+                data-acao="voltar-materiais">
+            ← Voltar
+        </button>
+    </div>
+
+    <form method="POST"
+          action="{% if modo == 'editar' %}{% url 'editar_material' material.id %}{% else %}{% url 'novo_material' %}{% endif %}"
+          enctype="multipart/form-data"
+          data-form-material>
+
+        {% csrf_token %}
+
+        <div class="fm-card">
+
+            <div class="fm-card-header">
+                <h3>Informações do material</h3>
+                <p>Preencha os dados para identificar e descrever o material.</p>
+            </div>
+
+            <div class="fm-card-body">
+
+                <div class="fm-grid">
+
+                    {% for field in form %}
+
+                        <div class="fm-campo {% if field.name == 'descricao' or field.name == 'orientacao_uso' or field.name == 'imagem' %}completo{% endif %}">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                                {% if field.field.required %}*{% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small>{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {{ field.errors }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="fm-acoes">
+
+            <button type="button"
+                    class="fm-cancelar"
+                    data-acao="voltar-materiais">
+                Cancelar
+            </button>
+
+            <button type="submit" class="fm-salvar">
+                {{ botao }}
+            </button>
 
         </div>
-    </div>
-</div>
 
-</body>
-</html>
-{% endblock %}
+    </form>
+
+</div>
