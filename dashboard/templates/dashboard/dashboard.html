@@ -224,7 +224,7 @@
     padding: 8px;
     border: 1px solid #e3e8ec;
     border-radius: 14px;
-    box-shadow: 0 12px 32px rgba(11, 61, 99, 0.16);
+    box-shadow: 0 12px 32px rgba(39, 50, 58, 0.16);
   }
 
   .lem-perfil__cab {
@@ -303,7 +303,7 @@
   --lte-sidebar-menu-active-color: #fff;
   --lte-sidebar-menu-active-bg: rgba(45, 212, 191, .18);
   --lte-sidebar-header-color: #9db9cc;
-  background-color: #00233d;               /* --lemaq-navy do style.css */
+  background-color: #082a45;               /* --lemaq-navy do style.css */
 }
 
 /* logo centralizada */
@@ -385,6 +385,110 @@
 .lem-sb .sidebar-menu .nav-link:focus-visible {
   outline: 2px solid #5eead4;
   outline-offset: 2px;
+}
+
+/* ===== Rodapé ===== */
+.lem-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  padding: 14px 32px;
+  background: #fff;
+  border-top: 1px solid #e1eaef;
+}
+
+.lem-footer__marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.lem-footer__logo {
+  display: block;
+  height: 35px;          /* o PNG tem margem transparente, o símbolo visível fica ~44px */
+  width: auto;
+  margin: -6px -4px;
+}
+.lem-footer__nome {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b3d63;
+}
+.lem-footer__campus {
+  display: block;
+  font-size: 12.5px;
+  color: #5b7385;
+}
+
+.lem-footer__copy {
+  margin: 0;
+  font-size: 12.5px;
+  color: #5b7385;
+}
+
+.lem-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid #0b6e6a;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0b6e6a;
+  text-decoration: none;
+  transition: background-color .15s, color .15s;
+}
+.lem-footer__link:hover {
+  background: #0b6e6a;
+  color: #fff;
+}
+.lem-footer__link:focus-visible {
+  outline: 2px solid #0b6e6a;
+  outline-offset: 3px;
+}
+
+@media (max-width: 767.98px) {
+  .lem-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lem-footer__link { transition: none; }
+}
+
+/* ===== Ícone de notificações ===== */
+.lem-notif {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--bs-navbar-color, #495057);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background-color .15s, color .15s;
+}
+.lem-notif:hover {
+  background: rgba(11, 61, 99, .08);
+  color: #0b3d63;
+}
+.lem-notif:focus-visible {
+  outline: 2px solid #0b6e6a;
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lem-notif { transition: none; }
 }
 
 </style>
@@ -536,6 +640,13 @@ try {
               <a class="nav-link" href="./pages/search-results.html" aria-label="Search">
                 <i class="bi bi-search" aria-hidden="true"></i>
               </a>
+            </li>
+
+                        <!--Notificações (visual apenas, sem funcionalidade por enquanto)-->
+            <li class="nav-item ms-auto me-1">
+              <button type="button" class="lem-notif" aria-label="Notificações" title="Notificações">
+                <i class="bi bi-bell" aria-hidden="true"></i>
+              </button>
             </li>
 
             <!-- Menu do perfil -->
@@ -823,21 +934,29 @@ try {
       </main>
       <!--end::App Main-->
 
-
       <!--begin::Footer-->
-      <footer class="app-footer">
-        <!--begin::To the end-->
-        <div class="float-end d-none d-sm-inline">Anything you want</div>
-        <!--end::To the end-->
-        <!--begin::Copyright-->
-        <strong>
-          Copyright &copy; 2014-2026&nbsp;
-          <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>.
-        </strong>
-        All rights reserved.
-        <!--end::Copyright-->
+      <footer class="app-footer lem-footer">
+        <div class="lem-footer__marca">
+          <img src="{% static 'LEM/assets/img/Logo Principal - Fundo transparente.png' %}"
+               alt="LEM - Laboratório de Ensino de Matemática"
+               class="lem-footer__logo">
+          <div>
+            <strong class="lem-footer__nome">Laboratório de Ensino de Matemática</strong>
+            <span class="lem-footer__campus">IFRN · Campus São Paulo do Potengi</span>
+          </div>
+        </div>
+
+        <p class="lem-footer__copy">
+          &copy; {% now "Y" %} LEM/SPP – Laboratório de Ensino de Matemática do IFRN-SPP. Todos os direitos reservados.
+        </p>
+
+        <a href="{% url 'home' %}" class="lem-footer__link">
+          <i class="bi bi-house-door" aria-hidden="true"></i>
+          Ir para a página inicial
+        </a>
       </footer>
       <!--end::Footer-->
+
     </div>
     <!--end::App Wrapper-->
     <!--begin::Script-->
@@ -1022,6 +1141,7 @@ document.addEventListener("click", function(e) {
 
     // Usuários
     if (acao === "novo-usuario") {
+<<<<<<< HEAD
         url = "/usuarios/formulario/";
     } else if (acao === "editar") {
         url = `/usuarios/editar/${id}/`;
@@ -1043,6 +1163,24 @@ document.addEventListener("click", function(e) {
     if (url) {
         carregarConteudo(url);
     }
+=======
+    url = "/usuarios/formulario/";
+} else if (acao === "editar") {
+    const id = botao.dataset.id;
+    url = `/usuarios/editar/${id}/`;
+} else if (acao === "voltar-usuarios") {
+    url = "/usuarios/";
+} else if (acao === "novo-material") {
+    url = "/materiais/novo/";
+} else if (acao === "voltar-materiais") {
+    url = "/materiais/";
+}
+
+if (url) {
+    carregarConteudo(url);
+}
+    
+>>>>>>> fbfeb9b2d008c30e09571673f439c03132b66298
 });
 
 
